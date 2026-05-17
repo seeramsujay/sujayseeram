@@ -1,0 +1,23 @@
+# Personal Content and Privacy Protection License (PCPPL)
+**Copyright (c) 2026 Sujay Seeram. All Rights Reserved.**
+
+### Preamble
+This portfolio, including all content, images, designs, code, assets, and personal information, is the intellectual property of Sujay Seeram. It is published on the web for direct, non-automated human viewing only. This license is established to protect the personal information and digital privacy of the author, and to prevent the unauthorized exploitation of their work, assets, and identity.
+
+### 1. Grant of License
+Permission is granted solely to individual human beings to access, load, and read this website in a standard, modern web browser for personal, informational, and non-commercial review of the author’s portfolio.
+
+No other license is granted. All rights not explicitly granted herein are strictly and fully reserved by the copyright owner.
+
+### 2. Prohibited Uses
+Under no circumstances may any part of this repository, website, or associated assets be used for:
+*   **Artificial Intelligence and Machine Learning Training:** You may not use, copy, download, scrape, ingest, or parse any portion of the content, code, styling, or media for the purpose of training, fine-tuning, testing, or validating machine learning models, large language models (LLMs), neural networks, artificial intelligence systems, or generative AI models.
+*   **Automated Scraping and Data Harvesting:** You may not crawl, scrape, harvest, mine, or extract text, images, code, or metadata from this repository or published website using any automated system, including but not limited to spiders, scrapers, crawlers, offline readers, AI bots, or API-based extractors.
+*   **Commercial Use:** You may not package, redistribute, sublicense, lease, sell, or commercially exploit any content, code, or design concepts found herein.
+*   **Redistribution and Derivation:** You may not modify, adapt, build upon, translate, or create derivative works from the content or layout without express, written permission from Sujay Seeram.
+
+### 3. Technical Assertions (Robots.txt and Metadata)
+The presence of machine-readable files (such as `robots.txt` declaring `Disallow: /` for AI crawlers) or metadata (such as `<meta name="robots" content="noai, noimageai">`) constitutes an active, technical assertion of this license. However, the absence of such metadata or technical configurations does not waive any terms of this license.
+
+### 4. Violation and Remedies
+Any automated ingestion, scraping, or processing of this repository's content or published site (whether on Netlify or any other host) in violation of this license is considered a breach of copyright and a direct violation of the author’s personal privacy. Sujay Seeram reserves the right to seek all available legal, equitable, and technical remedies, including but not limited to IP address blocking, DMCA takedown notices, and legal action for copyright infringement.
