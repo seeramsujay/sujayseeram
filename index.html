@@ -124,6 +124,8 @@
             color: var(--text-primary);
             transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
+            position: relative;
+            overflow: hidden;
         }
 
         .glass-card:hover {
@@ -145,10 +147,30 @@
                     transparent);
             transition: 0.5s;
             pointer-events: none;
+            z-index: 1;
         }
 
         .glass-card:hover::before {
             left: 100%;
+        }
+
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(74, 222, 128, 0.1),
+                transparent 40%
+            );
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .glass-card:hover::after {
+            opacity: 1;
         }
 
         .container {
@@ -1127,9 +1149,7 @@
                 align-self: center !important;
                 position: relative !important;
                 top: auto !important;
-                opacity: 1 !important;
                 margin-bottom: 2rem;
-                transition: none !important;
             }
 
             /* On mobile, apply the card hover/active transformations on the inner content div */
@@ -5508,21 +5528,25 @@
         const revealIO = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const s = nodeStates.get(entry.target);
-                    if (s) {
-                        // Snap internal start state to "far but close" so lerp doesn't
-                        // start from the extreme initial value after node first appears
-                        s.op = 0.05;
-                        s.sc = 0.90;
-                        s.z = -420;
+                    if (window.innerWidth > 768) {
+                        const s = nodeStates.get(entry.target);
+                        if (s) {
+                            s.op = 0.05;
+                            s.sc = 0.90;
+                            s.z = -420;
+                        }
+                        wake();
                     }
-                    wake();
                     revealIO.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.05, rootMargin: '0px 0px -5% 0px' });
 
-        timelineNodes.forEach(n => revealIO.observe(n));
+        timelineNodes.forEach(n => {
+            if (window.innerWidth > 768) {
+                revealIO.observe(n);
+            }
+        });
 
         // ─── General section reveal (about, vault cards, etc.) ───────────────────
         const fadeIO = new IntersectionObserver((entries) => {
@@ -5538,6 +5562,13 @@
             el.classList.add('fade-up');
             fadeIO.observe(el);
         });
+        
+        if (window.innerWidth <= 768) {
+            timelineNodes.forEach(el => {
+                el.classList.add('fade-up');
+                fadeIO.observe(el);
+            });
+        }
 
         // Dynamic Glowing Tag Parsing Routine
         document.querySelectorAll('.post-tags').forEach(el => {
