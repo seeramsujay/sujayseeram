@@ -73,7 +73,7 @@
     }
 
     html {
-        /* scroll-behavior removed — conflicts with JS lerp smoothing */
+        scroll-behavior: smooth;
         background-color: var(--bg-void);
         color: var(--text-primary);
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -122,6 +122,7 @@
         padding: 2rem 2.5rem;
         color: var(--text-primary);
         transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform, opacity;
     }
 
     .glass-card:hover {
@@ -153,6 +154,16 @@
         max-width: 1280px;
         margin: 0 auto;
         padding: 0 2rem;
+    }
+
+    p, .font-body {
+        max-width: 70ch;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-quote, .about-main p, .post-text {
+        max-width: 800px;
     }
 
     /* Navigation */
@@ -451,10 +462,36 @@
     }
 
     @media (max-width: 1024px) {
-
         .about-main,
         .about-side {
             grid-column: span 12;
+        }
+        .side-indicators {
+            right: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .side-indicators {
+            display: none;
+        }
+        .hero-title {
+            font-size: 4rem;
+        }
+        .nav-links {
+            gap: 1.5rem;
+        }
+        .nav-links a {
+            font-size: 0.6rem;
+        }
+    }
+
+    @media (min-width: 1600px) {
+        .side-indicators {
+            right: 5rem;
+        }
+        .container {
+            max-width: 1500px;
         }
     }
 
@@ -496,17 +533,17 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 40vh;
+        gap: 60vh;
         padding: 15vh 0;
-        transform-style: preserve-3d;
     }
 
     .timeline-node {
-        /* No CSS transition — JS lerp handles smoothing to prevent glitch */
+        position: sticky;
+        top: 25vh;
         will-change: transform, opacity;
         max-width: 500px;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
+        z-index: 1;
+        transition: none !important;
     }
 
     .timeline-node.left {
@@ -770,10 +807,32 @@
     }
 
     .post-tags {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 10px;
-        color: var(--text-muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 1.5rem;
         margin-bottom: 2rem;
+    }
+
+    .post-tags span {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 9px;
+        color: var(--optimism-teal);
+        background: rgba(45, 212, 191, 0.06);
+        border: 1px solid rgba(45, 212, 191, 0.18);
+        padding: 0.25rem 0.6rem;
+        border-radius: 4px;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+        letter-spacing: 0.05em;
+    }
+
+    .post-tags span:hover {
+        background: rgba(74, 222, 128, 0.1);
+        border-color: var(--optimism-mint);
+        color: var(--optimism-mint);
+        box-shadow: 0 0 10px var(--glow-mint);
+        transform: translateY(-1px);
     }
 
     .post-actions {
@@ -947,6 +1006,62 @@
         display: none;
     }
 
+    /* Centered Navigation Wrapper */
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+    
+    @media (min-width: 1600px) {
+        .nav-container {
+            max-width: 1500px;
+        }
+    }
+
+    /* Chronicle Telemetry HUD */
+    .chronicle-hud {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+        border-top: 1px dashed rgba(45, 212, 191, 0.2);
+        border-bottom: 1px dashed rgba(45, 212, 191, 0.2);
+        padding: 1.5rem 0;
+        width: 100%;
+    }
+
+    .hud-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hud-label {
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+    }
+
+    .hud-value {
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        color: var(--optimism-mint);
+        text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+    }
+
+    /* Expanded Post glowing highlight */
+    .post-card.expanded {
+        border-color: var(--optimism-mint) !important;
+        box-shadow: 0 8px 32px var(--glow-mint), 0 0 10px rgba(74, 222, 128, 0.2) !important;
+    }
+
     /* Responsiveness */
     @media (max-width: 768px) {
         .md-hidden {
@@ -969,9 +1084,20 @@
             display: none;
         }
 
+        .timeline-container {
+            gap: 3rem !important;
+            padding: 2rem 0 !important;
+        }
+
         .timeline-node {
             max-width: 100%;
             align-self: center !important;
+            position: relative !important;
+            top: auto !important;
+            opacity: 1 !important;
+            transform: none !important;
+            margin-bottom: 2rem;
+            transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) !important;
         }
 
         .timeline-year {
@@ -1003,6 +1129,60 @@
             padding: 3rem 1.5rem;
         }
     }
+
+    /* Fullscreen Overlays */
+    .fullscreen-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(3, 7, 8, 0.98);
+        backdrop-filter: blur(32px);
+        -webkit-backdrop-filter: blur(32px);
+        z-index: 1500;
+        display: none;
+        flex-direction: column;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+    }
+
+    .fullscreen-overlay.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .overlay-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 3rem;
+        border-bottom: 1px solid rgba(45, 212, 191, 0.15);
+        background: rgba(3, 7, 8, 0.8);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .overlay-scroll-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 3rem 1.5rem;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    @media (max-width: 768px) {
+        .overlay-header {
+            padding: 1rem 1.5rem;
+        }
+        .overlay-scroll-container {
+            padding: 1.5rem 1rem;
+        }
+    }
+
 </style>
 </head>
 
@@ -1018,15 +1198,16 @@
 
     <!-- Navigation -->
     <nav>
-        <a href="#hero" class="nav-logo">SUJAY SEERAM<span style="color: var(--text-muted)">.</span></a>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#odyssey">Odyssey</a>
-            <a href="#vault">Vault</a>
-            <a href="#posts">Posts</a>
-            <a href="#contact">Contact</a>
-        </div>
-        <div class="md-hidden material-symbols-outlined" style="color: var(--optimism-mint); cursor: pointer;">menu
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">SUJAY SEERAM<span style="color: var(--text-muted)">.</span></a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#odyssey">Odyssey</a>
+                <a href="javascript:void(0)" onclick="openVaultOverlay()">Vault</a>
+                <a href="javascript:void(0)" onclick="openPostsOverlay()">Posts</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="md-hidden material-symbols-outlined" style="color: var(--optimism-mint); cursor: pointer;">menu</div>
         </div>
     </nav>
 
@@ -1036,8 +1217,7 @@
         <a href="#hero" class="indicator-dot active" data-section="hero"></a>
         <a href="#about" class="indicator-dot" data-section="about"></a>
         <a href="#odyssey" class="indicator-dot" data-section="odyssey"></a>
-        <a href="#vault" class="indicator-dot" data-section="vault"></a>
-        <a href="#posts" class="indicator-dot" data-section="posts"></a>
+
         <a href="#contact" class="indicator-dot" data-section="contact"></a>
     </aside>
 
@@ -1575,537 +1755,41 @@
             </div>
         </section>
 
-        <!-- The Vault Section -->
-        <section id="vault" class="container" style="padding: 10rem 0;">
-            <div class="vault-header">
-                <div class="vault-title">
-                    <span class="section-label">— 03 / THE VAULT</span>
-                    <h2 class="text-gradient" style="font-size: var(--text-2xl); font-style: italic;">Indexed Works</h2>
-                </div>
-                <div class="filter-group">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="hackathon">Hackathon</button>
-                    <button class="filter-btn" data-filter="research">Research</button>
-                    <button class="filter-btn" data-filter="hardware">Hardware</button>
-                    <button class="filter-btn" data-filter="tool">Tools</button>
-                </div>
-            </div>
-
-            <div class="masonry-grid" id="project-grid">
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">ACTIVE BUILD</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">stride-tech</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">The
-                        current frontier. More when it's ready.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/stride-tech" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hackathon">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON (ACTIVE)</span>
-                        <div class="award-badge participation">🇮🇳 Google Solution Challenge</div>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">informed-poll</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Civic tech for first-time voters. RAG assistant + Firebase + swipeable candidate UI.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/informed-poll" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hackathon">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
-                        <div class="award-badge participation">🏅 AMD Slingshot</div>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">slingshot</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Pressure-built. Solo. Participation prize. Every hackathon is a checkpoint.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/slingshot" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hackathon">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
-                        <div class="award-badge participation">🏅 Google Promptathon</div>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">sentinel-mind</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Multi-agent disaster response platform. Gemini-powered autonomous coordination.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/sentinel-mind" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hackathon">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
-                        <div class="award-badge participation">🏅 GitHub DevDays</div>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">specRAG</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">RAG
-                        over hardware datasheets. No more Ctrl+F through 200 pages.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/specRAG" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hardware">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">COURSEWORK</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">smart-home-assistant</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">IoT
-                        coursework. Local-first home assistant. All processing stays on the network.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">CLI TOOL</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">mixer</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Terminal DJ streamer. Gapless audio via RMS energy profiling. No Electron.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/mixer" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">TOOL</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">evolvai-dash</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Dashboard making EVolvAI's outputs legible for the Melbourne audience.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/evolvai-dash" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">RESEARCH + HACKATHON</span>
-                        <div class="award-badge participation">🌍 IEEE IES Global Challenge</div>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">EVolvAI</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Generative counterfactual framework for EV infrastructure. Melbourne presentation.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/EVolvAI" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hackathon">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
-                        <div class="award-badge participation">🏅 Participation — Motorstone</div>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">motor-safe</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Real-time vibration signature detection. Solo. Real sensors, real hardware.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/motor-safe" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">SIMULATION</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">motor-sim</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Physics model for motor vibration stress testing. The unglamorous work that matters.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/motor-sim" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">SOLO PROJECT</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">ADAS-Sensor</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Translated GARC learnings into working LIDAR + CV sensor fusion code.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/ADAS-Sensor" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">COURSEWORK</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">AI-based-PID-tuning-controller</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Genetic Algorithms replace manual PID tuning. UDC coursework as a technical experiment.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/AI-based-PID-tuning-controller" target="_blank"
-                        class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hackathon">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
-                        <div class="award-badge participation">🥈 2nd Place — IIT Madras Shaastra</div>
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">dust-vision</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Real-time construction dust monitoring via computer vision. First hackathon ever. Silver.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/dust-vision" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">SIMULATION</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">dust-sim</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Physics simulation layer for the Shaastra entry. Validate before you deploy.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/dust-sim" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="hardware">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HARDWARE</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">oneWheel</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Balance control systems for single-wheel platforms. Software meets instability.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/oneWheel" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">UTILITY</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">LabsheetFormatMaker</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Open-sourced. Automate lab report formatting, reclaim hours for real engineering.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/LabsheetFormatMaker" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">CLI TOOL</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">ytm-cli</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Gapless music from the terminal. No GUI. No compromise.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/ytm-cli" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">RESEARCH</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">PersonalAssistant</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        First experiment in data sovereignty. 100% local inference, no API calls home.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/PersonalAssistant" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">OSS TOOL</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">Word-Association-Test-SSB</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Fullscreen WAT app simulating real SSB test environment. Built for the community.</p>
-                    <div class="project-tags">
-
-                    </div>
-
-                    <a href="https://github.com/seeramsujay/Word-Association-Test-SSB-" target="_blank"
-                        class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">CLI UTILITY</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">recordBro</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Custom local utility for capturing and managing recordings. Terminal-first.</p>
-                    <div class="project-tags">
-                        <span class="tag">CLI</span>
-                        <span class="tag">LINUX</span>
-                    </div>
-
-                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">MOBILE RESEARCH</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">healthcare-android-ai</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Sandbox for testing AI integrations within Android health applications.</p>
-                    <div class="project-tags">
-                        <span class="tag">ANDROID</span>
-                        <span class="tag">HEALTH_AI</span>
-                    </div>
-
-                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">ARCHITECTURE</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">SemanticMappingEngine</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Local SQL-based pipeline for data sovereignty. Moved away from Firebase.</p>
-                    <div class="project-tags">
-                        <span class="tag">SQL</span>
-                        <span class="tag">LOCAL_FIRST</span>
-                    </div>
-
-                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">AUTOMATION</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">maildigest</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Automatically summarizes and organizes email workflows locally.</p>
-                    <div class="project-tags">
-                        <span class="tag">PYTHON</span>
-                        <span class="tag">AUTOMATION</span>
-                    </div>
-
-                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="research">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">ML RESEARCH</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">spice-ai</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Private ML experimentation space. Pushing local hardware limits without GPU.</p>
-                    <div class="project-tags">
-                        <span class="tag">ML</span>
-                        <span class="tag">LOCAL_COMPUTE</span>
-                    </div>
-
-                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-                <div class="project-item glass-card" data-category="tool">
-                    <div class="flex justify-between items-start">
-                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">AUTOMATION</span>
-
-                    </div>
-                    <h3 style="font-size: 1.5rem; font-style: italic;">audio-lib-cleaner</h3>
-                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-                        Organize massive audio libraries with custom energy profiling scripts.</p>
-                    <div class="project-tags">
-                        <span class="tag">LINUX</span>
-                        <span class="tag">PYTHON</span>
-                    </div>
-
-                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
-                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                        VIEW_REPO <span class="material-symbols-outlined"
-                            style="font-size: 12px;">arrow_right_alt</span>
-                    </a>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- The Reading Room Section -->
+        
         <section id="posts" class="reading-room-container">
-            <div class="reading-room-header">
-                <span class="section-label">— 04 / THE READING ROOM</span>
-                <h2 class="text-gradient"
-                    style="font-size: var(--text-2xl); font-style: italic; margin-bottom: 1.5rem;">LinkedIn Chronicle
-                </h2>
-                <p class="font-body" style="font-size: var(--text-lg); color: var(--text-secondary);">
-                    Technical narratives and hackathon logs, archived exactly as they were shared.
-                </p>
+            <div class="reading-room-header" onclick="togglePostsSection()" style="cursor: pointer; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem;">
+                <div style="max-width: 800px;">
+                    <span class="section-label">— 04 / THE READING ROOM</span>
+                    <h2 class="text-gradient"
+                        style="font-size: var(--text-2xl); font-style: italic; margin-bottom: 1.5rem;">LinkedIn Chronicle
+                    </h2>
+                    <p class="font-body" style="font-size: var(--text-lg); color: var(--text-secondary);">
+                        Technical narratives and hackathon logs, archived exactly as they were shared.
+                    </p>
+                    <div class="chronicle-hud">
+                        <div class="hud-item">
+                            <span class="hud-label">LOGGED_ENTRIES</span>
+                            <span class="hud-value">24</span>
+                        </div>
+                        <div class="hud-item">
+                            <span class="hud-label">SYSTEM_STATUS</span>
+                            <span class="hud-value">ACTIVE // ONLINE</span>
+                        </div>
+                        <div class="hud-item">
+                            <span class="hud-label">TELEMETRY_SYNC</span>
+                            <span class="hud-value">LATEST // STABLE</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-btn" id="posts-toggle-btn" style="white-space: nowrap;">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">expand_more</span>
+                    SHOW_LOGS
+                </div>
             </div>
 
-            <div class="post-container" id="post-container">
+            <div id="posts-wrapper" style="display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden;">
+                <div style="min-height: 0;">
+                    <div class="post-container" id="post-container" style="padding-top: 4rem;">
 
                 <article class="post-card glass-card">
                     <div class="post-card-inner" onclick="togglePost(this)">
@@ -3284,6 +2968,8 @@
                     </div>
                 </article>
 
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -3292,14 +2978,10 @@
             <div class="contact-card glass-card">
                 <h2 class="contact-quote">"Always building. Occasionally online."</h2>
 
-                <div class="contact-links">
-                    <div class="contact-link-item">
-                        <span class="contact-link-label">Github_Archive</span>
-                        <a href="https://github.com/SuzayKid" target="_blank">github.com/SuzayKid</a>
-                    </div>
-                    <div class="contact-link-item">
-                        <span class="contact-link-label">Professional_Log</span>
-                        <a href="https://linkedin.com/in/sujayseeram" target="_blank">linkedin.com/in/sujayseeram</a>
+                <div class="contact-links" style="justify-content: center;">
+                    <div class="filter-btn" onclick="openTerminalArchive()" style="padding: 1rem 2rem; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">terminal</span>
+                        ACCESS_SYSTEM_ARCHIVE
                     </div>
                 </div>
 
@@ -3319,7 +3001,1763 @@
 
     </main>
 
-    <!-- Terminal Overlay -->
+    
+    <!-- The Vault Overlay -->
+    <div id="vault-overlay" class="fullscreen-overlay">
+        <div class="overlay-header">
+            <div class="nav-logo" style="color: var(--optimism-mint);">SYSTEM_VAULT // SUJAY SEERAM</div>
+            <div class="terminal-close" onclick="closeVaultOverlay()">[Close_Esc]</div>
+        </div>
+        <div class="overlay-scroll-container">
+            <!-- The Vault Section -->
+        <section id="vault" class="container" style="padding: 10rem 0;">
+            <div class="vault-header">
+                <div class="vault-title">
+                    <span class="section-label">— 03 / THE VAULT</span>
+                    <h2 class="text-gradient" style="font-size: var(--text-2xl); font-style: italic;">Indexed Works</h2>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="hackathon">Hackathon</button>
+                    <button class="filter-btn" data-filter="research">Research</button>
+                    <button class="filter-btn" data-filter="hardware">Hardware</button>
+                    <button class="filter-btn" data-filter="tool">Tools</button>
+                </div>
+            </div>
+
+            <div class="masonry-grid" id="project-grid">
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">ACTIVE BUILD</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">stride-tech</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">The
+                        current frontier. More when it's ready.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/stride-tech" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hackathon">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON (ACTIVE)</span>
+                        <div class="award-badge participation">🇮🇳 Google Solution Challenge</div>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">informed-poll</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Civic tech for first-time voters. RAG assistant + Firebase + swipeable candidate UI.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/informed-poll" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hackathon">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
+                        <div class="award-badge participation">🏅 AMD Slingshot</div>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">slingshot</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Pressure-built. Solo. Participation prize. Every hackathon is a checkpoint.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/slingshot" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hackathon">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
+                        <div class="award-badge participation">🏅 Google Promptathon</div>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">sentinel-mind</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Multi-agent disaster response platform. Gemini-powered autonomous coordination.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/sentinel-mind" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hackathon">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
+                        <div class="award-badge participation">🏅 GitHub DevDays</div>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">specRAG</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">RAG
+                        over hardware datasheets. No more Ctrl+F through 200 pages.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/specRAG" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hardware">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">COURSEWORK</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">smart-home-assistant</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">IoT
+                        coursework. Local-first home assistant. All processing stays on the network.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">CLI TOOL</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">mixer</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Terminal DJ streamer. Gapless audio via RMS energy profiling. No Electron.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/mixer" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">TOOL</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">evolvai-dash</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Dashboard making EVolvAI's outputs legible for the Melbourne audience.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/evolvai-dash" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">RESEARCH + HACKATHON</span>
+                        <div class="award-badge participation">🌍 IEEE IES Global Challenge</div>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">EVolvAI</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Generative counterfactual framework for EV infrastructure. Melbourne presentation.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/EVolvAI" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hackathon">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
+                        <div class="award-badge participation">🏅 Participation — Motorstone</div>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">motor-safe</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Real-time vibration signature detection. Solo. Real sensors, real hardware.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/motor-safe" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">SIMULATION</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">motor-sim</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Physics model for motor vibration stress testing. The unglamorous work that matters.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/motor-sim" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">SOLO PROJECT</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">ADAS-Sensor</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Translated GARC learnings into working LIDAR + CV sensor fusion code.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/ADAS-Sensor" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">COURSEWORK</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">AI-based-PID-tuning-controller</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Genetic Algorithms replace manual PID tuning. UDC coursework as a technical experiment.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/AI-based-PID-tuning-controller" target="_blank"
+                        class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hackathon">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HACKATHON</span>
+                        <div class="award-badge participation">🥈 2nd Place — IIT Madras Shaastra</div>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">dust-vision</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Real-time construction dust monitoring via computer vision. First hackathon ever. Silver.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/dust-vision" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">SIMULATION</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">dust-sim</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Physics simulation layer for the Shaastra entry. Validate before you deploy.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/dust-sim" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="hardware">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">HARDWARE</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">oneWheel</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Balance control systems for single-wheel platforms. Software meets instability.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/oneWheel" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">UTILITY</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">LabsheetFormatMaker</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Open-sourced. Automate lab report formatting, reclaim hours for real engineering.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/LabsheetFormatMaker" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">CLI TOOL</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">ytm-cli</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Gapless music from the terminal. No GUI. No compromise.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/ytm-cli" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">RESEARCH</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">PersonalAssistant</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        First experiment in data sovereignty. 100% local inference, no API calls home.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/PersonalAssistant" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">OSS TOOL</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">Word-Association-Test-SSB</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Fullscreen WAT app simulating real SSB test environment. Built for the community.</p>
+                    <div class="project-tags">
+
+                    </div>
+
+                    <a href="https://github.com/seeramsujay/Word-Association-Test-SSB-" target="_blank"
+                        class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">CLI UTILITY</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">recordBro</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Custom local utility for capturing and managing recordings. Terminal-first.</p>
+                    <div class="project-tags">
+                        <span class="tag">CLI</span>
+                        <span class="tag">LINUX</span>
+                    </div>
+
+                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">MOBILE RESEARCH</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">healthcare-android-ai</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Sandbox for testing AI integrations within Android health applications.</p>
+                    <div class="project-tags">
+                        <span class="tag">ANDROID</span>
+                        <span class="tag">HEALTH_AI</span>
+                    </div>
+
+                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">ARCHITECTURE</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">SemanticMappingEngine</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Local SQL-based pipeline for data sovereignty. Moved away from Firebase.</p>
+                    <div class="project-tags">
+                        <span class="tag">SQL</span>
+                        <span class="tag">LOCAL_FIRST</span>
+                    </div>
+
+                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">AUTOMATION</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">maildigest</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Automatically summarizes and organizes email workflows locally.</p>
+                    <div class="project-tags">
+                        <span class="tag">PYTHON</span>
+                        <span class="tag">AUTOMATION</span>
+                    </div>
+
+                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="research">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">ML RESEARCH</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">spice-ai</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Private ML experimentation space. Pushing local hardware limits without GPU.</p>
+                    <div class="project-tags">
+                        <span class="tag">ML</span>
+                        <span class="tag">LOCAL_COMPUTE</span>
+                    </div>
+
+                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+                <div class="project-item glass-card" data-category="tool">
+                    <div class="flex justify-between items-start">
+                        <span class="font-mono" style="font-size: 10px; opacity: 0.6;">AUTOMATION</span>
+
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-style: italic;">audio-lib-cleaner</h3>
+                    <p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        Organize massive audio libraries with custom energy profiling scripts.</p>
+                    <div class="project-tags">
+                        <span class="tag">LINUX</span>
+                        <span class="tag">PYTHON</span>
+                    </div>
+
+                    <a href="https://github.com/SuzayKid" target="_blank" class="font-mono"
+                        style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        VIEW_REPO <span class="material-symbols-outlined"
+                            style="font-size: 12px;">arrow_right_alt</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+        </div>
+    </div>
+    
+
+    <!-- The Posts Overlay -->
+    <div id="posts-overlay" class="fullscreen-overlay">
+        <div class="overlay-header">
+            <div class="nav-logo" style="color: var(--optimism-mint);">READING_ROOM // SUJAY SEERAM</div>
+            <div class="terminal-close" onclick="closePostsOverlay()">[Close_Esc]</div>
+        </div>
+        <div class="overlay-scroll-container">
+            <!-- The Reading Room Section -->
+        <section id="posts" class="reading-room-container">
+            <div class="reading-room-header" onclick="togglePostsSection()" style="cursor: pointer; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem;">
+                <div style="max-width: 800px;">
+                    <span class="section-label">— 04 / THE READING ROOM</span>
+                    <h2 class="text-gradient"
+                        style="font-size: var(--text-2xl); font-style: italic; margin-bottom: 1.5rem;">LinkedIn Chronicle
+                    </h2>
+                    <p class="font-body" style="font-size: var(--text-lg); color: var(--text-secondary);">
+                        Technical narratives and hackathon logs, archived exactly as they were shared.
+                    </p>
+                    <div class="chronicle-hud">
+                        <div class="hud-item">
+                            <span class="hud-label">LOGGED_ENTRIES</span>
+                            <span class="hud-value">24</span>
+                        </div>
+                        <div class="hud-item">
+                            <span class="hud-label">SYSTEM_STATUS</span>
+                            <span class="hud-value">ACTIVE // ONLINE</span>
+                        </div>
+                        <div class="hud-item">
+                            <span class="hud-label">TELEMETRY_SYNC</span>
+                            <span class="hud-value">LATEST // STABLE</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-btn" id="posts-toggle-btn" style="white-space: nowrap;">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">expand_less</span>
+                    HIDE_LOGS
+                </div>
+            </div>
+
+            <div id="posts-wrapper" style="display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden;">
+                <div style="min-height: 0;">
+                    <div class="post-container" id="post-container" style="padding-top: 4rem;">
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>DUST-VISION // IIT MADRAS SHAASTRA HACKATHON (2ND PLACE) 🏆</span>
+                        </div>
+                        <h3 class="post-title">My first ever hackathon. IIT Madras. Shaastra Smart City Challenge.</h3>
+                        <p class="post-excerpt">I honestly didn't know what to expect walking in. First year. No senior
+                            to shadow. Just a problem statement and a laptop....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                I honestly didn't know what to expect walking in. First year. No senior to shadow. Just
+                                a problem statement and a laptop.<br><br>We built `dust-vision` — a system to monitor
+                                and manage construction site dust emissions in real time using computer vision. The idea
+                                was simple: smart cities need air quality data *at the source*, not from a distant
+                                sensor 3 km away.<br><br>We came **2nd place**.<br><br>I remember the moment the results
+                                were announced and genuinely couldn't believe it. That one result made me want to do
+                                more hackathons, more projects, more of *this*.<br><br>First hackathon. Silver. Not a
+                                bad start. 🚀<br>
+                            </div>
+                            <div class="post-tags">#IITMadras #Shaastra #Hackathon #ComputerVision #SmartCity #FirstYear
+                                #ECE</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `I honestly didn't know what to expect walking in. First year. No senior to shadow. Just a problem statement and a laptop.<br><br>We built \`dust-vision\` — a system to monitor and manage construction site dust emissions in real time using computer vision. The idea was simple: smart cities need air quality data *at the source*, not from a distant sensor 3 km away.<br><br>We came **2nd place**.<br><br>I remember the moment the results were announced and genuinely couldn't believe it. That one result made me want to do more hackathons, more projects, more of *this*.<br><br>First hackathon. Silver. Not a bad start. 🚀<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=My%20first%20ever%20hackathon.%20IIT%20Madras.%20Shaastra%20Smart%20City%20Challenge."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>GARC CHENNAI // AUTOMOTIVE EXPOSURE (EVENT)</span>
+                        </div>
+                        <h3 class="post-title">Not every learning experience comes from a screen.</h3>
+                        <p class="post-excerpt">I attended the GARC (Global Automotive Research Competition) meet in
+                            Chennai, and it completely changed how I think about autonomous systems....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                I attended the GARC (Global Automotive Research Competition) meet in Chennai, and it
+                                completely changed how I think about autonomous systems.<br><br>We got hands-on exposure
+                                to:<br>- **ADAS** (Advanced Driver Assistance Systems)<br>- **LIDAR sensors** and how
+                                they're used in real vehicles<br>- **CARLA** — the simulator used for training
+                                self-driving cars<br>- **Baja SAE** — engineering race cars from scratch<br><br>Hearing
+                                from people actually *building* this stuff is different. You stop treating autonomous
+                                vehicles as a concept and start seeing the engineering decisions behind every
+                                component.<br><br>That trip planted seeds that would later grow into `ADAS-Sensor`.<br>
+                            </div>
+                            <div class="post-tags">#GARC #AutonomousVehicles #LIDAR #ADAS #Engineering #Learning</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `I attended the GARC (Global Automotive Research Competition) meet in Chennai, and it completely changed how I think about autonomous systems.<br><br>We got hands-on exposure to:<br>- **ADAS** (Advanced Driver Assistance Systems)<br>- **LIDAR sensors** and how they're used in real vehicles<br>- **CARLA** — the simulator used for training self-driving cars<br>- **Baja SAE** — engineering race cars from scratch<br><br>Hearing from people actually *building* this stuff is different. You stop treating autonomous vehicles as a concept and start seeing the engineering decisions behind every component.<br><br>That trip planted seeds that would later grow into \`ADAS-Sensor\`.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Not%20every%20learning%20experience%20comes%20from%20a%20screen."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>ADAS-SENSOR // LOG</span>
+                        </div>
+                        <h3 class="post-title">After GARC Chennai, I had to build something.</h3>
+                        <p class="post-excerpt">The LIDAR deep-dive, the CARLA simulator sessions, the conversations
+                            about self-driving edge cases — I came back and channelled everything into `ADAS-...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                The LIDAR deep-dive, the CARLA simulator sessions, the conversations about self-driving
+                                edge cases — I came back and channelled everything into `ADAS-Sensor`.<br><br>It's a
+                                solo project bridging raw sensor data with intelligent driving decision logic. An
+                                attempt to translate what I absorbed at that automotive meet into working
+                                code.<br><br>Sometimes the best project ideas don't come from a professor or a prompt.
+                                They come from just *being in the room* with people who are obsessed with the
+                                problem.<br><br>Go to the events. Talk to the engineers. Then go home and build.
+                                🚗📡<br>
+                            </div>
+                            <div class="post-tags">#ADAS #AutonomousVehicles #LIDAR #ComputerVision #SelfDriving #ECE
+                            </div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `The LIDAR deep-dive, the CARLA simulator sessions, the conversations about self-driving edge cases — I came back and channelled everything into \`ADAS-Sensor\`.<br><br>It's a solo project bridging raw sensor data with intelligent driving decision logic. An attempt to translate what I absorbed at that automotive meet into working code.<br><br>Sometimes the best project ideas don't come from a professor or a prompt. They come from just *being in the room* with people who are obsessed with the problem.<br><br>Go to the events. Talk to the engineers. Then go home and build. 🚗📡<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=After%20GARC%20Chennai%2C%20I%20had%20to%20build%20something."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>MOTOR-SAFE // MOTORSTONE HACKATHON ⚙️</span>
+                        </div>
+                        <h3 class="post-title">Motorstone Hackathon. Solo.</h3>
+                        <p class="post-excerpt">The project: `motor-safe` — detecting and mitigating dangerous
+                            vibrations in motors before they cause mechanical failure....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                The project: `motor-safe` — detecting and mitigating dangerous vibrations in motors
+                                before they cause mechanical failure.<br><br>Motors vibrate. That's normal. But when the
+                                frequency signature shifts — that's the warning sign most systems miss. We built
+                                something that listens.<br><br>This was one of those hackathons where I genuinely
+                                learned more from the process than the result. Real hardware, real sensor data,
+                                real-time processing. No fake datasets.<br><br>Walked away with a participation prize
+                                and a lot of respect for embedded systems work.<br><br>The grind is the point. ⚙️<br>
+                            </div>
+                            <div class="post-tags">#Motorstone #Hackathon #EmbeddedSystems #HardwareEngineering
+                                #MotorControl #ECE</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `The project: \`motor-safe\` — detecting and mitigating dangerous vibrations in motors before they cause mechanical failure.<br><br>Motors vibrate. That's normal. But when the frequency signature shifts — that's the warning sign most systems miss. We built something that listens.<br><br>This was one of those hackathons where I genuinely learned more from the process than the result. Real hardware, real sensor data, real-time processing. No fake datasets.<br><br>Walked away with a participation prize and a lot of respect for embedded systems work.<br><br>The grind is the point. ⚙️<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Motorstone%20Hackathon.%20Solo."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>MOTOR-SIM // LOG</span>
+                        </div>
+                        <h3 class="post-title">Before you deploy to real hardware, you *simulate*.</h3>
+                        <p class="post-excerpt">`motor-sim` was the private companion to `motor-safe`. A physics-based
+                            model I built to stress-test motor vibration scenarios before touching actual h...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `motor-sim` was the private companion to `motor-safe`. A physics-based model I built to
+                                stress-test motor vibration scenarios before touching actual hardware.<br><br>It's not
+                                glamorous. Nobody writes LinkedIn posts about simulation environments. But this is where
+                                the bugs get caught — not on the physical motor.<br><br>Simulate first. Deploy second.
+                                Break nothing.<br>
+                            </div>
+                            <div class="post-tags">#Simulation #Physics #EmbeddedSystems #Engineering</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`motor-sim\` was the private companion to \`motor-safe\`. A physics-based model I built to stress-test motor vibration scenarios before touching actual hardware.<br><br>It's not glamorous. Nobody writes LinkedIn posts about simulation environments. But this is where the bugs get caught — not on the physical motor.<br><br>Simulate first. Deploy second. Break nothing.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Before%20you%20deploy%20to%20real%20hardware%2C%20you%20*simulate*."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>EVOLVAI // IEEE IES GENERATIVE AI CHALLENGE 🌍🔋</span>
+                        </div>
+                        <h3 class="post-title">This one is different. I have to write about this properly.</h3>
+                        <p class="post-excerpt">For the **IEEE IES Generative AI Challenge 2026**, our team built
+                            `EVolvAI` — a generative counterfactual framework that optimizes EV charging infrast...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                For the **IEEE IES Generative AI Challenge 2026**, our team built `EVolvAI` — a
+                                generative counterfactual framework that optimizes EV charging infrastructure placement
+                                across cities. The paper we submitted was an NITP-standard research paper.<br><br>Four
+                                milestones. Three completed before the finals. The fourth: **a live presentation in
+                                Melbourne.**<br><br>The technical depth required was unlike anything I'd done before.
+                                Generative AI meets infrastructure optimization meets real-world constraints. Every
+                                review cycle made the work sharper.<br><br>Massive credit to my teammates who made this
+                                happen:<br>**Krishna Nandhan Reddy, Akshay Varma Rudraraju, Dasvanth PS, Lochan B** —
+                                this paper is all of us.<br><br>Global stage. First year. We showed up. 🌏<br>
+                            </div>
+                            <div class="post-tags">#EVolvAI #IEEE #GenerativeAI #EVInfrastructure #Research #Hackathon
+                                #TeamWork</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `For the **IEEE IES Generative AI Challenge 2026**, our team built \`EVolvAI\` — a generative counterfactual framework that optimizes EV charging infrastructure placement across cities. The paper we submitted was an NITP-standard research paper.<br><br>Four milestones. Three completed before the finals. The fourth: **a live presentation in Melbourne.**<br><br>The technical depth required was unlike anything I'd done before. Generative AI meets infrastructure optimization meets real-world constraints. Every review cycle made the work sharper.<br><br>Massive credit to my teammates who made this happen:<br>**Krishna Nandhan Reddy, Akshay Varma Rudraraju, Dasvanth PS, Lochan B** — this paper is all of us.<br><br>Global stage. First year. We showed up. 🌏<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=This%20one%20is%20different.%20I%20have%20to%20write%20about%20this%20properly."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>EVOLVAI-DASH // LOG</span>
+                        </div>
+                        <h3 class="post-title">The engine is useless if no one can read the output.</h3>
+                        <p class="post-excerpt">While the core `EVolvAI` model ran the optimization logic,
+                            `evolvai-dash` was what made our Melbourne presentation *land*. Clean, interactive data
+                            vis...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                While the core `EVolvAI` model ran the optimization logic, `evolvai-dash` was what made
+                                our Melbourne presentation *land*. Clean, interactive data visualization of EV
+                                infrastructure metrics across city grids.<br><br>Data is meaningless if it's not
+                                legible. Dashboards are a design problem as much as a technical one.<br><br>Built it
+                                solo, specifically to communicate complex outputs clearly. 📊<br>
+                            </div>
+                            <div class="post-tags">#DataViz #Dashboard #EV #IEEE #Design</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `While the core \`EVolvAI\` model ran the optimization logic, \`evolvai-dash\` was what made our Melbourne presentation *land*. Clean, interactive data visualization of EV infrastructure metrics across city grids.<br><br>Data is meaningless if it's not legible. Dashboards are a design problem as much as a technical one.<br><br>Built it solo, specifically to communicate complex outputs clearly. 📊<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=The%20engine%20is%20useless%20if%20no%20one%20can%20read%20the%20output."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>SPECRAG // GITHUB DEVDAYS HACKATHON 📄🔧</span>
+                        </div>
+                        <h3 class="post-title">Hardware datasheets are dense. Like, genuinely painful to parse.</h3>
+                        <p class="post-excerpt">At the **GitHub DevDays Hackathon**, I built `specRAG` — a
+                            Retrieval-Augmented Generation tool that ingests complex hardware datasheets and lets you
+                            *...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                At the **GitHub DevDays Hackathon**, I built `specRAG` — a Retrieval-Augmented
+                                Generation tool that ingests complex hardware datasheets and lets you *query* them like
+                                a knowledgeable engineer would answer.<br><br>No more Ctrl+F through 200 pages. Ask the
+                                datasheet a question. Get the answer.<br><br>Solo build. RAG pipeline + LLM + hardware
+                                constraint logic.<br><br>This is the kind of tooling I want to use every day. So I built
+                                it.<br>
+                            </div>
+                            <div class="post-tags">#RAG #GenerativeAI #GitHubDevDays #Hackathon #HardwareDev #LLM</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `At the **GitHub DevDays Hackathon**, I built \`specRAG\` — a Retrieval-Augmented Generation tool that ingests complex hardware datasheets and lets you *query* them like a knowledgeable engineer would answer.<br><br>No more Ctrl+F through 200 pages. Ask the datasheet a question. Get the answer.<br><br>Solo build. RAG pipeline + LLM + hardware constraint logic.<br><br>This is the kind of tooling I want to use every day. So I built it.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Hardware%20datasheets%20are%20dense.%20Like%2C%20genuinely%20painful%20to%20parse."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>SLINGSHOT // AMD SLINGSHOT HACKATHON 💻</span>
+                        </div>
+                        <h3 class="post-title">**AMD Slingshot Hackathon.** Solo.</h3>
+                        <p class="post-excerpt">I went in, I built, I competed, I got a participation prize....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                I went in, I built, I competed, I got a participation prize.<br><br>But honestly? The
+                                output wasn't the point. What I remember most is how much code I wrote under pressure in
+                                a short window. Hackathon mode hits different — no distractions, no overthinking, just
+                                solving.<br><br>`slingshot` was a product of that intensity.<br><br>From Motorstone
+                                onwards, I've collected a few participating prizes. Each one is a checkpoint — not a
+                                destination.<br><br>The next hackathon is always more interesting than the last. ⚡<br>
+                            </div>
+                            <div class="post-tags">#AMDSlingshot #Hackathon #SoloDev #EngineeringLife</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `I went in, I built, I competed, I got a participation prize.<br><br>But honestly? The output wasn't the point. What I remember most is how much code I wrote under pressure in a short window. Hackathon mode hits different — no distractions, no overthinking, just solving.<br><br>\`slingshot\` was a product of that intensity.<br><br>From Motorstone onwards, I've collected a few participating prizes. Each one is a checkpoint — not a destination.<br><br>The next hackathon is always more interesting than the last. ⚡<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=**AMD%20Slingshot%20Hackathon.**%20Solo."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>INFORMED-POLL // GOOGLE SOLUTION CHALLENGE 🗳️</span>
+                        </div>
+                        <h3 class="post-title">I'm currently participating in the **Google Solution Challenge**, and
+                            `informed-poll` is my submission.</h3>
+                        <p class="post-excerpt">The problem: first-time voters — especially teenagers — have no easy way
+                            to actually *understand* who they're voting for. Not just names and parties, ...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                The problem: first-time voters — especially teenagers — have no easy way to actually
+                                *understand* who they're voting for. Not just names and parties, but policies, track
+                                records, and what each candidate actually stands for.<br><br>`informed-poll` is a civic
+                                tech platform built to fix that. Think of it as a smart, accessible, AI-powered voter
+                                companion.<br><br>Firebase auth. LanceDB RAG assistant. Swipeable candidate UI. The
+                                whole thing.<br><br>Still building. Still grinding. This one matters. 🇮🇳<br>
+                            </div>
+                            <div class="post-tags">#GoogleSolutionChallenge #CivicTech #OpenSource #AI #RAG
+                                #VoterEducation</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `The problem: first-time voters — especially teenagers — have no easy way to actually *understand* who they're voting for. Not just names and parties, but policies, track records, and what each candidate actually stands for.<br><br>\`informed-poll\` is a civic tech platform built to fix that. Think of it as a smart, accessible, AI-powered voter companion.<br><br>Firebase auth. LanceDB RAG assistant. Swipeable candidate UI. The whole thing.<br><br>Still building. Still grinding. This one matters. 🇮🇳<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=I'm%20currently%20participating%20in%20the%20**Google%20Solution%20Challenge**%2C%20and%20%60informed-poll%60%20is%20my%20submission."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>SENTINEL-MIND 🚨🤖 // LOG</span>
+                        </div>
+                        <h3 class="post-title">What if an AI could coordinate emergency response — autonomously?</h3>
+                        <p class="post-excerpt">`sentinel-mind` is an Autonomous Multi-Agent Disaster Response Platform
+                            powered by Gemini. Multiple agents, each with a specialized role, coordinating...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `sentinel-mind` is an Autonomous Multi-Agent Disaster Response Platform powered by
+                                Gemini. Multiple agents, each with a specialized role, coordinating in real-time during
+                                simulated crisis scenarios.<br><br>Built this solo for the **Google Promptathon**
+                                (online).<br><br>The hardest part wasn't the code — it was designing the agent
+                                orchestration so that each agent knew *when to act and when to defer*. That's a
+                                surprisingly deep problem.<br><br>Agentic AI in high-stakes environments is where I want
+                                to be. 🧠<br>
+                            </div>
+                            <div class="post-tags">#AI #MultiAgent #DisasterResponse #Gemini #GooglePromptathon
+                                #AutonomousSystems</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`sentinel-mind\` is an Autonomous Multi-Agent Disaster Response Platform powered by Gemini. Multiple agents, each with a specialized role, coordinating in real-time during simulated crisis scenarios.<br><br>Built this solo for the **Google Promptathon** (online).<br><br>The hardest part wasn't the code — it was designing the agent orchestration so that each agent knew *when to act and when to defer*. That's a surprisingly deep problem.<br><br>Agentic AI in high-stakes environments is where I want to be. 🧠<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=What%20if%20an%20AI%20could%20coordinate%20emergency%20response%20%E2%80%94%20autonomously%3F"
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>AI-BASED-PID-TUNING-CONTROLLER ⚙️🧬 // LOG</span>
+                        </div>
+                        <h3 class="post-title">For my **UDC coursework** this semester, I didn't just implement a
+                            standard PID controller.</h3>
+                        <p class="post-excerpt">I built an `AI-based-PID-tuning-controller` that uses **Genetic
+                            Algorithms** to autonomously tune PID parameters for motor control — removing the manu...
+                        </p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                I built an `AI-based-PID-tuning-controller` that uses **Genetic Algorithms** to
+                                autonomously tune PID parameters for motor control — removing the manual trial-and-error
+                                process entirely.<br><br>The GA searches the parameter space, evaluates system response,
+                                and converges on optimal values. No hand-tuning. No guesswork.<br><br>Bringing AI into
+                                classical control theory is one of my favourite areas right now. Old problems, new
+                                tools.<br>
+                            </div>
+                            <div class="post-tags">#ControlSystems #PID #GeneticAlgorithm #UDC #ECE
+                                #AmritaVishwaVidyapeetham</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `I built an \`AI-based-PID-tuning-controller\` that uses **Genetic Algorithms** to autonomously tune PID parameters for motor control — removing the manual trial-and-error process entirely.<br><br>The GA searches the parameter space, evaluates system response, and converges on optimal values. No hand-tuning. No guesswork.<br><br>Bringing AI into classical control theory is one of my favourite areas right now. Old problems, new tools.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=For%20my%20**UDC%20coursework**%20this%20semester%2C%20I%20didn't%20just%20implement%20a%20standard%20PID%20controller."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>GITHUB-SEMANTIC-SEARCHER 🔍🧠 // LOG</span>
+                        </div>
+                        <h3 class="post-title">Standard GitHub search matches keywords. I want something that matches
+                            *meaning*.</h3>
+                        <p class="post-excerpt">I'm building `github-semantic-searcher` — a tool that runs semantic
+                            search across repositories. You describe what you're looking for conceptually, and...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                I'm building `github-semantic-searcher` — a tool that runs semantic search across
+                                repositories. You describe what you're looking for conceptually, and it finds the
+                                relevant code, even if the exact terms don't match.<br><br>The underlying idea: codebase
+                                navigation shouldn't require you to already know what you're looking for.<br><br>Still
+                                private, still in progress. This one is for me — and maybe eventually for everyone.<br>
+                            </div>
+                            <div class="post-tags">#SemanticSearch #AI #DeveloperTools #RAG #LocalFirst</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `I'm building \`github-semantic-searcher\` — a tool that runs semantic search across repositories. You describe what you're looking for conceptually, and it finds the relevant code, even if the exact terms don't match.<br><br>The underlying idea: codebase navigation shouldn't require you to already know what you're looking for.<br><br>Still private, still in progress. This one is for me — and maybe eventually for everyone.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Standard%20GitHub%20search%20matches%20keywords.%20I%20want%20something%20that%20matches%20*meaning*."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>MIXER 🎛️ // LOG</span>
+                        </div>
+                        <h3 class="post-title">I wanted gapless audio transitions in the terminal. So I built it.</h3>
+                        <p class="post-excerpt">`mixer` is a terminal-based DJ streamer — gapless playback, minimal
+                            interface, no Electron, no browser tab. Just the audio and the shell....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `mixer` is a terminal-based DJ streamer — gapless playback, minimal interface, no
+                                Electron, no browser tab. Just the audio and the shell.<br><br>Writing low-level digital
+                                audio processing logic that handles seamless transitions was a proper technical
+                                challenge. No tutorials for this one. Just docs and debugging.<br><br>When the first
+                                gapless transition played, it hit. 🎧<br>
+                            </div>
+                            <div class="post-tags">#AudioEngineering #CLI #Terminal #Linux #SoloDev</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`mixer\` is a terminal-based DJ streamer — gapless playback, minimal interface, no Electron, no browser tab. Just the audio and the shell.<br><br>Writing low-level digital audio processing logic that handles seamless transitions was a proper technical challenge. No tutorials for this one. Just docs and debugging.<br><br>When the first gapless transition played, it hit. 🎧<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=I%20wanted%20gapless%20audio%20transitions%20in%20the%20terminal.%20So%20I%20built%20it."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>YTM-CLI 🎵 // LOG</span>
+                        </div>
+                        <h3 class="post-title">I live in the terminal.</h3>
+                        <p class="post-excerpt">`ytm-cli` lets me play music directly from the command line. No GUI. No
+                            app switching. No nonsense....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `ytm-cli` lets me play music directly from the command line. No GUI. No app switching.
+                                No nonsense.<br><br>It's the kind of tool I built because I couldn't find exactly what I
+                                wanted — so I made it. That's the whole philosophy.<br><br>Local. Fast. Mine. 💻<br>
+                            </div>
+                            <div class="post-tags">#CLI #Terminal #LinuxDev #Tools #OpenSource</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`ytm-cli\` lets me play music directly from the command line. No GUI. No app switching. No nonsense.<br><br>It's the kind of tool I built because I couldn't find exactly what I wanted — so I made it. That's the whole philosophy.<br><br>Local. Fast. Mine. 💻<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=I%20live%20in%20the%20terminal."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>YTSTR 📺 // LOG</span>
+                        </div>
+                        <h3 class="post-title">A lightweight tool for handling YouTube streams efficiently. Open-sourced
+                            it.</h3>
+                        <p class="post-excerpt">Sometimes the right tool is a 300-line script, not a full application.
+                            `ytstr` is that script....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                Sometimes the right tool is a 300-line script, not a full application. `ytstr` is that
+                                script.<br><br>If you work with streams and want something minimal — check it out.
+                                🎬<br>
+                            </div>
+                            <div class="post-tags">#OpenSource #Developer #CLI #Tools</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `Sometimes the right tool is a 300-line script, not a full application. \`ytstr\` is that script.<br><br>If you work with streams and want something minimal — check it out. 🎬<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=A%20lightweight%20tool%20for%20handling%20YouTube%20streams%20efficiently.%20Open-sourced%20it."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>DUST-SIM 🏙️ // LOG</span>
+                        </div>
+                        <h3 class="post-title">Before the Shaastra finals, I needed to model the data.</h3>
+                        <p class="post-excerpt">`dust-sim` is the simulation layer I built for `dust-vision`. Before
+                            deploying anything real, you need to know what your system *should* see under dif...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `dust-sim` is the simulation layer I built for `dust-vision`. Before deploying anything
+                                real, you need to know what your system *should* see under different
+                                conditions.<br><br>Built solo. Used to validate and stress-test the vision pipeline
+                                before the actual competition.<br><br>Simulation is unglamorous. It's also
+                                non-negotiable. 💨<br>
+                            </div>
+                            <div class="post-tags">#Simulation #SmartCity #ComputerVision #Engineering</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`dust-sim\` is the simulation layer I built for \`dust-vision\`. Before deploying anything real, you need to know what your system *should* see under different conditions.<br><br>Built solo. Used to validate and stress-test the vision pipeline before the actual competition.<br><br>Simulation is unglamorous. It's also non-negotiable. 💨<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Before%20the%20Shaastra%20finals%2C%20I%20needed%20to%20model%20the%20data."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>AI-PID (UDC COURSEWORK) // LOG</span>
+                        </div>
+                        <h3 class="post-title">Semester project. But make it actually interesting.</h3>
+                        <p class="post-excerpt">`AI-based-PID-tuning-controller` is what happens when you combine
+                            Genetic Algorithms with motor control parameters and let it run. The algorithm disco...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `AI-based-PID-tuning-controller` is what happens when you combine Genetic Algorithms
+                                with motor control parameters and let it run. The algorithm discovers optimal values
+                                that would take hours to hand-tune — in seconds.<br><br>This is what I love about
+                                studying ECE at Amrita. The coursework becomes a canvas.<br>
+                            </div>
+                            <div class="post-tags">#ECE #ControlSystems #AI #AmritaVishwaVidyapeetham</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`AI-based-PID-tuning-controller\` is what happens when you combine Genetic Algorithms with motor control parameters and let it run. The algorithm discovers optimal values that would take hours to hand-tune — in seconds.<br><br>This is what I love about studying ECE at Amrita. The coursework becomes a canvas.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Semester%20project.%20But%20make%20it%20actually%20interesting."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>WORD-ASSOCIATION-TEST-SSB 🇮🇳 // LOG</span>
+                        </div>
+                        <h3 class="post-title">Preparing for SSB? This one's for you.</h3>
+                        <p class="post-excerpt">I built a fullscreen **Word Association Test (WAT)** application and
+                            open-sourced it. It simulates the real SSB testing environment — timing, format, ...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                I built a fullscreen **Word Association Test (WAT)** application and open-sourced it. It
+                                simulates the real SSB testing environment — timing, format, everything.<br><br>Practice
+                                makes the difference. Good luck to everyone who's on that path. 🧠<br>
+                            </div>
+                            <div class="post-tags">#SSB #Defence #OpenSource #DesktopApp #Preparation</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `I built a fullscreen **Word Association Test (WAT)** application and open-sourced it. It simulates the real SSB testing environment — timing, format, everything.<br><br>Practice makes the difference. Good luck to everyone who's on that path. 🧠<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Preparing%20for%20SSB%3F%20This%20one's%20for%20you."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>LABSHEETFORMATMAKER 📄 // LOG</span>
+                        </div>
+                        <h3 class="post-title">If you're a student formatting lab reports manually — stop. I
+                            open-sourced `LabsheetFormatMaker`.</h3>
+                        <p class="post-excerpt">One tool. Saves hours per semester. That's it....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                One tool. Saves hours per semester. That's it.<br><br>Free to use. Fork it, adapt it,
+                                share it. 🎓<br>
+                            </div>
+                            <div class="post-tags">#OpenSource #Student #Productivity #Automation</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `One tool. Saves hours per semester. That's it.<br><br>Free to use. Fork it, adapt it, share it. 🎓<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=If%20you're%20a%20student%20formatting%20lab%20reports%20manually%20%E2%80%94%20stop.%20I%20open-sourced%20%60LabsheetFormatMaker%60."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>PERSONALASSISTANT 🔒 // LOG</span>
+                        </div>
+                        <h3 class="post-title">The experiment: can you have an intelligent personal assistant where
+                            **none of your data leaves your machine?**</h3>
+                        <p class="post-excerpt">`PersonalAssistant` is my ongoing answer to that question. 100% local
+                            inference. 100% private. No API calls home....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `PersonalAssistant` is my ongoing answer to that question. 100% local inference. 100%
+                                private. No API calls home.<br><br>If it runs, it runs on *my* hardware. If it learns,
+                                it learns *locally*. This is the bar I'm setting.<br><br>Privacy isn't a feature. It's
+                                the architecture. 🛡️<br>
+                            </div>
+                            <div class="post-tags">#Privacy #LocalFirst #AI #LocalLLM #Engineering</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`PersonalAssistant\` is my ongoing answer to that question. 100% local inference. 100% private. No API calls home.<br><br>If it runs, it runs on *my* hardware. If it learns, it learns *locally*. This is the bar I'm setting.<br><br>Privacy isn't a feature. It's the architecture. 🛡️<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=The%20experiment%3A%20can%20you%20have%20an%20intelligent%20personal%20assistant%20where%20**none%20of%20your%20data%20leaves%20your%20machine%3F**"
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>LABSHEETMAKER // LOG</span>
+                        </div>
+                        <h3 class="post-title">University admin overhead: automated.</h3>
+                        <p class="post-excerpt">`LabsheetMaker` handles the tedious formatting so I can spend time on
+                            the actual engineering....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `LabsheetMaker` handles the tedious formatting so I can spend time on the actual
+                                engineering.<br><br>Small scripts. Big time savings. Do less repetitive work.<br>
+                            </div>
+                            <div class="post-tags">#Automation #StudentLife #Productivity</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`LabsheetMaker\` handles the tedious formatting so I can spend time on the actual engineering.<br><br>Small scripts. Big time savings. Do less repetitive work.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=University%20admin%20overhead%3A%20automated."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>RECORDBRO 🎙️ // LOG</span>
+                        </div>
+                        <h3 class="post-title">Built a custom local utility for capturing and managing recordings —
+                            terminal-first, no cloud, exactly how I want it.</h3>
+                        <p class="post-excerpt">The best tools are the ones you build for yourself....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                The best tools are the ones you build for yourself.<br>
+                            </div>
+                            <div class="post-tags">#Tools #CLI #Linux #Productivity</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `The best tools are the ones you build for yourself.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Built%20a%20custom%20local%20utility%20for%20capturing%20and%20managing%20recordings%20%E2%80%94%20terminal-first%2C%20no%20cloud%2C%20exactly%20how%20I%20want%20it."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>HEALTHCARE-ANDROID-AI 📱 // LOG</span>
+                        </div>
+                        <h3 class="post-title">A private sandbox for testing AI integrations within Android health
+                            applications.</h3>
+                        <p class="post-excerpt">Mobile + health data + on-device AI = a space I'm actively exploring.
+                            Watch this space....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                Mobile + health data + on-device AI = a space I'm actively exploring. Watch this
+                                space.<br>
+                            </div>
+                            <div class="post-tags">#AndroidDev #HealthTech #AI #Mobiledev</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `Mobile + health data + on-device AI = a space I'm actively exploring. Watch this space.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=A%20private%20sandbox%20for%20testing%20AI%20integrations%20within%20Android%20health%20applications."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>ONEWHEEL 🛹 // LOG</span>
+                        </div>
+                        <h3 class="post-title">Hardware + physics + software control. The trifecta.</h3>
+                        <p class="post-excerpt">`oneWheel` is an ongoing tinkering project — exploring balance control
+                            systems for single-wheel platforms....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `oneWheel` is an ongoing tinkering project — exploring balance control systems for
+                                single-wheel platforms.<br><br>Control theory is beautiful when it works. Terrifying
+                                when it doesn't. ⚙️<br>
+                            </div>
+                            <div class="post-tags">#Robotics #Hardware #ControlSystems #Engineering</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`oneWheel\` is an ongoing tinkering project — exploring balance control systems for single-wheel platforms.<br><br>Control theory is beautiful when it works. Terrifying when it doesn't. ⚙️<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Hardware%20%2B%20physics%20%2B%20software%20control.%20The%20trifecta."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>SEMANTICMAPPINGENGINE 🗺️ // LOG</span>
+                        </div>
+                        <h3 class="post-title">Rearchitected the entire thing. Moved away from Firebase to a **local
+                            SQL-based pipeline**.</h3>
+                        <p class="post-excerpt">No external dependencies. No cloud sync. Full offline operation....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                No external dependencies. No cloud sync. Full offline operation.<br><br>Data sovereignty
+                                is non-negotiable. 🔒<br>
+                            </div>
+                            <div class="post-tags">#LocalFirst #SQL #Database #Privacy #Architecture</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `No external dependencies. No cloud sync. Full offline operation.<br><br>Data sovereignty is non-negotiable. 🔒<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Rearchitected%20the%20entire%20thing.%20Moved%20away%20from%20Firebase%20to%20a%20**local%20SQL-based%20pipeline**."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>MAILDIGEST 📧 // LOG</span>
+                        </div>
+                        <h3 class="post-title">My inbox was winning. So I wrote a script.</h3>
+                        <p class="post-excerpt">`maildigest` automatically summarizes and organizes email workflows
+                            locally. The result: a distraction-free, signal-only inbox....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                `maildigest` automatically summarizes and organizes email workflows locally. The result:
+                                a distraction-free, signal-only inbox.<br><br>Code your environment. Don't let your
+                                environment code you.<br>
+                            </div>
+                            <div class="post-tags">#Automation #Productivity #LocalFirst</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `\`maildigest\` automatically summarizes and organizes email workflows locally. The result: a distraction-free, signal-only inbox.<br><br>Code your environment. Don't let your environment code you.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=My%20inbox%20was%20winning.%20So%20I%20wrote%20a%20script."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>SPICE-AI 🌶️ // LOG</span>
+                        </div>
+                        <h3 class="post-title">A private ML experimentation space. Pushing what I can run entirely on
+                            local hardware without GPU support.</h3>
+                        <p class="post-excerpt">Constraints breed creativity. When you can't throw compute at a problem,
+                            you have to think harder....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                Constraints breed creativity. When you can't throw compute at a problem, you have to
+                                think harder.<br>
+                            </div>
+                            <div class="post-tags">#MachineLearning #AI #LocalFirst #Research</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `Constraints breed creativity. When you can't throw compute at a problem, you have to think harder.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=A%20private%20ML%20experimentation%20space.%20Pushing%20what%20I%20can%20run%20entirely%20on%20local%20hardware%20without%20GPU%20support."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>IEEEMAKER // LOG</span>
+                        </div>
+                        <h3 class="post-title">Deep in the build. Bridging raw hardware concepts with structured
+                            execution pipelines.</h3>
+                        <p class="post-excerpt">More when it's ready. ⚡...</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                More when it's ready. ⚡<br>
+                            </div>
+                            <div class="post-tags">#Hardware #Engineering #Build</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn" onclick="copyPostText(this, `More when it's ready. ⚡<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=Deep%20in%20the%20build.%20Bridging%20raw%20hardware%20concepts%20with%20structured%20execution%20pipelines."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>AUDIO-LIB-CLEANER 🧹 // LOG</span>
+                        </div>
+                        <h3 class="post-title">My audio library was chaos. Now it's organized. A few hundred lines of
+                            script later.</h3>
+                        <p class="post-excerpt">Automate the boring. Focus on the interesting....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                Automate the boring. Focus on the interesting.<br>
+                            </div>
+                            <div class="post-tags">#Automation #Linux #Scripting #Productivity</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `Automate the boring. Focus on the interesting.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=My%20audio%20library%20was%20chaos.%20Now%20it's%20organized.%20A%20few%20hundred%20lines%20of%20script%20later."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>ANTIGRAVITYHELPER ⚡ // LOG</span>
+                        </div>
+                        <h3 class="post-title">My personal automation layer. A growing collection of scripts and
+                            utilities that handle the repetitive parts of my workflow.</h3>
+                        <p class="post-excerpt">Every hour saved on busywork is an hour to build something real....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                Every hour saved on busywork is an hour to build something real.<br><br>It's private.
+                                It's constantly evolving. It's mine.<br>
+                            </div>
+                            <div class="post-tags">#Productivity #Automation #LocalFirst #DevTools</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `Every hour saved on busywork is an hour to build something real.<br><br>It's private. It's constantly evolving. It's mine.<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=My%20personal%20automation%20layer.%20A%20growing%20collection%20of%20scripts%20and%20utilities%20that%20handle%20the%20repetitive%20parts%20of%20my%20workflow."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-card glass-card">
+                    <div class="post-card-inner" onclick="togglePost(this)">
+                        <div class="post-meta">
+                            <span>SUZAYKID // GITHUB PROFILE</span>
+                        </div>
+                        <h3 class="post-title">If you want to see what a first-year ECE student who's obsessed with
+                            local-first systems, autonomous tech, and AI is actually building — [my
+                            GitHub](https://github.com/SuzayKid) is the answer.</h3>
+                        <p class="post-excerpt">30+ repositories. Public and private. Hackathons, coursework, solo
+                            experiments, team projects....</p>
+                        <div class="post-read-more">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">unfold_more</span>
+                            <span>Read Full Log</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-body">
+                            <div class="post-text">
+                                30+ repositories. Public and private. Hackathons, coursework, solo experiments, team
+                                projects.<br><br>Always building. 🔥<br>
+                            </div>
+                            <div class="post-tags">#Developer #ECE #Portfolio #GitHub #AmritaVishwaVidyapeetham</div>
+                            <div class="post-footer" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                                <button class="filter-btn"
+                                    onclick="copyPostText(this, `30+ repositories. Public and private. Hackathons, coursework, solo experiments, team projects.<br><br>Always building. 🔥<br>`)">
+                                    <span class="font-metadata">Copy Text</span>
+                                </button>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/SuzayKid&title=If%20you%20want%20to%20see%20what%20a%20first-year%20ECE%20student%20who's%20obsessed%20with%20local-first%20systems%2C%20autonomous%20tech%2C%20and%20AI%20is%20actually%20building%20%E2%80%94%20%5Bmy%20GitHub%5D(https%3A%2F%2Fgithub.com%2FSuzayKid)%20is%20the%20answer."
+                                    target="_blank" class="filter-btn" style="text-decoration: none;">
+                                    <span class="font-metadata">Post to LinkedIn ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        </div>
+    </div>
+    
+<!-- Terminal Overlay -->
     <div id="terminal-overlay" class="terminal-overlay">
         <div class="terminal-header">
             <div class="terminal-title">Terminal_System // sujay@amrita:~$</div>
@@ -3344,6 +4782,11 @@
                 <div>AI-PID-Tuner (Control Theory)</div>
                 <div>mixer (Terminal DJ)</div>
             </div>
+            <div class="terminal-prompt">> cat system/archive</div>
+            <div class="terminal-output" style="margin-bottom: 1.5rem;">
+                GITHUB_ARCHIVE: <a href="https://github.com/SuzayKid" target="_blank" style="color: var(--optimism-mint); text-decoration: none; border-bottom: 1px solid rgba(74,222,128,0.2);">github.com/SuzayKid</a><br>
+                PROFESSIONAL_LOG: <a href="https://linkedin.com/in/sujayseeram" target="_blank" style="color: var(--optimism-mint); text-decoration: none; border-bottom: 1px solid rgba(74,222,128,0.2);">linkedin.com/in/sujayseeram</a>
+            </div>
             <div class="terminal-prompt">> _</div>
         </div>
     </div>
@@ -3358,7 +4801,7 @@
         });
 
         // ─── Core refs ───────────────────────────────────────────────────────────
-        const sections = ['hero', 'about', 'odyssey', 'vault', 'posts', 'contact'];
+        const sections = ['hero', 'about', 'odyssey', 'contact'];
         const indicators = document.querySelectorAll('.indicator-dot');
         const progressBar = document.getElementById('scroll-progress-bar');
         const timelineNodes = document.querySelectorAll('.timeline-node');
@@ -3377,17 +4820,39 @@
         const LERP_SPEED = 0.085;   // feel: 0.06 = butter, 0.12 = snappy
         const DEAD_ZONE = 0.38;    // fraction of vh — card in zone = pristine
 
+        // Helper to get true static absolute offset top of sticky/transformed elements
+        const getStaticAbsoluteTop = (el) => {
+            const originalPosition = el.style.position;
+            const originalTransform = el.style.transform;
+            
+            // Temporarily reset to static layout styles for accurate measurement
+            el.style.position = 'static';
+            el.style.transform = 'none';
+            
+            let top = 0;
+            let current = el;
+            while (current) {
+                top += current.offsetTop;
+                current = current.offsetParent;
+            }
+            
+            el.style.position = originalPosition;
+            el.style.transform = originalTransform;
+            
+            return top;
+        };
+
         // Cache section offsets and node static positions
         let sectionOffsets = [];
         const cacheSectionOffsets = () => {
             sectionOffsets = sections.map(id => {
                 const el = document.getElementById(id);
-                return el ? el.offsetTop : 0;
+                return el ? getStaticAbsoluteTop(el) : 0;
             });
             timelineNodes.forEach(node => {
                 const s = nodeStates.get(node);
                 if (s) {
-                    s.top = node.offsetTop + node.closest('section').offsetTop;
+                    s.top = getStaticAbsoluteTop(node);
                     s.height = node.offsetHeight;
                 }
             });
@@ -3425,29 +4890,90 @@
             let busy = false;
             if (Math.abs(lerpedScroll - sy) > 0.5) busy = true;
 
-            timelineNodes.forEach(node => {
+            timelineNodes.forEach((node, idx) => {
+                if (window.innerWidth <= 768) {
+                    node.style.opacity = '';
+                    node.style.transform = '';
+                    return;
+                }
                 const s = nodeStates.get(node);
-                const nodeCenter = s.top + s.height * 0.5;
-                const viewCenter = lerpedScroll + vh * 0.5;
-                const raw = (nodeCenter - viewCenter) / (vh * 0.5);         // –1..1, 0 = centered
-                const dist = Math.max(-1, Math.min(1, raw));
-                const abs = Math.abs(dist);
+                if (!s) return;
+                const vh = window.innerHeight;
+                const stickyTop = vh * 0.25;
+                const targetScroll = s.top - stickyTop;
+                
+                let tY = 0;
+                let tSc = 1;
+                let tOp = 1;
+                let rX = 0;
+                let zIndex = 10 + idx;
 
-                const effT = Math.max(0, (abs - DEAD_ZONE) / (1 - DEAD_ZONE)); // 0 in zone, 1 at edge
+                if (lerpedScroll < targetScroll) {
+                    // Coming from the bottom
+                    const prevNode = timelineNodes[idx - 1];
+                    const prevS = prevNode ? nodeStates.get(prevNode) : null;
+                    const animDistance = prevS ? Math.max(vh * 0.4, s.top - prevS.top) : (vh * 0.6);
+                    
+                    const diff = targetScroll - lerpedScroll;
+                    if (diff > animDistance) {
+                        tY = 30; // 30vh below
+                        tOp = 0;
+                        tSc = 0.9;
+                        rX = 15; // tilted back
+                    } else {
+                        const progress = 1 - (diff / animDistance);
+                        const ease = progress * (2 - progress); // Ease out quad
+                        tY = (1 - ease) * 30;
+                        tOp = ease;
+                        tSc = 0.9 + 0.1 * ease;
+                        rX = (1 - ease) * 15;
+                    }
+                } else {
+                    // Stuck at 25vh, check if next card is pushing it out
+                    const nextNode = timelineNodes[idx + 1];
+                    if (nextNode) {
+                        const nextS = nodeStates.get(nextNode);
+                        if (nextS) {
+                            const nextTargetScroll = nextS.top - stickyTop;
+                            const totalDist = nextTargetScroll - targetScroll;
+                            
+                            if (lerpedScroll < nextTargetScroll) {
+                                const p = (lerpedScroll - targetScroll) / totalDist;
+                                if (p > 0.6) {
+                                    // Exit transition (smooth conveyor slide-up & fade-out)
+                                    const exitP = (p - 0.6) / 0.4;
+                                    const ease = exitP * exitP; // Ease in quad
+                                    tY = -ease * 30; // slide up by 30vh
+                                    tOp = 1 - ease;
+                                    tSc = 1 - ease * 0.05;
+                                    rX = -ease * 15; // tilted forward
+                                } else {
+                                    // Active stuck state
+                                    tY = 0;
+                                    tOp = 1;
+                                    tSc = 1;
+                                    rX = 0;
+                                }
+                            } else {
+                                // Scrolled completely past, fully hidden in background
+                                tY = -30;
+                                tOp = 0;
+                                tSc = 0.95;
+                                rX = -15;
+                            }
+                        }
+                    } else {
+                        // Last card: stays stuck at 25vh, scrolls away naturally with parent section
+                        tY = 0;
+                        tOp = 1;
+                        tSc = 1;
+                        rX = 0;
+                    }
+                }
 
-                const tOp = Math.max(0.12, 1 - effT * 0.88);
-                const tSc = 1 - effT * 0.10;         
-                const tZ = -effT * 560;
-                const tRX = dist * 9 * effT;
-                const tRY = (node.classList.contains('left') ? 1 : -1) * effT * 11;
-
-                // Apply directly from single lerped source (No individual state chasing)
                 node.style.opacity = tOp.toFixed(3);
-                node.style.transform =
-                    `translateZ(${tZ.toFixed(1)}px) ` +
-                    `rotateX(${tRX.toFixed(2)}deg) ` +
-                    `rotateY(${tRY.toFixed(2)}deg) ` +
-                    `scale(${tSc.toFixed(4)})`;
+                node.style.transform = `translateY(${tY.toFixed(2)}vh) scale(${tSc.toFixed(4)}) rotateX(${rX.toFixed(2)}deg) translateZ(0px)`;
+                node.style.zIndex = zIndex;
             });
 
             // Self-schedule only while still converging; otherwise go idle
@@ -3505,11 +5031,20 @@
             fadeIO.observe(el);
         });
 
+        // Dynamic Glowing Tag Parsing Routine
+        document.querySelectorAll('.post-tags').forEach(el => {
+            const rawText = el.textContent.trim();
+            if (rawText && !rawText.includes('<span')) {
+                const tags = rawText.split(/\s+/);
+                el.innerHTML = tags.map(tag => tag.trim() ? `<span>${tag.trim()}</span>` : '').join('');
+            }
+        });
+
         // Boot tick for initial state
         rafId = requestAnimationFrame(tick);
 
         // Vault Filtering
-        const filterBtns = document.querySelectorAll('.filter-btn');
+        const filterBtns = document.querySelectorAll('.vault-header .filter-btn');
         const projectItems = document.querySelectorAll('.project-item');
 
         filterBtns.forEach(btn => {
@@ -3542,6 +5077,23 @@
             }
         };
 
+        const togglePostsSection = () => {
+            const wrapper = document.getElementById('posts-wrapper');
+            const btn = document.getElementById('posts-toggle-btn');
+            const isOpen = wrapper.style.gridTemplateRows === '1fr';
+            
+            wrapper.style.gridTemplateRows = isOpen ? '0fr' : '1fr';
+            btn.innerHTML = isOpen ? 
+                '<span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">expand_more</span> SHOW_LOGS' : 
+                '<span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">expand_less</span> HIDE_LOGS';
+            
+            if (!isOpen) {
+                setTimeout(() => {
+                    document.getElementById('posts').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        };
+
         // Clipboard Copy
         const copyPostText = (btn, text) => {
             navigator.clipboard.writeText(text).then(() => {
@@ -3560,11 +5112,52 @@
                 document.getElementById('terminal-overlay').style.display = 'flex';
                 keyHistory = '';
             }
-            if (e.key === 'Escape') closeTerminal();
+            if (e.key === 'Escape') { closeTerminal(); closeVaultOverlay(); closePostsOverlay(); }
         });
+
+        
+        const openVaultOverlay = () => {
+            const el = document.getElementById('vault-overlay');
+            el.style.display = 'flex';
+            el.offsetHeight;
+            el.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeVaultOverlay = () => {
+            const el = document.getElementById('vault-overlay');
+            el.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 500);
+        };
+
+        const openPostsOverlay = () => {
+            const el = document.getElementById('posts-overlay');
+            el.style.display = 'flex';
+            el.offsetHeight;
+            el.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closePostsOverlay = () => {
+            const el = document.getElementById('posts-overlay');
+            el.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 500);
+        };
 
         const closeTerminal = () => {
             document.getElementById('terminal-overlay').style.display = 'none';
+        };
+
+        const openTerminalArchive = () => {
+            document.getElementById('terminal-overlay').style.display = 'flex';
+            const output = document.getElementById('terminal-output');
+            output.scrollTop = output.scrollHeight;
         };
 
         // Accessibility Fix: Hide ligature icons from screen readers
