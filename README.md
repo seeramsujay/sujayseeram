@@ -3,7 +3,7 @@
 - 🌱 I’m currently learning Electronics and Communication Engineering at Amrita Vishwa Vidyapeetham 
 - 💞️ I’m looking to collaborate on any kinds of projects which are novel and help the world to become a better place to live  
 - 📫 How to reach me mail me at sujayat2007@gmail.com (prolly il not respond [sorry])
-- 😄 Pronouns: Suzay, Tubelight
+- 😄 Pronouns: Suzay, Tubelight, Professional Larper
 - ⚡ Fun fact: I am a dumb nerd who loves to apply physics everywhere and tries to make projects which need the least items possible (economical)
 
 <!---
