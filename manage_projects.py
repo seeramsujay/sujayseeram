@@ -256,8 +256,15 @@ def parse_readme_desc_text(readme_text, max_len=120):
                 continue
             if "Licensing" in line_str or "Prohibitions" in line_str or "Copyright" in line_str:
                 continue
+            # Skip lines that are primarily HTML tags (e.g. README badges/logos)
+            if re.match(r'^\s*<[^>]+>', line_str):
+                continue
             cleaned = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', line_str)
             cleaned = cleaned.replace("**", "").replace("__", "").replace("*", "").replace("_", "")
+            # Strip any remaining HTML tags from description text
+            cleaned = re.sub(r'<[^>]+>', '', cleaned).strip()
+            if not cleaned:
+                continue
             desc_lines.append(cleaned)
             if len(desc_lines) >= 2:
                 break
