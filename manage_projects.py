@@ -7,6 +7,51 @@ import base64
 import re
 from datetime import datetime
 
+# ANSI Colors
+COLORS = {
+    'cyan': '\033[96m',
+    'green': '\033[92m',
+    'yellow': '\033[93m',
+    'red': '\033[91m',
+    'magenta': '\033[95m',
+    'bold': '\033[1m',
+    'reset': '\033[0m'
+}
+
+def color_text(text, color):
+    if sys.stdout.isatty():
+        return f"{COLORS.get(color, '')}{text}{COLORS['reset']}"
+    return text
+
+def clear_screen():
+    if sys.stdout.isatty():
+        print('\033[H\033[2J', end='')
+    else:
+        print("\n" + "="*80 + "\n")
+
+def print_box_header(title):
+    width = 65
+    title_len = len(title)
+    padding = (width - title_len - 2) // 2
+    left_pad = " " * padding
+    right_pad = " " * (width - title_len - 2 - padding)
+    
+    border_color = 'cyan'
+    print(color_text("╔" + "═" * (width - 2) + "╗", border_color))
+    print(color_text(f"║{left_pad}{color_text(title, 'bold')}{right_pad}║", border_color))
+    print(color_text("╚" + "═" * (width - 2) + "╝", border_color))
+
+def print_status(msg, status_type='info'):
+    if status_type == 'info':
+        prefix = color_text("[i]", "cyan")
+    elif status_type == 'success':
+        prefix = color_text("[✓]", "green")
+    elif status_type == 'warning':
+        prefix = color_text("[!]", "yellow")
+    elif status_type == 'error':
+        prefix = color_text("[✗]", "red")
+    print(f"  {prefix} {msg}")
+
 def load_env():
     env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
     if os.path.exists(env_path):
@@ -23,7 +68,10 @@ def get_gemini_key():
     load_env()
     key = os.environ.get('GEMINI_API_KEY')
     if not key or key == 'your_gemini_api_key_here':
-        print("ERROR: GEMINI_API_KEY is not set in environment or .env file.")
+        clear_screen()
+        print_box_header("ERROR: CONFIGURATION MISSING")
+        print_status("GEMINI_API_KEY is not set in environment or .env file.", "error")
+        print("\n  Please set GEMINI_API_KEY and run again.")
         sys.exit(1)
     return key
 
@@ -37,7 +85,7 @@ def init_db():
         if os.path.exists(src_path):
             import shutil
             shutil.copy(src_path, db_path)
-            print(f"Initialized projects_db.json from backup.")
+            print_status(f"Initialized projects_db.json from backup.", "success")
         else:
             with open(db_path, 'w', encoding='utf-8') as f:
                 json.dump([], f)
@@ -48,23 +96,20 @@ def save_db(projects):
     db_path = get_db_path()
     with open(db_path, 'w', encoding='utf-8') as f:
         json.dump(projects, f, indent=4)
-    print(f"Database saved to {db_path}")
+    print_status(f"Database saved to {db_path}", "success")
 
 def get_public_repos():
-    print("Fetching public repositories from GitHub...")
-    # Deprecation fix: use --visibility=public instead of --public
-    cmd = ["gh", "repo list", "seeramsujay", "--visibility=public", "--json", "name,createdAt,description,url,isFork", "--limit", "100"]
-    # gh CLI requires arguments to be split, let's use subprocess list
+    print_status("Fetching public repositories from GitHub...", "info")
     try:
         res = subprocess.run(["gh", "repo", "list", "seeramsujay", "--visibility=public", "--json", "name,createdAt,description,url,isFork", "--limit", "100"],
                              capture_output=True, text=True, check=True)
         return json.loads(res.stdout)
     except Exception as e:
-        print(f"Error calling gh CLI: {e}")
+        print_status(f"Error calling gh CLI: {e}", "error")
         sys.exit(1)
 
 def get_readme_content(repo_name):
-    print(f"Fetching README for {repo_name}...")
+    print_status(f"Fetching README for {repo_name}...", "info")
     try:
         res = subprocess.run(["gh", "api", f"repos/seeramsujay/{repo_name}/readme", "--jq", ".content"],
                              capture_output=True, text=True)
@@ -72,15 +117,15 @@ def get_readme_content(repo_name):
             b64_content = res.stdout.strip()
             return base64.b64decode(b64_content).decode('utf-8', errors='ignore')
     except Exception as e:
-        print(f"Warning: could not fetch README for {repo_name}: {e}")
+        print_status(f"Warning: could not fetch README for {repo_name}: {e}", "warning")
     return ""
 
 def generate_metadata_with_gemini(repo_name, repo_desc, readme_content, api_key):
-    print(f"Calling Gemini API to analyze {repo_name}...")
+    print_status(f"Analyzing repository content with Gemini 3.1 Flash Lite...", "info")
     try:
         import google.generativeai as genai
     except ImportError:
-        print("ERROR: google-generativeai package is not installed.")
+        print_status("google-generativeai package is not installed.", "error")
         sys.exit(1)
 
     genai.configure(api_key=api_key)
@@ -106,7 +151,7 @@ Strict JSON Schema to output:
 
 Response MUST be a single JSON object matching the schema.
 """
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-3.1-flash-lite')
     response = model.generate_content(
         prompt,
         generation_config={"response_mime_type": "application/json"}
@@ -115,7 +160,7 @@ Response MUST be a single JSON object matching the schema.
     try:
         data = json.loads(response.text.strip())
         return data
-    except Exception as e:
+    except Exception:
         text = response.text.strip()
         if text.startswith("```"):
             text = re.sub(r"^```json\s*", "", text)
@@ -123,8 +168,7 @@ Response MUST be a single JSON object matching the schema.
             text = re.sub(r"\s*```$", "", text)
         try:
             return json.loads(text.strip())
-        except Exception as e2:
-            print(f"Error parsing Gemini response: {e2}")
+        except Exception:
             return {
                 "status": "COMPLETED",
                 "category": "tool",
@@ -141,30 +185,90 @@ def format_date(created_at_str):
     except Exception:
         return "Unknown"
 
-def edit_project(project):
-    print("\n" + "="*40)
-    print("           EDIT PROJECT CARD")
-    print("="*40)
-    name = input(f"Project Name [{project['name']}]: ").strip() or project['name']
-    date = input(f"Date [{project['date']}]: ").strip() or project['date']
-    status = input(f"Status [{project['status']}]: ").strip() or project['status']
-    category = input(f"Category (research/hardware/tool/hackathon) [{project['category']}]: ").strip() or project['category']
+def verify_private_repos(existing_projects, repos):
+    public_urls = {r['url'].lower().strip() for r in repos}
+    public_names = {r['name'].lower().strip() for r in repos}
     
-    tags_str = input(f"Tags (comma-separated) [{', '.join(project.get('tags', []))}]: ").strip()
+    updated_projects = []
+    db_updated = False
+    
+    for project in existing_projects:
+        if project.get('opted_out'):
+            updated_projects.append(project)
+            continue
+            
+        link = project.get('githubLink')
+        if not link:
+            # Local archive, keep as-is
+            updated_projects.append(project)
+            continue
+            
+        repo_name = project['name'].lower().strip()
+        if link.lower().strip() not in public_urls and repo_name not in public_names:
+            # Private or deleted
+            clear_screen()
+            print_box_header(f"PRIVATE/DELETED REPOSITORY: {project['name']}")
+            print_status(f"Repository URL: {link}", "warning")
+            print_status("This repository is no longer in your public GitHub repository list.", "info")
+            print("  It may have been deleted or set to private.")
+            print("-" * 65)
+            
+            while True:
+                choice = input(f"  Options: [{color_text('K', 'green')}]eep as Local Archive, [{color_text('R', 'red')}]emove from database: ").strip().lower()
+                if choice == 'k':
+                    project['githubLink'] = ""
+                    updated_projects.append(project)
+                    db_updated = True
+                    print_status(f"Converted {project['name']} to a Local Archive.", "success")
+                    input("\n  Press Enter to continue...")
+                    break
+                elif choice == 'r':
+                    db_updated = True
+                    print_status(f"Removed {project['name']} from database.", "success")
+                    input("\n  Press Enter to continue...")
+                    break
+        else:
+            updated_projects.append(project)
+            
+    return updated_projects, db_updated
+
+def edit_project(project):
+    clear_screen()
+    print_box_header(f"EDIT PROJECT CARD: {project['name']}")
+    print("  Leave field blank to keep current value.")
+    print("-" * 65)
+    
+    name = input(f"  Name [{color_text(project['name'], 'cyan')}]: ").strip() or project['name']
+    date = input(f"  Date [{color_text(project['date'], 'cyan')}]: ").strip() or project['date']
+    status = input(f"  Status [{color_text(project['status'], 'cyan')}]: ").strip() or project['status']
+    category = input(f"  Category (research/hardware/tool/hackathon) [{color_text(project['category'], 'cyan')}]: ").strip() or project['category']
+    
+    tags_curr = ', '.join(project.get('tags', []))
+    tags_str = input(f"  Tags (comma-separated) [{color_text(tags_curr, 'cyan')}]: ").strip()
     if tags_str:
         tags = [t.strip().upper() for t in tags_str.split(',') if t.strip()]
     else:
         tags = project.get('tags', [])
         
-    description = input(f"Description [{project['description']}]: ").strip() or project['description']
+    description = input(f"  Description [{color_text(project['description'][:45] + '...', 'cyan')}]: ").strip() or project['description']
     
-    award_text = input(f"Award Text [{project.get('awardText') or 'None'}]: ").strip()
+    award_curr = project.get('awardText') or 'None'
+    award_text = input(f"  Award Text [{color_text(str(award_curr), 'cyan')}]: ").strip()
     if award_text.lower() in ('none', 'null', ''):
         award_text = None
+    elif not award_text and award_curr == 'None':
+        award_text = None
+    elif not award_text:
+        award_text = project.get('awardText')
         
-    award_type = input(f"Award Type (gold/silver/participation) [{project.get('awardType') or 'None'}]: ").strip()
+    award_type_curr = project.get('awardType') or 'None'
+    award_type = input(f"  Award Type (gold/silver/participation) [{color_text(str(award_type_curr), 'cyan')}]: ").strip()
     if award_type.lower() in ('none', 'null', ''):
         award_type = None
+    elif not award_type and award_type_curr == 'None':
+        award_type = None
+    elif not award_type:
+        award_type = project.get('awardType')
         
     project['name'] = name
     project['date'] = date
@@ -176,15 +280,33 @@ def edit_project(project):
     project['awardType'] = award_type
     return project
 
+def display_proposed_project(project):
+    clear_screen()
+    print_box_header(f"PROPOSED PORTFOLIO CARD: {project['name']}")
+    
+    print(f"  {color_text('Name:', 'yellow'):<15} {color_text(project['name'], 'bold')}")
+    print(f"  {color_text('Date:', 'yellow'):<15} {project['date']}")
+    print(f"  {color_text('Status:', 'yellow'):<15} {color_text(project['status'], 'cyan')}")
+    print(f"  {color_text('Category:', 'yellow'):<15} {color_text(project['category'], 'magenta')}")
+    print(f"  {color_text('Tags:', 'yellow'):<15} {', '.join(project['tags'])}")
+    print(f"  {color_text('GitHub Link:', 'yellow'):<15} {project['githubLink']}")
+    if project.get('awardText'):
+        print(f"  {color_text('Award:', 'yellow'):<15} {color_text(project['awardText'], 'green')} ({project['awardType']})")
+    print("-" * 65)
+    print(f"  {color_text('Description:', 'bold')}")
+    desc = project['description']
+    wrapped_desc = "\n".join(f"    {desc[i:i+60]}" for i in range(0, len(desc), 60))
+    print(wrapped_desc)
+    print("-" * 65)
+
 def inject_data(projects_list):
-    print("Injecting project details into index.html...")
+    print_status("Injecting project details into index.html...", "info")
     
     # Clean readmes mapping
     readmes_dict = {}
     projects_clean = []
     
     for p in projects_list:
-        # Create a copy without the raw readme for projects array injection
         p_copy = p.copy()
         readme_content = p_copy.pop('readme', '')
         projects_clean.append(p_copy)
@@ -211,7 +333,7 @@ def inject_data(projects_list):
         new_proj_block = f"{start_proj}\n        const projects = {projects_json};\n        {end_proj}"
         content = content.replace(old_proj_block, new_proj_block)
     else:
-        print("WARNING: Projects data markers not found in index.html!")
+        print_status("Projects data markers not found in index.html!", "warning")
     
     # Inject readmes data
     start_readme = '// <!-- PROJECT_READMES_START -->'
@@ -224,28 +346,39 @@ def inject_data(projects_list):
         new_readme_block = f"{start_readme}\n        const projectReadmes = {readmes_json};\n        {end_readme}"
         content = content.replace(old_readme_block, new_readme_block)
     else:
-        print("WARNING: Project readmes markers not found in index.html!")
+        print_status("Project readmes markers not found in index.html!", "warning")
         
     with open(html_path, 'w', encoding='utf-8') as f:
         f.write(content)
         
-    print("index.html updated successfully!")
-
+    print_status("index.html updated successfully!", "success")
 
 def main():
     api_key = get_gemini_key()
+    
+    clear_screen()
+    print_box_header("PORTFOLIO SYNCHRONIZATION PIPELINE")
+    
     existing_projects = init_db()
     
     # Map by github link for easy lookup
-    existing_by_link = {p['githubLink']: p for p in existing_projects}
+    existing_by_link = {p['githubLink']: p for p in existing_projects if p.get('githubLink')}
     # Also maintain name index
     existing_by_name = {p['name']: p for p in existing_projects}
     
     repos = get_public_repos()
     
-    new_additions = []
-    db_updated = False
+    # Step 1: Verify for private or deleted repositories
+    print_status("Verifying existing tracked projects against GitHub public repository list...", "info")
+    existing_projects, db_updated = verify_private_repos(existing_projects, repos)
     
+    # Refresh index mappings after verification cleanup
+    existing_by_link = {p['githubLink']: p for p in existing_projects if p.get('githubLink')}
+    existing_by_name = {p['name']: p for p in existing_projects}
+    
+    new_additions = []
+    
+    # Step 2: Iterate over fetched repos to check for new creations
     for repo in repos:
         name = repo['name']
         url = repo['url']
@@ -257,25 +390,25 @@ def main():
         if url in existing_by_link or name in existing_by_name:
             continue
             
-        print("\n" + "-"*50)
-        print(f"New repository found: {name}")
-        print(f"URL: {url}")
-        print(f"Fork: {is_fork}")
-        print(f"Created: {created_at}")
-        print(f"GitHub Description: {gh_desc}")
-        print("-"*50)
+        clear_screen()
+        print_box_header(f"NEW REPOSITORY DETECTED: {name}")
+        print(f"  {color_text('URL:', 'yellow'):<15} {url}")
+        print(f"  {color_text('Fork Status:', 'yellow'):<15} {'Yes' if is_fork else 'No'}")
+        print(f"  {color_text('Created:', 'yellow'):<15} {created_at}")
+        print(f"  {color_text('GitHub Desc:', 'yellow'):<15} {gh_desc}")
+        print("-" * 65)
         
         if is_fork:
-            opt_in = input("This is a fork. Do you want to include it? (y/N): ").strip().lower()
+            opt_in = input(f"  This is a fork. Do you want to include it in the portfolio? ({color_text('y', 'green')}/{color_text('N', 'red')}): ").strip().lower()
             if opt_in != 'y':
-                print(f"Skipping fork {name}.")
-                # Store placeholder in DB with opted_out flag to avoid prompting again
+                print_status(f"Skipping fork {name}.", "info")
                 existing_projects.append({
                     "name": name,
                     "githubLink": url,
                     "opted_out": True
                 })
                 db_updated = True
+                input("\n  Press Enter to continue...")
                 continue
                 
         # Fetch README and analyze
@@ -297,40 +430,32 @@ def main():
         
         # Confirm & Edit Loop
         while True:
-            print("\nProposed Card Details:")
-            print(f"  Name:        {project['name']}")
-            print(f"  Date:        {project['date']}")
-            print(f"  Status:      {project['status']}")
-            print(f"  Category:    {project['category']}")
-            print(f"  Tags:        {', '.join(project['tags'])}")
-            print(f"  Description: {project['description']}")
-            print(f"  Award Text:  {project['awardText']}")
-            print(f"  Award Type:  {project['awardType']}")
-            
-            choice = input("\nOptions: [A]ccept, [E]dit, [R]eject/Skip: ").strip().lower()
+            display_proposed_project(project)
+            choice = input(f"  Options: [{color_text('A', 'green')}]ccept, [{color_text('E', 'yellow')}]dit, [{color_text('R', 'red')}]eject/Skip: ").strip().lower()
             if choice == 'a':
                 new_additions.append(project)
                 existing_projects.append(project)
                 db_updated = True
-                print(f"Accepted {name}.")
+                print_status(f"Accepted {name}.", "success")
+                input("\n  Press Enter to continue...")
                 break
             elif choice == 'e':
                 project = edit_project(project)
             else:
-                print(f"Skipped {name}.")
-                # Save as opted out
+                print_status(f"Skipped {name}.", "info")
                 existing_projects.append({
                     "name": name,
                     "githubLink": url,
                     "opted_out": True
                 })
                 db_updated = True
+                input("\n  Press Enter to continue...")
                 break
 
     if db_updated:
-        # Save to projects_db.json
-        # Filter out temporary objects or keep them to prevent re-querying
         save_db(existing_projects)
+    else:
+        print_status("No new projects or database changes to save.", "success")
         
     # Always update index.html to keep it synchronized with projects_db.json
     active_projects = [p for p in existing_projects if not p.get('opted_out')]
