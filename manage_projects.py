@@ -61,8 +61,11 @@ def load_env():
                 if line and not line.startswith('#') and '=' in line:
                     key, val = line.split('=', 1)
                     key = key.strip()
+                    val = val.strip()
+                    if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                        val = val[1:-1]
                     if key not in os.environ:
-                        os.environ[key] = val.strip()
+                        os.environ[key] = val
 
 def get_gemini_key():
     load_env()
@@ -185,119 +188,215 @@ def format_date(created_at_str):
     except Exception:
         return "Unknown"
 
-def verify_private_repos(existing_projects, repos):
-    public_urls = {r['url'].lower().strip() for r in repos}
-    public_names = {r['name'].lower().strip() for r in repos}
+def build_tui_projects(existing_projects, repos):
+    existing_by_name = {p['name']: p for p in existing_projects}
+    existing_by_link = {p['githubLink']: p for p in existing_projects if p.get('githubLink')}
     
-    updated_projects = []
-    db_updated = False
+    tui_projects = []
+    added_names = set()
     
-    for project in existing_projects:
-        if project.get('opted_out'):
-            updated_projects.append(project)
-            continue
-            
-        link = project.get('githubLink')
-        if not link:
-            # Local archive, keep as-is
-            updated_projects.append(project)
-            continue
-            
-        repo_name = project['name'].lower().strip()
-        if link.lower().strip() not in public_urls and repo_name not in public_names:
-            # Private or deleted
-            clear_screen()
-            print_box_header(f"PRIVATE/DELETED REPOSITORY: {project['name']}")
-            print_status(f"Repository URL: {link}", "warning")
-            print_status("This repository is no longer in your public GitHub repository list.", "info")
-            print("  It may have been deleted or set to private.")
-            print("-" * 65)
-            
-            while True:
-                choice = input(f"  Options: [{color_text('K', 'green')}]eep as Local Archive, [{color_text('R', 'red')}]emove from database: ").strip().lower()
-                if choice == 'k':
-                    project['githubLink'] = ""
-                    updated_projects.append(project)
-                    db_updated = True
-                    print_status(f"Converted {project['name']} to a Local Archive.", "success")
-                    input("\n  Press Enter to continue...")
-                    break
-                elif choice == 'r':
-                    db_updated = True
-                    print_status(f"Removed {project['name']} from database.", "success")
-                    input("\n  Press Enter to continue...")
-                    break
+    for repo in repos:
+        name = repo['name']
+        url = repo['url']
+        is_fork = repo.get('isFork', False)
+        
+        matched_project = existing_by_link.get(url) or existing_by_name.get(name)
+        
+        if matched_project:
+            tui_state = 'D' if matched_project.get('opted_out') else ('A' if not matched_project.get('githubLink') else 'P')
+            tui_projects.append({
+                "name": matched_project['name'],
+                "githubLink": matched_project.get('githubLink', ''),
+                "opted_out": matched_project.get('opted_out', False),
+                "is_new": False,
+                "is_fork": is_fork,
+                "description": matched_project.get('description', ''),
+                "category": matched_project.get('category', ''),
+                "state": tui_state,
+                "original_project": matched_project,
+                "repo_url": url,
+                "original_repo": repo
+            })
+            added_names.add(matched_project['name'])
         else:
-            updated_projects.append(project)
+            tui_state = 'D' if is_fork else 'P'
+            tui_projects.append({
+                "name": name,
+                "githubLink": url,
+                "opted_out": False,
+                "is_new": True,
+                "is_fork": is_fork,
+                "description": repo.get('description') or '',
+                "category": 'tool',
+                "state": tui_state,
+                "original_project": None,
+                "repo_url": url,
+                "original_repo": repo
+            })
+            added_names.add(name)
             
-    return updated_projects, db_updated
+    for p in existing_projects:
+        if p['name'] not in added_names:
+            tui_state = 'D' if p.get('opted_out') else ('A' if not p.get('githubLink') else 'P')
+            tui_projects.append({
+                "name": p['name'],
+                "githubLink": p.get('githubLink', ''),
+                "opted_out": p.get('opted_out', False),
+                "is_new": False,
+                "is_fork": False,
+                "description": p.get('description', ''),
+                "category": p.get('category', ''),
+                "state": tui_state,
+                "original_project": p,
+                "repo_url": p.get('githubLink', '')
+            })
+            
+    tui_projects.sort(key=lambda x: (not x['is_new'], x['name'].lower()))
+    return tui_projects
 
-def edit_project(project):
-    clear_screen()
-    print_box_header(f"EDIT PROJECT CARD: {project['name']}")
-    print("  Leave field blank to keep current value.")
-    print("-" * 65)
-    
-    name = input(f"  Name [{color_text(project['name'], 'cyan')}]: ").strip() or project['name']
-    date = input(f"  Date [{color_text(project['date'], 'cyan')}]: ").strip() or project['date']
-    status = input(f"  Status [{color_text(project['status'], 'cyan')}]: ").strip() or project['status']
-    category = input(f"  Category (research/hardware/tool/hackathon) [{color_text(project['category'], 'cyan')}]: ").strip() or project['category']
-    
-    tags_curr = ', '.join(project.get('tags', []))
-    tags_str = input(f"  Tags (comma-separated) [{color_text(tags_curr, 'cyan')}]: ").strip()
-    if tags_str:
-        tags = [t.strip().upper() for t in tags_str.split(',') if t.strip()]
-    else:
-        tags = project.get('tags', [])
-        
-    description = input(f"  Description [{color_text(project['description'][:45] + '...', 'cyan')}]: ").strip() or project['description']
-    
-    award_curr = project.get('awardText') or 'None'
-    award_text = input(f"  Award Text [{color_text(str(award_curr), 'cyan')}]: ").strip()
-    if award_text.lower() in ('none', 'null', ''):
-        award_text = None
-    elif not award_text and award_curr == 'None':
-        award_text = None
-    elif not award_text:
-        award_text = project.get('awardText')
-        
-    award_type_curr = project.get('awardType') or 'None'
-    award_type = input(f"  Award Type (gold/silver/participation) [{color_text(str(award_type_curr), 'cyan')}]: ").strip()
-    if award_type.lower() in ('none', 'null', ''):
-        award_type = None
-    elif not award_type and award_type_curr == 'None':
-        award_type = None
-    elif not award_type:
-        award_type = project.get('awardType')
-        
-    project['name'] = name
-    project['date'] = date
-    project['status'] = status
-    project['category'] = category
-    project['tags'] = tags
-    project['description'] = description
-    project['awardText'] = award_text
-    project['awardType'] = award_type
-    return project
+def get_key():
+    import sys
+    import tty
+    import termios
+    import select
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd)
+        ch = sys.stdin.read(1)
+        if ch == '\x1b':
+            rlist, _, _ = select.select([sys.stdin], [], [], 0.05)
+            if rlist:
+                ch2 = sys.stdin.read(1)
+                if ch2 == '[':
+                    rlist, _, _ = select.select([sys.stdin], [], [], 0.05)
+                    if rlist:
+                        ch3 = sys.stdin.read(1)
+                        if ch3 == 'A': return 'up'
+                        elif ch3 == 'B': return 'down'
+                        elif ch3 == 'C': return 'right'
+                        elif ch3 == 'D': return 'left'
+            return 'esc'
+        return ch
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
-def display_proposed_project(project):
-    clear_screen()
-    print_box_header(f"PROPOSED PORTFOLIO CARD: {project['name']}")
+def run_tui(projects):
+    selected_idx = 0
+    start_idx = 0
     
-    print(f"  {color_text('Name:', 'yellow'):<15} {color_text(project['name'], 'bold')}")
-    print(f"  {color_text('Date:', 'yellow'):<15} {project['date']}")
-    print(f"  {color_text('Status:', 'yellow'):<15} {color_text(project['status'], 'cyan')}")
-    print(f"  {color_text('Category:', 'yellow'):<15} {color_text(project['category'], 'magenta')}")
-    print(f"  {color_text('Tags:', 'yellow'):<15} {', '.join(project['tags'])}")
-    print(f"  {color_text('GitHub Link:', 'yellow'):<15} {project['githubLink']}")
-    if project.get('awardText'):
-        print(f"  {color_text('Award:', 'yellow'):<15} {color_text(project['awardText'], 'green')} ({project['awardType']})")
-    print("-" * 65)
-    print(f"  {color_text('Description:', 'bold')}")
-    desc = project['description']
-    wrapped_desc = "\n".join(f"    {desc[i:i+60]}" for i in range(0, len(desc), 60))
-    print(wrapped_desc)
-    print("-" * 65)
+    while True:
+        try:
+            terminal_size = os.get_terminal_size()
+            term_height = terminal_size.lines
+            term_width = terminal_size.columns
+        except Exception:
+            term_height = 24
+            term_width = 80
+            
+        visible_count = term_height - 11
+        if visible_count < 5:
+            visible_count = 5
+            
+        selected_idx = max(0, min(selected_idx, len(projects) - 1))
+        
+        if selected_idx < start_idx:
+            start_idx = selected_idx
+        elif selected_idx >= start_idx + visible_count:
+            start_idx = selected_idx - visible_count + 1
+            
+        clear_screen()
+        print_box_header("PORTFOLIO MANAGER - PROJECT PUBLISHING CONTROL")
+        print("  Use Up/Down or j/k to navigate.")
+        print(f"  Actions: {color_text('[p]', 'green')} Public, {color_text('[a]', 'yellow')} Archive (Local), {color_text('[d]', 'red')} Nuke (Opt-out)")
+        print(f"  Press {color_text('[s]', 'cyan')} to Save & Commit, or {color_text('[q]', 'bold')} to Quit without saving.")
+        print("-" * term_width)
+        
+        end_idx = min(start_idx + visible_count, len(projects))
+        for i in range(start_idx, end_idx):
+            p = projects[i]
+            is_selected = (i == selected_idx)
+            
+            state = p['state']
+            if state == 'P':
+                state_str = color_text("[ P ] Public ", "green")
+            elif state == 'A':
+                state_str = color_text("[ A ] Archive", "yellow")
+            else:
+                state_str = color_text("[ D ] Nuked  ", "red")
+                
+            type_tag = ""
+            if p['is_new']:
+                type_tag = color_text("[NEW] ", "cyan")
+            elif p['is_fork']:
+                type_tag = color_text("[FORK]", "magenta")
+            else:
+                type_tag = "      "
+                
+            indicator = "-> " if is_selected else "   "
+            name_display = p['name']
+            if is_selected:
+                name_display = color_text(name_display, "bold")
+                line_content = f"{indicator}{state_str} {type_tag} {name_display}"
+            else:
+                line_content = f"{indicator}{state_str} {type_tag} {name_display}"
+                
+            print(line_content[:term_width])
+            
+        print("-" * term_width)
+        
+        count_p = sum(1 for x in projects if x['state'] == 'P')
+        count_a = sum(1 for x in projects if x['state'] == 'A')
+        count_d = sum(1 for x in projects if x['state'] == 'D')
+        
+        status_line = f"  Total: {len(projects)} | {color_text('P', 'green')}: {count_p} | {color_text('A', 'yellow')}: {count_a} | {color_text('D', 'red')}: {count_d}"
+        print(status_line)
+        
+        if projects:
+            sel_p = projects[selected_idx]
+            p_desc = sel_p.get('description', 'No description.')
+            wrapped_lines = []
+            desc_limit = term_width - 8
+            for j in range(0, len(p_desc), desc_limit):
+                wrapped_lines.append(p_desc[j:j+desc_limit])
+            desc_disp = "\n            ".join(wrapped_lines[:2])
+            if len(wrapped_lines) > 2:
+                desc_disp += "..."
+                
+            print(f"  {color_text('Project:', 'yellow')} {sel_p['name']}")
+            print(f"  {color_text('URL:', 'yellow')} {sel_p.get('githubLink') or sel_p.get('repo_url') or 'Local Archive'}")
+            print(f"  {color_text('Desc:', 'yellow')} {desc_disp}")
+            
+        key = get_key()
+        if not key:
+            continue
+            
+        if key in ('up', 'k'):
+            selected_idx = max(0, selected_idx - 1)
+        elif key in ('down', 'j'):
+            selected_idx = min(len(projects) - 1, selected_idx + 1)
+        elif key == 'p':
+            projects[selected_idx]['state'] = 'P'
+        elif key == 'a':
+            projects[selected_idx]['state'] = 'A'
+        elif key == 'd':
+            projects[selected_idx]['state'] = 'D'
+        elif key == 's':
+            clear_screen()
+            print_box_header("CONFIRM PORTFOLIO COMMISSION")
+            print(f"  {color_text('Public (P):', 'green'):<15} {count_p} projects (will be displayed with GitHub links)")
+            print(f"  {color_text('Archived (A):', 'yellow'):<15} {count_a} projects (will be displayed without GitHub links)")
+            print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
+            print("-" * 65)
+            confirm = input("  Apply changes and update portfolio? (y/n): ").strip().lower()
+            if confirm == 'y':
+                return 'save'
+        elif key == 'q':
+            clear_screen()
+            print_box_header("QUIT WITHOUT SAVING")
+            confirm = input("  Are you sure you want to discard all changes? (y/n): ").strip().lower()
+            if confirm == 'y':
+                return 'quit'
 
 def inject_data(projects_list):
     print_status("Injecting project details into index.html...", "info")
@@ -360,106 +459,93 @@ def main():
     print_box_header("PORTFOLIO SYNCHRONIZATION PIPELINE")
     
     existing_projects = init_db()
-    
-    # Map by github link for easy lookup
-    existing_by_link = {p['githubLink']: p for p in existing_projects if p.get('githubLink')}
-    # Also maintain name index
-    existing_by_name = {p['name']: p for p in existing_projects}
-    
     repos = get_public_repos()
     
-    # Step 1: Verify for private or deleted repositories
-    print_status("Verifying existing tracked projects against GitHub public repository list...", "info")
-    existing_projects, db_updated = verify_private_repos(existing_projects, repos)
+    print_status("Reconciling database projects and GitHub repositories...", "info")
+    tui_projects = build_tui_projects(existing_projects, repos)
     
-    # Refresh index mappings after verification cleanup
-    existing_by_link = {p['githubLink']: p for p in existing_projects if p.get('githubLink')}
-    existing_by_name = {p['name']: p for p in existing_projects}
+    action = run_tui(tui_projects)
     
-    new_additions = []
-    
-    # Step 2: Iterate over fetched repos to check for new creations
-    for repo in repos:
-        name = repo['name']
-        url = repo['url']
-        is_fork = repo['isFork']
-        created_at = repo['createdAt']
-        gh_desc = repo['description'] or ""
-        
-        # Check if already tracked
-        if url in existing_by_link or name in existing_by_name:
-            continue
-            
+    if action == 'save':
         clear_screen()
-        print_box_header(f"NEW REPOSITORY DETECTED: {name}")
-        print(f"  {color_text('URL:', 'yellow'):<15} {url}")
-        print(f"  {color_text('Fork Status:', 'yellow'):<15} {'Yes' if is_fork else 'No'}")
-        print(f"  {color_text('Created:', 'yellow'):<15} {created_at}")
-        print(f"  {color_text('GitHub Desc:', 'yellow'):<15} {gh_desc}")
-        print("-" * 65)
+        print_box_header("SAVING AND COMMISSIONING CHANGES")
         
-        if is_fork:
-            opt_in = input(f"  This is a fork. Do you want to include it in the portfolio? ({color_text('y', 'green')}/{color_text('N', 'red')}): ").strip().lower()
-            if opt_in != 'y':
-                print_status(f"Skipping fork {name}.", "info")
-                existing_projects.append({
-                    "name": name,
-                    "githubLink": url,
-                    "opted_out": True
-                })
-                db_updated = True
-                input("\n  Press Enter to continue...")
-                continue
-                
-        # Fetch README and analyze
-        readme = get_readme_content(name)
-        metadata = generate_metadata_with_gemini(name, gh_desc, readme, api_key)
+        existing_by_name = {p['name']: p for p in existing_projects}
+        db_updated = False
         
-        project = {
-            "name": name,
-            "date": format_date(created_at),
-            "status": metadata.get("status", "COMPLETED"),
-            "category": metadata.get("category", "tool"),
-            "tags": metadata.get("tags", []),
-            "description": metadata.get("description", gh_desc),
-            "githubLink": url,
-            "awardText": metadata.get("awardText"),
-            "awardType": metadata.get("awardType"),
-            "readme": readme
-        }
-        
-        # Confirm & Edit Loop
-        while True:
-            display_proposed_project(project)
-            choice = input(f"  Options: [{color_text('A', 'green')}]ccept, [{color_text('E', 'yellow')}]dit, [{color_text('R', 'red')}]eject/Skip: ").strip().lower()
-            if choice == 'a':
-                new_additions.append(project)
-                existing_projects.append(project)
-                db_updated = True
-                print_status(f"Accepted {name}.", "success")
-                input("\n  Press Enter to continue...")
-                break
-            elif choice == 'e':
-                project = edit_project(project)
+        for item in tui_projects:
+            name = item['name']
+            state = item['state']
+            is_new = item['is_new']
+            repo_url = item['repo_url']
+            
+            if is_new:
+                if state in ('P', 'A'):
+                    print_status(f"Ingesting new project: {name}", "info")
+                    readme = get_readme_content(name)
+                    repo_obj = item.get('original_repo') or {}
+                    gh_desc = repo_obj.get('description') or ""
+                    created_at = repo_obj.get('createdAt') or datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+                    
+                    metadata = generate_metadata_with_gemini(name, gh_desc, readme, api_key)
+                    
+                    new_project = {
+                        "name": name,
+                        "date": format_date(created_at),
+                        "status": metadata.get("status", "COMPLETED"),
+                        "category": metadata.get("category", "tool"),
+                        "tags": metadata.get("tags", []),
+                        "description": metadata.get("description", gh_desc),
+                        "githubLink": repo_url if state == 'P' else "",
+                        "awardText": metadata.get("awardText"),
+                        "awardType": metadata.get("awardType"),
+                        "readme": readme
+                    }
+                    existing_projects.append(new_project)
+                    db_updated = True
+                    print_status(f"Successfully ingested {name}.", "success")
+                else:
+                    new_project = {
+                        "name": name,
+                        "githubLink": repo_url,
+                        "opted_out": True
+                    }
+                    existing_projects.append(new_project)
+                    db_updated = True
+                    print_status(f"Skipped and marked {name} as opted-out.", "info")
             else:
-                print_status(f"Skipped {name}.", "info")
-                existing_projects.append({
-                    "name": name,
-                    "githubLink": url,
-                    "opted_out": True
-                })
-                db_updated = True
-                input("\n  Press Enter to continue...")
-                break
+                proj = existing_by_name.get(name)
+                if proj:
+                    original_opted_out = proj.get('opted_out', False)
+                    original_link = proj.get('githubLink', '')
+                    
+                    target_opted_out = (state == 'D')
+                    if state == 'P':
+                        target_link = repo_url or original_link
+                    elif state == 'A':
+                        target_link = ""
+                    else:
+                        target_link = original_link
+                        
+                    if original_opted_out != target_opted_out or original_link != target_link:
+                        if target_opted_out:
+                            proj['opted_out'] = True
+                        else:
+                            if 'opted_out' in proj:
+                                proj.pop('opted_out')
+                        proj['githubLink'] = target_link
+                        db_updated = True
+                        print_status(f"Updated status of {name} to {state}.", "info")
 
-    if db_updated:
-        save_db(existing_projects)
+        if db_updated:
+            save_db(existing_projects)
+        else:
+            print_status("No changes were made to the project database.", "success")
+            
+        active_projects = [p for p in existing_projects if not p.get('opted_out')]
+        inject_data(active_projects)
     else:
-        print_status("No new projects or database changes to save.", "success")
-        
-    # Always update index.html to keep it synchronized with projects_db.json
-    active_projects = [p for p in existing_projects if not p.get('opted_out')]
-    inject_data(active_projects)
+        print_status("Quit. No changes saved.", "warning")
 
 if __name__ == '__main__':
     main()
