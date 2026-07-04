@@ -33,6 +33,7 @@
             --bg-void: #020204;
             --bg-surface: #07080d;
             --bg-elevated: #0d0f17;
+            --bg-grid: rgba(255, 255, 255, 0.02);
 
             /* === PRIMARY: UPGRADED LUMINOUS ACCENTS === */
             --optimism-mint: #00ff87;  /* High-intensity neon green */
@@ -94,11 +95,12 @@
             --bg-void: #faf8f5;      /* Warm cream off-white base */
             --bg-surface: #ffffff;   /* Pure white card backgrounds */
             --bg-elevated: #efebe2;  /* Warm clay panel backgrounds */
+            --bg-grid: rgba(0, 0, 0, 0.025);
 
-            /* === PRIMARY: BOLD EDITORIAL ACCENT === */
-            --optimism-mint: #ff4f00;  /* Bold editorial orange */
-            --optimism-teal: #e63b00;  /* Deep saturated vermilion */
-            --optimism-cyan: #ff7324;  /* Warm glowing coral */
+            /* === PRIMARY: DIALED DOWN TO WARM TERRACOTTA / COPPER BROWN === */
+            --optimism-mint: #ab4e26;  /* Sophisticated warm rust/terracotta */
+            --optimism-teal: #733113;  /* Deep bronze/copper brown */
+            --optimism-cyan: #c4693b;  /* Soft warm clay amber */
             --optimism-white: #1a1a1a; /* Dark charcoal */
 
             /* === SECONDARY: HORIZON BLUE === */
@@ -106,8 +108,8 @@
             --horizon-deep: #003cc2;   /* Deep royal blue */
 
             /* === THE OPTIMISTIC GRADIENT === */
-            --gradient-optimism: linear-gradient(135deg, #ff7324 0%, #ff4f00 50%, #e63b00 100%);
-            --gradient-horizon: linear-gradient(135deg, #ff4f00 0%, #0052ff 100%);
+            --gradient-optimism: linear-gradient(135deg, #c4693b 0%, #ab4e26 50%, #733113 100%);
+            --gradient-horizon: linear-gradient(135deg, #ab4e26 0%, #0052ff 100%);
 
             /* === TEXT === */
             --text-primary: #1a1d20;   /* High contrast charcoal */
@@ -116,28 +118,28 @@
             --text-bright: #000000;    /* Pure black for titles */
 
             /* === GLOW & EMISSION === */
-            --glow-mint: rgba(255, 79, 0, 0.08);
-            --glow-teal: rgba(230, 59, 0, 0.06);
+            --glow-mint: rgba(171, 78, 38, 0.08);
+            --glow-teal: rgba(115, 49, 19, 0.06);
 
             /* === HIGH-END GLASSMORPHISM === */
             --glass-bg: rgba(255, 255, 255, 0.70);
-            --glass-border: rgba(255, 79, 0, 0.12);
-            --glass-border-hover: rgba(255, 79, 0, 0.35);
+            --glass-border: rgba(171, 78, 38, 0.12);
+            --glass-border-hover: rgba(171, 78, 38, 0.35);
             --glass-blur: blur(20px);
             --glass-shimmer: linear-gradient(45deg,
                     transparent 25%,
-                    rgba(255, 79, 0, 0.05) 50%,
+                    rgba(171, 78, 38, 0.05) 50%,
                     transparent 75%);
 
             /* === THEME RGBS FOR TRANSPARENCY === */
-            --theme-color-1-rgb: 255, 79, 0;
-            --theme-color-2-rgb: 230, 59, 0;
-            --spotlight-color: rgba(255, 79, 0, 0.04);
-            --card-glow-color: rgba(255, 79, 0, 0.06);
+            --theme-color-1-rgb: 171, 78, 38;
+            --theme-color-2-rgb: 115, 49, 19;
+            --spotlight-color: rgba(171, 78, 38, 0.04);
+            --card-glow-color: rgba(171, 78, 38, 0.06);
             --nav-bg: rgba(250, 249, 246, 0.65);
             --overlay-bg: rgba(250, 249, 246, 0.98);
             --overlay-header-bg: rgba(250, 249, 246, 0.8);
-            --overlay-border: rgba(255, 79, 0, 0.15);
+            --overlay-border: rgba(171, 78, 38, 0.15);
         }
 
         * {
@@ -159,6 +161,11 @@
             min-height: 100vh;
             line-height: 1.6;
             position: relative;
+            background-image: 
+                linear-gradient(var(--bg-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center center;
         }
 
         body::before {
@@ -201,7 +208,7 @@
             inset: 0;
             z-index: 9999;
             pointer-events: none;
-            opacity: 0.04;
+            opacity: 0.065;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
@@ -1623,8 +1630,7 @@
         }
 
         /* ── Card Description Collapse & Reveal ── */
-        .timeline-card-content p.font-body, 
-        .project-item p.font-body {
+        .timeline-card-content p.font-body {
             max-height: 0;
             opacity: 0;
             margin-bottom: 0 !important;
@@ -1641,11 +1647,13 @@
             margin-bottom: 2rem !important;
         }
 
-        .project-item:hover p.font-body,
-        .project-item.active p.font-body {
-            max-height: 200px;
-            opacity: 1;
-            margin-bottom: 1.5rem !important;
+        .scramble-char {
+            display: inline-block;
+            transition: opacity 0.25s ease, color 0.25s ease;
+        }
+        .scramble-char.is-scrambled {
+            opacity: 0.32;
+            color: var(--text-secondary);
         }
 
         /* Mobile Navigation Drawer styles */
@@ -6419,38 +6427,67 @@
                 const originalName = h3.dataset.originalName || h3.textContent.trim();
                 h3.dataset.originalName = originalName;
 
-                let isHovered = false;
-                let scrambleInterval = null;
+                // Wrap each character in a styled span
+                h3.innerHTML = originalName.split('').map((char, idx) => {
+                    if (char === ' ') return `<span data-char=" " style="white-space: pre;"> </span>`;
+                    return `<span class="scramble-char" data-idx="${idx}">${char}</span>`;
+                }).join('');
+
+                const spans = h3.querySelectorAll('.scramble-char');
                 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=_";
 
+                let isHovered = false;
+                let intervals = [];
+
                 const startJackpot = () => {
-                    clearInterval(scrambleInterval);
-                    scrambleInterval = setInterval(() => {
-                        if (isHovered) return;
-                        h3.textContent = originalName.split('').map(char => {
-                            if (char === ' ' || char === '-' || char === '(' || char === ')') return char;
-                            return chars[Math.floor(Math.random() * chars.length)];
-                        }).join('');
-                    }, 140 + Math.random() * 80);
+                    intervals.forEach(clearInterval);
+                    intervals = [];
+                    isHovered = false;
+
+                    spans.forEach((span) => {
+                        const speed = 180 + Math.random() * 320;
+                        setTimeout(() => {
+                            if (isHovered) return;
+                            const interval = setInterval(() => {
+                                if (isHovered) return;
+                                span.textContent = chars[Math.floor(Math.random() * chars.length)];
+                                span.classList.add('is-scrambled');
+                            }, speed);
+                            intervals.push(interval);
+                        }, Math.random() * 150);
+                    });
                 };
 
                 const resolveName = () => {
-                    clearInterval(scrambleInterval);
                     isHovered = true;
-                    let iteration = 0;
-                    scrambleInterval = setInterval(() => {
-                        h3.textContent = originalName.split('').map((char, index) => {
-                            if (char === ' ' || char === '-' || char === '(' || char === ')') return char;
-                            if (index < iteration) return char;
-                            return chars[Math.floor(Math.random() * chars.length)];
-                        }).join('');
+                    intervals.forEach(clearInterval);
+                    intervals = [];
 
-                        if (iteration >= originalName.length) {
-                            h3.textContent = originalName;
-                            clearInterval(scrambleInterval);
-                        }
-                        iteration++;
-                    }, 25);
+                    spans.forEach((span) => {
+                        const idx = parseInt(span.dataset.idx);
+                        const originalChar = originalName[idx];
+                        const delay = idx * 28;
+
+                        setTimeout(() => {
+                            if (!isHovered) return;
+                            let scrambleSteps = 0;
+                            const localInterval = setInterval(() => {
+                                if (!isHovered) {
+                                    clearInterval(localInterval);
+                                    return;
+                                }
+                                if (scrambleSteps >= 3) {
+                                    span.textContent = originalChar;
+                                    span.classList.remove('is-scrambled');
+                                    clearInterval(localInterval);
+                                } else {
+                                    span.textContent = chars[Math.floor(Math.random() * chars.length)];
+                                    span.classList.add('is-scrambled');
+                                    scrambleSteps++;
+                                }
+                            }, 35);
+                        }, delay);
+                    });
                 };
 
                 card.addEventListener('mouseenter', () => {
@@ -6463,7 +6500,7 @@
                     card.classList.remove('active');
                     setTimeout(() => {
                         if (!isHovered) startJackpot();
-                    }, 350);
+                    }, 400);
                 });
 
                 startJackpot();
@@ -6488,7 +6525,9 @@
                     openProjectDetailOverlay(name, descHtml, repoLink);
                 });
 
-                initJackpotTitle(card, h3);
+                if (card.classList.contains('timeline-card-content')) {
+                    initJackpotTitle(card, h3);
+                }
             });
 
             window.currentProjectsList = sortedProjects;
