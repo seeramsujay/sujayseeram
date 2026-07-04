@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sujay Seeram | Portfolio</title>
+    <!-- Theme Initializer -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('portfolio-theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            if (theme === 'light') {
+                document.documentElement.classList.add('light-theme');
+            }
+        })();
+    </script>
     <!-- AI Training and Scraper Restrictions -->
     <meta name="robots" content="noai, noimageai">
     <!-- Fonts -->
@@ -19,43 +30,53 @@
     <style>
         :root {
             /* === BACKGROUND LAYERS === */
-            --bg-void: #030708;
-            --bg-surface: #061114;
-            --bg-elevated: #0a1f24;
+            --bg-void: #020204;
+            --bg-surface: #07080d;
+            --bg-elevated: #0d0f17;
 
-            /* === PRIMARY: OPTIMISTIC MINT === */
-            --optimism-mint: #4ade80;
-            --optimism-teal: #2dd4bf;
-            --optimism-cyan: #06b6d4;
+            /* === PRIMARY: UPGRADED LUMINOUS ACCENTS === */
+            --optimism-mint: #00ff87;  /* High-intensity neon green */
+            --optimism-teal: #00f3ff;  /* Luminous electric cyan */
+            --optimism-cyan: #00bfff;  /* Luminous sky blue */
             --optimism-white: #f0fdfa;
 
             /* === SECONDARY: HORIZON BLUE === */
             --horizon-blue: #3b82f6;
-            --horizon-deep: #1e3a8a;
+            --horizon-deep: #0037a5;
 
             /* === THE OPTIMISTIC GRADIENT === */
-            --gradient-optimism: linear-gradient(135deg, #2dd4bf 0%, #4ade80 50%, #3b82f6 100%);
-            --gradient-horizon: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --gradient-optimism: linear-gradient(135deg, #00f3ff 0%, #00ff87 50%, #3b82f6 100%);
+            --gradient-horizon: linear-gradient(135deg, #00bfff 0%, #0037a5 100%);
 
             /* === TEXT === */
-            --text-primary: #f8fafc;
+            --text-primary: #e2e8f0;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             --text-bright: #ffffff;
 
             /* === GLOW & EMISSION === */
-            --glow-mint: rgba(74, 222, 128, 0.15);
-            --glow-teal: rgba(45, 212, 191, 0.12);
+            --glow-mint: rgba(0, 255, 135, 0.18);
+            --glow-teal: rgba(0, 243, 255, 0.15);
 
             /* === HIGH-END GLASSMORPHISM === */
-            --glass-bg: rgba(6, 17, 20, 0.45);
-            --glass-border: rgba(45, 212, 191, 0.18);
-            --glass-border-hover: rgba(74, 222, 128, 0.5);
+            --glass-bg: rgba(7, 8, 13, 0.55);
+            --glass-border: rgba(0, 243, 255, 0.15);
+            --glass-border-hover: rgba(0, 255, 135, 0.45);
             --glass-blur: blur(28px);
             --glass-shimmer: linear-gradient(45deg,
                     transparent 25%,
-                    rgba(45, 212, 191, 0.05) 50%,
+                    rgba(0, 243, 255, 0.05) 50%,
                     transparent 75%);
+
+            /* === THEME RGBS FOR TRANSPARENCY === */
+            --theme-color-1-rgb: 0, 243, 255;
+            --theme-color-2-rgb: 0, 255, 135;
+            --spotlight-color: rgba(0, 243, 255, 0.05);
+            --card-glow-color: rgba(0, 255, 135, 0.1);
+            --nav-bg: rgba(3, 7, 8, 0.4);
+            --overlay-bg: rgba(3, 7, 8, 0.98);
+            --overlay-header-bg: rgba(3, 7, 8, 0.8);
+            --overlay-border: rgba(0, 243, 255, 0.15);
 
             /* === TEXT SCALE === */
             --text-xs: clamp(0.75rem, 1vw, 0.875rem);
@@ -66,6 +87,57 @@
             --text-2xl: clamp(2rem, 4vw, 3rem);
             --text-hero: clamp(3.5rem, 8vw, 7rem);
             --text-display: clamp(5rem, 12vw, 10rem);
+        }
+
+        .light-theme {
+            /* === BACKGROUND LAYERS === */
+            --bg-void: #faf8f5;      /* Warm cream off-white base */
+            --bg-surface: #ffffff;   /* Pure white card backgrounds */
+            --bg-elevated: #efebe2;  /* Warm clay panel backgrounds */
+
+            /* === PRIMARY: BOLD EDITORIAL ACCENT === */
+            --optimism-mint: #ff4f00;  /* Bold editorial orange */
+            --optimism-teal: #e63b00;  /* Deep saturated vermilion */
+            --optimism-cyan: #ff7324;  /* Warm glowing coral */
+            --optimism-white: #1a1a1a; /* Dark charcoal */
+
+            /* === SECONDARY: HORIZON BLUE === */
+            --horizon-blue: #0052ff;   /* Saturated electric blue */
+            --horizon-deep: #003cc2;   /* Deep royal blue */
+
+            /* === THE OPTIMISTIC GRADIENT === */
+            --gradient-optimism: linear-gradient(135deg, #ff7324 0%, #ff4f00 50%, #e63b00 100%);
+            --gradient-horizon: linear-gradient(135deg, #ff4f00 0%, #0052ff 100%);
+
+            /* === TEXT === */
+            --text-primary: #1a1d20;   /* High contrast charcoal */
+            --text-secondary: #5c626a; /* Slate grey for body copy */
+            --text-muted: #8e95a0;     /* Muted grey for captions */
+            --text-bright: #000000;    /* Pure black for titles */
+
+            /* === GLOW & EMISSION === */
+            --glow-mint: rgba(255, 79, 0, 0.08);
+            --glow-teal: rgba(230, 59, 0, 0.06);
+
+            /* === HIGH-END GLASSMORPHISM === */
+            --glass-bg: rgba(255, 255, 255, 0.70);
+            --glass-border: rgba(255, 79, 0, 0.12);
+            --glass-border-hover: rgba(255, 79, 0, 0.35);
+            --glass-blur: blur(20px);
+            --glass-shimmer: linear-gradient(45deg,
+                    transparent 25%,
+                    rgba(255, 79, 0, 0.05) 50%,
+                    transparent 75%);
+
+            /* === THEME RGBS FOR TRANSPARENCY === */
+            --theme-color-1-rgb: 255, 79, 0;
+            --theme-color-2-rgb: 230, 59, 0;
+            --spotlight-color: rgba(255, 79, 0, 0.04);
+            --card-glow-color: rgba(255, 79, 0, 0.06);
+            --nav-bg: rgba(250, 249, 246, 0.65);
+            --overlay-bg: rgba(250, 249, 246, 0.98);
+            --overlay-header-bg: rgba(250, 249, 246, 0.8);
+            --overlay-border: rgba(255, 79, 0, 0.15);
         }
 
         * {
@@ -94,8 +166,7 @@
             position: fixed;
             inset: 0;
             background: radial-gradient(600px circle at var(--global-mouse-x, 50%) var(--global-mouse-y, 50%),
-                    rgba(45, 212, 191, 0.04),
-                    /* Premium Teal tinge globally */
+                    var(--spotlight-color),
                     transparent 60%);
             pointer-events: none;
             z-index: -1;
@@ -164,7 +235,7 @@
             height: 100%;
             background: linear-gradient(90deg,
                     transparent,
-                    rgba(45, 212, 191, 0.05),
+                    rgba(var(--theme-color-1-rgb), 0.05),
                     transparent);
             transition: 0.5s;
             pointer-events: none;
@@ -180,7 +251,7 @@
             position: absolute;
             inset: 0;
             background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                    rgba(74, 222, 128, 0.1),
+                    var(--card-glow-color),
                     transparent 40%);
             pointer-events: none;
             opacity: 0;
@@ -222,7 +293,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.25rem 2.5rem;
-            background: rgba(3, 7, 8, 0.4);
+            background: var(--nav-bg);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--glass-border);
@@ -299,6 +370,15 @@
         }
 
         /* Utility */
+        /* ── Desktop 3D Card Tilt ──────────────────────────────────── */
+        @media (pointer: fine) {
+            .timeline-card-content, .project-item {
+                transform-style: preserve-3d;
+                will-change: transform;
+            }
+        }
+
+        /* ── Scramble label: characters swap while animating ────────── */
         .section-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
@@ -453,8 +533,10 @@
             align-items: center;
             gap: 0.5rem;
             transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(45, 212, 191, 0.1);
+            border-bottom: 1px solid rgba(var(--theme-color-1-rgb), 0.1);
             padding-bottom: 4px;
+            /* Magnetic effect: will be overridden by JS transform */
+            transform-origin: center center;
         }
 
         .hero-links a:hover {
@@ -549,7 +631,7 @@
         .edu-item {
             position: relative;
             padding-left: 2rem;
-            border-left: 1px solid rgba(45, 212, 191, 0.1);
+            border-left: 1px solid rgba(var(--theme-color-1-rgb), 0.1);
             padding-bottom: 2.5rem;
         }
 
@@ -648,45 +730,21 @@
             left: 50%;
             top: 0;
             bottom: 0;
-            width: 1px;
-            background: linear-gradient(to bottom,
-                    transparent,
-                    var(--optimism-teal) 10%,
-                    var(--optimism-mint) 50%,
-                    var(--optimism-teal) 90%,
-                    transparent);
-            opacity: 0.2;
+            width: 2px;
+            background: rgba(var(--theme-color-1-rgb), 0.1);
             transform: translateX(-50%);
             z-index: 0;
         }
 
-        .timeline-conduit::after {
-            content: '';
+        .timeline-progress-fill {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100px;
-            background: var(--optimism-mint);
-            box-shadow: 0 0 20px var(--optimism-mint);
-            filter: blur(2px);
-            animation: conduitPulse 4s infinite linear;
-        }
-
-        @keyframes conduitPulse {
-            0% {
-                top: -10%;
-                opacity: 0;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                top: 110%;
-                opacity: 0;
-            }
+            height: 0%;
+            background: linear-gradient(to bottom, var(--optimism-teal), var(--optimism-mint));
+            box-shadow: 0 0 10px var(--glow-mint);
+            transition: height 0.1s ease-out;
         }
 
         /* Vault */
@@ -747,8 +805,8 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
             padding: 0.25rem 0.75rem;
-            background: rgba(45, 212, 191, 0.05);
-            border: 1px solid rgba(45, 212, 191, 0.1);
+            background: rgba(var(--theme-color-1-rgb), 0.05);
+            border: 1px solid rgba(var(--theme-color-1-rgb), 0.1);
             color: var(--optimism-teal);
             border-radius: 4px;
         }
@@ -779,7 +837,7 @@
         }
 
         .award-badge.participation {
-            background: rgba(45, 212, 191, 0.08);
+            background: rgba(var(--theme-color-1-rgb), 0.08);
             color: var(--optimism-mint);
             border: 1px solid var(--glass-border);
         }
@@ -859,7 +917,7 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(45, 212, 191, 0.03);
+            background: rgba(var(--theme-color-1-rgb), 0.03);
         }
 
         .post-card.expanded .post-content {
@@ -892,8 +950,8 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
             color: var(--optimism-teal);
-            background: rgba(45, 212, 191, 0.06);
-            border: 1px solid rgba(45, 212, 191, 0.18);
+            background: rgba(var(--theme-color-1-rgb), 0.06);
+            border: 1px solid rgba(var(--theme-color-1-rgb), 0.18);
             padding: 0.25rem 0.6rem;
             border-radius: 4px;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -902,7 +960,7 @@
         }
 
         .post-tags span:hover {
-            background: rgba(74, 222, 128, 0.1);
+            background: rgba(var(--theme-color-2-rgb), 0.1);
             border-color: var(--optimism-mint);
             color: var(--optimism-mint);
             box-shadow: 0 0 10px var(--glow-mint);
@@ -944,7 +1002,7 @@
             text-align: center;
             position: relative;
             padding: 4rem 2rem;
-            background: linear-gradient(to top, rgba(74, 222, 128, 0.05), transparent);
+            background: linear-gradient(to top, rgba(var(--theme-color-2-rgb), 0.05), transparent);
             overflow: hidden;
         }
 
@@ -953,7 +1011,7 @@
             position: absolute;
             inset: 0;
             background: radial-gradient(800px circle at var(--global-mouse-x, 50%) var(--global-mouse-y, 50%),
-                    rgba(74, 222, 128, 0.08),
+                    rgba(var(--theme-color-2-rgb), 0.08),
                     /* Mint tinge specifically for the contact section background */
                     transparent 50%);
             pointer-events: none;
@@ -1042,6 +1100,27 @@
             display: none;
             flex-direction: column;
             font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+            animation: crt-flicker 0.9s steps(1) infinite;
+        }
+
+        /* CRT Scanlines Overlay */
+        .terminal-overlay::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(74, 222, 128, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        @keyframes crt-flicker {
+            0%   { opacity: 0.97; }
+            50%  { opacity: 1;    }
+            100% { opacity: 0.97; }
         }
 
         .terminal-header {
@@ -1049,7 +1128,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 3rem;
-            border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+            border-bottom: 1px solid rgba(var(--theme-color-1-rgb), 0.2);
             padding-bottom: 1rem;
         }
 
@@ -1097,6 +1176,38 @@
             color: var(--optimism-cyan);
         }
 
+        .terminal-cursor {
+            color: var(--optimism-mint);
+            animation: cursor-blink 1s infinite;
+        }
+
+        @keyframes cursor-blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* ── Mobile Tap Particle Burst ─────────────────────────────── */
+        .touch-particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            will-change: transform, opacity;
+        }
+        @keyframes particle-scatter {
+            0%   { transform: translate(var(--tx0), var(--ty0)) scale(1); opacity: 1; }
+            100% { transform: translate(var(--txF), var(--tyF)) scale(0); opacity: 0; }
+        }
+
+        /* ── Mobile Magnetic Card Tilt ─────────────────────────────── */
+        @media (pointer: coarse) {
+            .timeline-card-content, .project-item {
+                transform-style: preserve-3d;
+                perspective: 800px;
+                transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+            }
+        }
+
         .md-hidden {
             display: none;
         }
@@ -1123,8 +1234,8 @@
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
             margin: 2rem 0;
-            border-top: 1px dashed rgba(45, 212, 191, 0.2);
-            border-bottom: 1px dashed rgba(45, 212, 191, 0.2);
+            border-top: 1px dashed rgba(var(--theme-color-1-rgb), 0.2);
+            border-bottom: 1px dashed rgba(var(--theme-color-1-rgb), 0.2);
             padding: 1.5rem 0;
             width: 100%;
         }
@@ -1148,13 +1259,13 @@
             font-weight: 500;
             letter-spacing: 0.05em;
             color: var(--optimism-mint);
-            text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+            text-shadow: 0 0 8px rgba(var(--theme-color-2-rgb), 0.3);
         }
 
         /* Expanded Post glowing highlight */
         .post-card.expanded {
             border-color: var(--optimism-mint) !important;
-            box-shadow: 0 8px 32px var(--glow-mint), 0 0 10px rgba(74, 222, 128, 0.2) !important;
+            box-shadow: 0 8px 32px var(--glow-mint), 0 0 10px rgba(var(--theme-color-2-rgb), 0.2) !important;
         }
 
         /* Responsiveness */
@@ -1181,7 +1292,7 @@
 
             .timeline-container {
                 gap: 3rem !important;
-                padding: 2rem 0 !important;
+                padding: 2rem 1.5rem !important;
             }
 
             .timeline-node {
@@ -1234,6 +1345,57 @@
             .contact-card {
                 padding: 3rem 1.5rem;
             }
+
+            /* Overlays as sliding bottom sheets */
+            .fullscreen-overlay {
+                top: auto !important;
+                bottom: 0 !important;
+                height: 85vh !important;
+                border-top-left-radius: 24px;
+                border-top-right-radius: 24px;
+                background: rgba(10, 15, 17, 0.98) !important;
+                border-top: 1px solid rgba(var(--theme-color-2-rgb), 0.15);
+                transform: translateY(100%) !important;
+                opacity: 1 !important; /* Only animate sliding */
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
+            .light-theme .fullscreen-overlay {
+                background: rgba(247, 244, 237, 0.98) !important;
+                border-top: 1px solid rgba(var(--theme-color-1-rgb), 0.1);
+            }
+            .fullscreen-overlay.active {
+                transform: translateY(0) !important;
+            }
+
+            /* Terminal overlay stays fullscreen */
+            #terminal-overlay.fullscreen-overlay {
+                height: 100vh !important;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                border-top: none;
+                transform: translateY(30px) !important;
+                opacity: 0 !important;
+                transition: opacity 0.5s ease, transform 0.5s ease !important;
+            }
+            #terminal-overlay.fullscreen-overlay.active {
+                transform: translateY(0) !important;
+                opacity: 1 !important;
+            }
+
+            .mobile-drag-handle {
+                display: block;
+                width: 48px;
+                height: 5px;
+                background: rgba(var(--theme-color-1-rgb), 0.2);
+                border-radius: 3px;
+                margin: 0.75rem auto 0.25rem auto;
+                flex-shrink: 0;
+                z-index: 110;
+                cursor: grab;
+            }
+            .light-theme .mobile-drag-handle {
+                background: rgba(var(--theme-color-1-rgb), 0.15);
+            }
         }
 
         /* Fullscreen Overlays */
@@ -1252,6 +1414,10 @@
             overflow: hidden;
         }
 
+        .mobile-drag-handle {
+            display: none;
+        }
+
         .fullscreen-overlay.active {
             display: flex;
             opacity: 1;
@@ -1263,8 +1429,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.5rem 3rem;
-            border-bottom: 1px solid rgba(45, 212, 191, 0.15);
-            background: rgba(3, 7, 8, 0.8);
+            border-bottom: 1px solid var(--overlay-border);
+            background: var(--overlay-header-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             position: sticky;
@@ -1311,13 +1477,13 @@
             background: var(--gradient-optimism);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+            border-bottom: 1px solid rgba(var(--theme-color-1-rgb), 0.2);
             padding-bottom: 0.5rem;
         }
 
         .markdown-body h2 {
             font-size: 1.4rem;
-            border-bottom: 1px dashed rgba(45, 212, 191, 0.15);
+            border-bottom: 1px dashed rgba(var(--theme-color-1-rgb), 0.15);
             padding-bottom: 0.25rem;
         }
 
@@ -1347,8 +1513,8 @@
         .markdown-body code {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
-            background: rgba(45, 212, 191, 0.08);
-            border: 1px solid rgba(45, 212, 191, 0.15);
+            background: rgba(var(--theme-color-1-rgb), 0.08);
+            border: 1px solid rgba(var(--theme-color-1-rgb), 0.15);
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
             color: var(--optimism-teal);
@@ -1376,7 +1542,7 @@
             margin: 1.5rem 0;
             font-style: italic;
             color: var(--text-primary);
-            background: rgba(74, 222, 128, 0.03);
+            background: rgba(var(--theme-color-2-rgb), 0.03);
             border-radius: 0 8px 8px 0;
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
@@ -1385,7 +1551,7 @@
         .markdown-body a {
             color: var(--optimism-mint);
             text-decoration: none;
-            border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+            border-bottom: 1px solid rgba(var(--theme-color-2-rgb), 0.2);
             transition: all 0.3s ease;
         }
 
@@ -1403,14 +1569,194 @@
         .timeline-node:hover,
         .project-item:hover {
             transform: translateY(-4px) scale(1.01);
-            border-color: rgba(74, 222, 128, 0.4);
-            box-shadow: 0 12px 40px rgba(74, 222, 128, 0.1);
+            border-color: rgba(var(--theme-color-2-rgb), 0.4);
+            box-shadow: 0 12px 40px rgba(var(--theme-color-2-rgb), 0.1);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            margin-left: 1rem;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--glass-border-hover);
+            box-shadow: 0 0 12px var(--glow-mint);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle-btn span {
+            font-size: 18px;
+            position: absolute;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+        }
+
+        .light-theme .theme-icon-dark {
+            transform: translateY(30px) rotate(90deg);
+            opacity: 0;
+        }
+        .light-theme .theme-icon-light {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+
+        .theme-icon-dark {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        .theme-icon-light {
+            transform: translateY(-30px) rotate(-90deg);
+            opacity: 0;
+        }
+
+        /* ── Card Description Collapse & Reveal ── */
+        .timeline-card-content p.font-body, 
+        .project-item p.font-body {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0 !important;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                        opacity 0.3s ease,
+                        margin-bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+        }
+
+        .timeline-card-content:hover p.font-body,
+        .timeline-card-content.active p.font-body {
+            max-height: 200px;
+            opacity: 1;
+            margin-bottom: 2rem !important;
+        }
+
+        .project-item:hover p.font-body,
+        .project-item.active p.font-body {
+            max-height: 200px;
+            opacity: 1;
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Mobile Navigation Drawer styles */
+        .mobile-drawer {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: none;
+            pointer-events: none;
+        }
+        .mobile-drawer.active {
+            display: block;
+            pointer-events: auto;
+        }
+        .mobile-drawer-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 7, 8, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-drawer.active .mobile-drawer-backdrop {
+            opacity: 1;
+        }
+        .mobile-drawer-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 80%;
+            max-width: 320px;
+            background: rgba(10, 15, 17, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(var(--theme-color-2-rgb), 0.15);
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem 2rem;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+        .light-theme .mobile-drawer-content {
+            background: rgba(247, 244, 237, 0.95);
+            border-left: 1px solid rgba(var(--theme-color-1-rgb), 0.1);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+        }
+        .mobile-drawer.active .mobile-drawer-content {
+            transform: translateX(0);
+        }
+        .mobile-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3.5rem;
+        }
+        .mobile-drawer-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+        }
+        .mobile-drawer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            flex-grow: 1;
+        }
+        .mobile-drawer-links a {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+            transform: translateX(20px);
+            opacity: 0;
+        }
+        .mobile-drawer.active .mobile-drawer-links a {
+            transform: translateX(0);
+            opacity: 1;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-drawer.active .mobile-drawer-links a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-drawer.active .mobile-drawer-links a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-drawer.active .mobile-drawer-links a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-drawer.active .mobile-drawer-links a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-drawer.active .mobile-drawer-links a:nth-child(5) { transition-delay: 0.3s; }
+
+        .mobile-drawer-links a:hover,
+        .mobile-drawer-links a:active {
+            color: var(--optimism-mint);
+            transform: translateX(4px);
+        }
+        .mobile-drawer-footer {
+            margin-top: auto;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body class="antialiased">
+
+
 
     <!-- Textures -->
     <div class="noise-overlay"></div>
@@ -1424,17 +1770,46 @@
     <nav>
         <div class="nav-container">
             <a href="#hero" class="nav-logo">SUJAY SEERAM<span style="color: var(--text-muted)">.</span></a>
-            <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#odyssey">Odyssey</a>
-                <a href="javascript:void(0)" onclick="openVaultOverlay()">Vault</a>
-                <a href="javascript:void(0)" onclick="openPostsOverlay()">Posts</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="md-hidden material-symbols-outlined" style="color: var(--optimism-mint); cursor: pointer;">menu
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#odyssey">Odyssey</a>
+                    <a href="javascript:void(0)" onclick="openVaultOverlay()">Vault</a>
+                    <a href="javascript:void(0)" onclick="openPostsOverlay()">Posts</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme">
+                    <span class="material-symbols-outlined theme-icon-dark">dark_mode</span>
+                    <span class="material-symbols-outlined theme-icon-light">light_mode</span>
+                </button>
+                <div class="md-hidden material-symbols-outlined" style="color: var(--optimism-mint); cursor: pointer;" onclick="openMobileDrawer()">menu
+                </div>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-drawer">
+        <div class="mobile-drawer-backdrop" onclick="closeMobileDrawer()"></div>
+        <div class="mobile-drawer-content">
+            <div class="mobile-drawer-header">
+                <span class="font-mono" style="font-size: 10px; color: var(--optimism-mint);">NAVIGATION_INDEX</span>
+                <button class="mobile-drawer-close" onclick="closeMobileDrawer()" aria-label="Close menu">
+                    <span class="material-symbols-outlined" style="color: var(--text-primary);">close</span>
+                </button>
+            </div>
+            <div class="mobile-drawer-links font-mono">
+                <a href="#about" onclick="closeMobileDrawer()">// ABOUT</a>
+                <a href="#odyssey" onclick="closeMobileDrawer()">// ODYSSEY</a>
+                <a href="javascript:void(0)" onclick="closeMobileDrawer(); openVaultOverlay()">// VAULT</a>
+                <a href="javascript:void(0)" onclick="closeMobileDrawer(); openPostsOverlay()">// POSTS</a>
+                <a href="#contact" onclick="closeMobileDrawer()">// CONTACT</a>
+            </div>
+            <div class="mobile-drawer-footer">
+                <span class="font-mono" style="font-size: 8px; opacity: 0.4; color: var(--text-muted)">© SUJAY SEERAM 2026</span>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Side Indicators -->
@@ -1588,7 +1963,9 @@
             </div>
 
             <div class="perspective-container">
-                <div class="timeline-conduit"></div>
+                <div class="timeline-conduit">
+                    <div class="timeline-progress-fill" id="timeline-progress-fill"></div>
+                </div>
                 <div class="timeline-container" id="timeline-container">
                 </div>
             </div>
@@ -3026,6 +3403,7 @@
 
     <!-- The Project Detail Overlay -->
     <div id="project-detail-overlay" class="fullscreen-overlay">
+        <div class="mobile-drag-handle"></div>
         <div class="overlay-header" style="justify-content: flex-start; gap: 2rem;">
             <div class="terminal-close" onclick="closeProjectDetailOverlay()"
                 style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: var(--optimism-teal); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; transition: color 0.3s ease;">
@@ -3056,6 +3434,7 @@
 
     <!-- The Vault Overlay -->
     <div id="vault-overlay" class="fullscreen-overlay">
+        <div class="mobile-drag-handle"></div>
         <div class="overlay-header" style="justify-content: flex-start; gap: 2rem;">
             <div class="terminal-close" onclick="closeVaultOverlay()"
                 style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: var(--optimism-teal); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; transition: color 0.3s ease;">
@@ -3092,6 +3471,7 @@
 
     <!-- The Posts Overlay -->
     <div id="posts-overlay" class="fullscreen-overlay">
+        <div class="mobile-drag-handle"></div>
         <div class="overlay-header" style="justify-content: flex-start; gap: 2rem;">
             <div class="terminal-close" onclick="closePostsOverlay()"
                 style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: var(--optimism-teal); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; transition: color 0.3s ease;">
@@ -4651,6 +5031,18 @@
             // Progress bar
             progressBar.style.width = ((sy / maxSY) * 100).toFixed(2) + '%';
 
+            // Timeline conduit scroll progress fill logic
+            const timelineContainer = document.getElementById('timeline-container');
+            const progressFill = document.getElementById('timeline-progress-fill');
+            if (timelineContainer && progressFill) {
+                const rect = timelineContainer.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                const totalDist = rect.height;
+                const currentProgress = (viewportHeight * 0.75 - rect.top) / totalDist;
+                const percentage = Math.max(0, Math.min(100, currentProgress * 100));
+                progressFill.style.height = `${percentage}%`;
+            }
+
             // Active section logic - bound to lerpedScroll for sync
             let current = sections[0];
             for (let i = 0; i < sections.length; i++) {
@@ -4820,48 +5212,65 @@
             }
         });
 
-        // Global mouse spotlight glow tracker & contact page specific overlay (desktop only)
-        if (window.innerWidth > 768) {
-            let globalMouseTimeout;
-            const contactSec = document.getElementById('contact');
+        // Global mouse/touch spotlight glow tracker — throttled to RAF
+        let globalPointerTimeout;
+        let pendingPointerX = -1, pendingPointerY = -1, pointerRAFPending = false;
+        const contactSec = document.getElementById('contact');
 
-            window.addEventListener('mousemove', (e) => {
-                document.body.classList.add('mouse-active');
+        const flushPointer = () => {
+            pointerRAFPending = false;
+            const clientX = pendingPointerX;
+            const clientY = pendingPointerY;
 
-                // Set global mouse position relative to viewport
-                document.documentElement.style.setProperty('--global-mouse-x', `${e.clientX}px`);
-                document.documentElement.style.setProperty('--global-mouse-y', `${e.clientY}px`);
+            document.body.classList.add('mouse-active');
+            document.documentElement.style.setProperty('--global-mouse-x', `${clientX}px`);
+            document.documentElement.style.setProperty('--global-mouse-y', `${clientY}px`);
 
-                // Set localized contact mouse position relative to contact section for green tinge
-                if (contactSec) {
-                    const rect = contactSec.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    contactSec.style.setProperty('--global-mouse-x', `${x}px`);
-                    contactSec.style.setProperty('--global-mouse-y', `${y}px`);
+            if (contactSec) {
+                const rect = contactSec.getBoundingClientRect();
+                contactSec.style.setProperty('--global-mouse-x', `${clientX - rect.left}px`);
+                contactSec.style.setProperty('--global-mouse-y', `${clientY - rect.top}px`);
+                contactSec.classList.toggle('mouse-active',
+                    clientY >= rect.top && clientY <= rect.bottom);
+            }
 
-                    // Activate contact section glow if cursor is active inside the section bounds
-                    if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
-                        contactSec.classList.add('mouse-active');
-                    } else {
-                        contactSec.classList.remove('mouse-active');
-                    }
-                }
-
-                // Inactivity timer - smoothly fade out global mouse spotlight after 2 seconds
-                clearTimeout(globalMouseTimeout);
-                globalMouseTimeout = setTimeout(() => {
-                    document.body.classList.remove('mouse-active');
-                    if (contactSec) contactSec.classList.remove('mouse-active');
-                }, 2000);
-            });
-
-            // Fade out completely when cursor leaves document window
-            document.addEventListener('mouseleave', () => {
+            clearTimeout(globalPointerTimeout);
+            globalPointerTimeout = setTimeout(() => {
                 document.body.classList.remove('mouse-active');
                 if (contactSec) contactSec.classList.remove('mouse-active');
-            });
-        }
+            }, 2000);
+        };
+
+        const updatePointerPosition = (clientX, clientY) => {
+            pendingPointerX = clientX;
+            pendingPointerY = clientY;
+            if (!pointerRAFPending) {
+                pointerRAFPending = true;
+                requestAnimationFrame(flushPointer);
+            }
+        };
+
+        window.addEventListener('mousemove', (e) => {
+            updatePointerPosition(e.clientX, e.clientY);
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches[0]) {
+                updatePointerPosition(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches[0]) {
+                updatePointerPosition(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        document.addEventListener('mouseleave', () => {
+            document.body.classList.remove('mouse-active');
+            if (contactSec) contactSec.classList.remove('mouse-active');
+        }, { passive: true });
+
 
         // Dynamic Glowing Tag Parsing Routine
         document.querySelectorAll('.post-tags').forEach(el => {
@@ -4935,15 +5344,173 @@
             });
         };
 
+        // Mobile Navigation Drawer Controllers
+        const openMobileDrawer = () => {
+            const drawer = document.getElementById('mobile-nav-drawer');
+            if (drawer) {
+                drawer.style.display = 'block';
+                drawer.offsetHeight; // force reflow
+                drawer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        };
+
+        const closeMobileDrawer = () => {
+            const drawer = document.getElementById('mobile-nav-drawer');
+            if (drawer) {
+                drawer.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(() => {
+                    drawer.style.display = 'none';
+                }, 500);
+            }
+        };
+
+        // Gestures & Project Cycling for Bottom Sheets on Mobile
+        const cycleProjectDetail = (direction) => {
+            if (!window.currentProjectsList || window.currentProjectsList.length === 0 || !window.currentActiveProjectName) return;
+            
+            const index = window.currentProjectsList.findIndex(p => p.name === window.currentActiveProjectName);
+            if (index === -1) return;
+            
+            let nextIndex = index + direction;
+            if (nextIndex < 0) nextIndex = window.currentProjectsList.length - 1;
+            if (nextIndex >= window.currentProjectsList.length) nextIndex = 0;
+            
+            const nextProject = window.currentProjectsList[nextIndex];
+            const containerEl = document.querySelector('#project-detail-overlay .overlay-scroll-container');
+            
+            if (containerEl) {
+                containerEl.style.opacity = '0';
+                containerEl.style.transform = direction > 0 ? 'translateX(-20px)' : 'translateX(20px)';
+                containerEl.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+            }
+            
+            setTimeout(() => {
+                const descHtml = nextProject.description;
+                const repoLink = (nextProject.githubLink && nextProject.githubLink.trim() !== '') ? nextProject.githubLink : null;
+                
+                openProjectDetailOverlay(nextProject.name, descHtml, repoLink);
+                
+                if (containerEl) {
+                    containerEl.scrollTop = 0;
+                    containerEl.style.transform = direction > 0 ? 'translateX(20px)' : 'translateX(-20px)';
+                    containerEl.offsetHeight; // Force reflow
+                    containerEl.style.opacity = '1';
+                    containerEl.style.transform = 'translateX(0)';
+                }
+            }, 200);
+        };
+
+        const setupOverlayGestures = (overlayId, closeFn, allowCycling = false) => {
+            const overlay = document.getElementById(overlayId);
+            if (!overlay) return;
+
+            const scrollContainer = overlay.querySelector('.overlay-scroll-container');
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let currentY = 0;
+            let startTime = 0;
+            let isVerticalSwipe = false;
+            let isHorizontalSwipe = false;
+            let canDismiss = false;
+
+            overlay.addEventListener('touchstart', (e) => {
+                if (window.innerWidth > 768) return;
+
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                currentX = startX;
+                currentY = startY;
+                startTime = Date.now();
+                isVerticalSwipe = false;
+                isHorizontalSwipe = false;
+
+                const touchOnHeader = e.target.closest('.mobile-drag-handle') || e.target.closest('.overlay-header');
+                const scrollAtTop = scrollContainer ? scrollContainer.scrollTop <= 5 : true;
+                canDismiss = touchOnHeader || scrollAtTop;
+
+                overlay.style.transition = 'none';
+            }, { passive: true });
+
+            overlay.addEventListener('touchmove', (e) => {
+                if (window.innerWidth > 768) return;
+
+                const touch = e.touches[0];
+                currentX = touch.clientX;
+                currentY = touch.clientY;
+
+                const diffX = currentX - startX;
+                const diffY = currentY - startY;
+
+                if (!isVerticalSwipe && !isHorizontalSwipe) {
+                    if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) {
+                        isVerticalSwipe = true;
+                    } else if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+                        isHorizontalSwipe = true;
+                    }
+                }
+
+                if (isVerticalSwipe && canDismiss && diffY > 0) {
+                    overlay.style.transform = `translateY(${diffY}px)`;
+                }
+            }, { passive: true });
+
+            overlay.addEventListener('touchend', (e) => {
+                if (window.innerWidth > 768) return;
+
+                const diffX = currentX - startX;
+                const diffY = currentY - startY;
+                const duration = Date.now() - startTime;
+                const velocityY = diffY / duration;
+                const velocityX = diffX / duration;
+
+                overlay.style.transition = '';
+
+                if (isVerticalSwipe && canDismiss) {
+                    if (diffY > 150 || (velocityY > 0.4 && diffY > 50)) {
+                        overlay.style.transform = '';
+                        closeFn();
+                    } else {
+                        overlay.style.transform = '';
+                    }
+                } else if (isHorizontalSwipe && allowCycling) {
+                    if (Math.abs(diffX) > 100 || Math.abs(velocityX) > 0.4) {
+                        if (diffX > 0) {
+                            cycleProjectDetail(-1); // Swiped right: go previous
+                        } else {
+                            cycleProjectDetail(1);  // Swiped left: go next
+                        }
+                    }
+                }
+
+                startX = 0;
+                startY = 0;
+                currentX = 0;
+                currentY = 0;
+                isVerticalSwipe = false;
+                isHorizontalSwipe = false;
+            }, { passive: true });
+        };
+
+        // Initialize Gestures
+        document.addEventListener('DOMContentLoaded', () => {
+            setupOverlayGestures('project-detail-overlay', closeProjectDetailOverlay, true);
+            setupOverlayGestures('vault-overlay', closeVaultOverlay, false);
+            setupOverlayGestures('posts-overlay', closePostsOverlay, false);
+        });
+
         // Terminal Logic
         let keyHistory = '';
         window.addEventListener('keydown', (e) => {
             keyHistory += e.key.toLowerCase();
             if (keyHistory.endsWith('build')) {
-                document.getElementById('terminal-overlay').style.display = 'flex';
+                openTerminal();
                 keyHistory = '';
             }
-            if (e.key === 'Escape') { closeTerminal(); closeVaultOverlay(); closePostsOverlay(); closeProjectDetailOverlay(); }
+            if (e.key === 'Escape') { closeTerminal(); closeVaultOverlay(); closePostsOverlay(); closeProjectDetailOverlay(); closeMobileDrawer(); }
         });
 
 
@@ -4981,14 +5548,136 @@
             }, 500);
         };
 
+        // Terminal Telemetry Boot Sequence Simulation
+        const terminalCommands = [
+            { type: 'telemetry', text: 'SYSTEM_BOOTLOADER: INITIATING SECURE ARCHIVE TELEMETRY...' },
+            { type: 'telemetry', text: 'LOADING SEGMENT 0x0A: KAVACH_THREAT_INTERCEPTOR... ACTIVE' },
+            { type: 'telemetry', text: 'LOADING SEGMENT 0x0B: SYNTHSCOPE_LOGIC_SIMULATOR... LOADED' },
+            { type: 'telemetry', text: 'DECRYPTING STUDENT CREDENTIALS: SUJAY_SEERAM // ECE // AMRITA' },
+            { type: 'telemetry', text: 'ESTABLISHING INTERACTIVE TTY LINK... SECURE CONNECTION FOUND.' },
+            { type: 'telemetry', text: '---------------------------------------------------------' },
+            { type: 'prompt', text: 'whoami' },
+            { type: 'output', text: 'Sujay Seeram. First-year ECE at Amrita.<br>Building things since before it was cool.<br>30+ repos. Hackathons. Research. Hardware.<br>The grind is the point.' },
+            { type: 'prompt', text: 'ls projects/active' },
+            { type: 'grid', items: [
+                'informed-poll (Google Solution Challenge)',
+                'sentinel-mind (Multi-agent AI)',
+                'evolvai-dash (Melbourne presentation)',
+                'specRAG (Datasheet parser)',
+                'PersonalAssistant (Local-first AI)',
+                'smart-home-assistant (IoT framework)',
+                'AI-PID-Tuner (Control Theory)',
+                'mixer (Terminal DJ)'
+            ]},
+            { type: 'prompt', text: 'cat system/archive' },
+            { type: 'output', text: 'GITHUB_ARCHIVE: <a href="https://github.com/seeramsujay" target="_blank" style="color: var(--optimism-mint); text-decoration: none; border-bottom: 1px solid rgba(74,222,128,0.2);">github.com/seeramsujay</a><br>PROFESSIONAL_LOG: <a href="https://linkedin.com/in/sujayseeram" target="_blank" style="color: var(--optimism-mint); text-decoration: none; border-bottom: 1px solid rgba(74,222,128,0.2);">linkedin.com/in/sujayseeram</a>' },
+            { type: 'prompt', text: '_' }
+        ];
+
+        let terminalBooting = false;
+
+        const startTerminalBootSequence = () => {
+            if (terminalBooting) return;
+            terminalBooting = true;
+
+            const outputEl = document.getElementById('terminal-output');
+            if (!outputEl) return;
+
+            outputEl.innerHTML = '';
+            let lineIndex = 0;
+
+            const printNext = () => {
+                if (lineIndex >= terminalCommands.length) {
+                    terminalBooting = false;
+                    return;
+                }
+
+                const cmd = terminalCommands[lineIndex];
+                lineIndex++;
+
+                if (cmd.type === 'telemetry') {
+                    const div = document.createElement('div');
+                    div.className = 'terminal-output font-mono';
+                    div.style.color = 'var(--text-muted)';
+                    div.style.fontSize = '11px';
+                    div.textContent = cmd.text;
+                    outputEl.appendChild(div);
+                    outputEl.scrollTop = outputEl.scrollHeight;
+                    setTimeout(printNext, 40 + Math.random() * 50);
+                } else if (cmd.type === 'prompt') {
+                    const promptDiv = document.createElement('div');
+                    promptDiv.className = 'terminal-prompt';
+                    if (cmd.text === '_') {
+                        promptDiv.innerHTML = '> <span class="terminal-cursor">_</span>';
+                        outputEl.appendChild(promptDiv);
+                        outputEl.scrollTop = outputEl.scrollHeight;
+                        terminalBooting = false;
+                        return;
+                    }
+                    promptDiv.textContent = '> ';
+                    outputEl.appendChild(promptDiv);
+                    outputEl.scrollTop = outputEl.scrollHeight;
+
+                    let charIndex = 0;
+                    const typeChar = () => {
+                        if (charIndex < cmd.text.length) {
+                            promptDiv.textContent += cmd.text[charIndex];
+                            charIndex++;
+                            outputEl.scrollTop = outputEl.scrollHeight;
+                            setTimeout(typeChar, 20 + Math.random() * 30);
+                        } else {
+                            setTimeout(printNext, 120);
+                        }
+                    };
+                    typeChar();
+                } else if (cmd.type === 'output') {
+                    const div = document.createElement('div');
+                    div.className = 'terminal-output';
+                    div.innerHTML = cmd.text;
+                    outputEl.appendChild(div);
+                    outputEl.scrollTop = outputEl.scrollHeight;
+                    setTimeout(printNext, 200);
+                } else if (cmd.type === 'grid') {
+                    const gridDiv = document.createElement('div');
+                    gridDiv.className = 'terminal-grid';
+                    cmd.items.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.textContent = item;
+                        gridDiv.appendChild(itemDiv);
+                    });
+                    outputEl.appendChild(gridDiv);
+                    outputEl.scrollTop = outputEl.scrollHeight;
+                    setTimeout(printNext, 250);
+                }
+            };
+
+            printNext();
+        };
+
+        const openTerminal = () => {
+            const el = document.getElementById('terminal-overlay');
+            if (el) {
+                el.style.display = 'flex';
+                el.offsetHeight; // Force reflow
+                el.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                startTerminalBootSequence();
+            }
+        };
+
         const closeTerminal = () => {
-            document.getElementById('terminal-overlay').style.display = 'none';
+            const el = document.getElementById('terminal-overlay');
+            if (el) {
+                el.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(() => {
+                    el.style.display = 'none';
+                }, 500);
+            }
         };
 
         const openTerminalArchive = () => {
-            document.getElementById('terminal-overlay').style.display = 'flex';
-            const output = document.getElementById('terminal-output');
-            output.scrollTop = output.scrollHeight;
+            openTerminal();
         };
 
         // Accessibility Fix: Hide ligature icons from screen readers
@@ -5034,11 +5723,15 @@
     "pollution-check": "# \u26a1 EcoPulse\n\n**Universal Carbon Auditor \u2014 Private, Automated, High-Performance.**\n\n\ud83d\udd17 **Live Demo:** [https://pollution-check-site-453397284615.us-central1.run.app](https://pollution-check-site-453397284615.us-central1.run.app)\n\nEcoPulse is a Progressive Web App (PWA) carbon auditing platform designed to automate environmental footprint tracking with zero user friction and absolute data privacy. It parses Google Location History exports, bank statement CSVs, and receipt photos locally in the browser, ledgering them against a **15kg daily CO2e budget** representing the global target for climate stabilization.\n\n---\n\n## \ud83c\udfdb\ufe0f Challenge Vertical & Project Soul\nEcoPulse sits in the **Personal Carbon Ledger & Sustainability Ingestion** vertical. \n\nExisting personal carbon trackers fail due to \"self-reporting fatigue\" (requiring users to manually log every meal or commute) or invasive cloud linkages (requiring continuous, unsecure bank API connections). EcoPulse resolves both pain points by auditing digital artifacts that users already possess, executing all computations local-first inside the browser.\n\n---\n\n## \ud83c\udfaf Challenge Expectations & Architecture Alignment\n\nEcoPulse is designed from the ground up to address all requirements of the challenge:\n\n### 1. Smart, Dynamic Assistant\nWe have implemented the **EcoPulse AI Assistant**, an interactive dashboard agent. It operates local-first (guaranteeing user privacy) and dynamically audits the live carbon ledger. Rather than static boilerplate advice, the assistant generates responsive insights based on the exact files the user has ingested.\n\n### 2. Logical Decision Making Based on User Context\nThe assistant analyzes the local Zustand state to trace emission hotspots:\n* **Dietary Context**: Detects meat purchases (beef, pork, lamb) and suggests substitution plans using IPCC AR6 environmental impact metrics.\n* **Travel Context**: Detects vehicle and air commutes and maps specific green alternatives (high-speed rail, public transit, walking bounds).\n* **Digital Context**: Scans network throughput and video streaming hours, offering practical settings guidelines (e.g., UHD downscaling details) to reduce server overhead.\n\n### 3. Practical and Real-World Usability\nEcoPulse bypasses manual estimation forms by parsing files users already have:\n* **Google Takeout Location History** (Travel metrics mapped to distance with noise filtering)\n* **Standard Bank Statement CSVs** (Financial spend translated to NAICS intensity indexes)\n* **Grocery Receipt Photos** (Downsampled locally and processed via Edge OCR)\n\n### 4. Clean and Maintainable Code\nThe app has a highly modular architecture:\n* **State Layer**: Decoupled Zustand store (`src/store/carbonStore.ts`) manages ledger transactions.\n* **Ingestion Layer**: Decoupled parsers parse files and map records to standard `CarbonEvent` shapes.\n* **Performance Bound**: Employs Preact and Tailwind CSS v4, yielding an compiled, gzipped bundle under **150KB** (complying with repository size restrictions).\n\n---\n\n## \ud83d\udee0\ufe0f How It Works & Directory Structure\n\n```\npollution-check/\n\u251c\u2500\u2500 Dockerfile                   # Multi-stage production container build configuration\n\u251c\u2500\u2500 nginx.conf                   # Nginx config with Gzip compression and client-side routing\n\u251c\u2500\u2500 edge/\n\u2502   \u2514\u2500\u2500 audit-proxy.ts           # Cloudflare Worker proxying LLM & token-to-carbon cost\n\u251c\u2500\u2500 src/\n\u2502   \u251c\u2500\u2500 components/              # Decoupled UI components\n\u2502   \u2502   \u251c\u2500\u2500 DigitalTracker.tsx   # Digital energy formulas & manual overrides\n\u2502   \u2502   \u251c\u2500\u2500 FinancialParser.tsx  # Bank CSV statement parser & previewer\n\u2502   \u2502   \u251c\u2500\u2500 TakeoutParser.tsx    # Google Takeout location history importer\n\u2502   \u2502   \u2514\u2500\u2500 VisionAuditor.tsx    # Canvas photo optimizer, API caller, and mock processor\n\u2502   \u251c\u2500\u2500 constants/\n\u2502   \u2502   \u2514\u2500\u2500 carbonEmissions.ts   # Hardcoded emission factors (GWP AR6) and MCC mappings\n\u2502   \u251c\u2500\u2500 data/\n\u2502   \u2502   \u2514\u2500\u2500 parser.ts            # Google Takeout JSON parser with low-confidence filtering\n\u2502   \u251c\u2500\u2500 store/\n\u2502   \u2502   \u2514\u2500\u2500 carbonStore.ts       # Zustand carbon ledger and budget state store\n\u2502   \u251c\u2500\u2500 app.tsx                  # Dashboard container & budget visual loop\n\u2502   \u251c\u2500\u2500 index.css                # Tailwind CSS v4 entry point\n\u2502   \u2514\u2500\u2500 main.tsx                 # Bootstrapping React root node\n```\n\n### Ingestion Logic\n1. **Google Takeout Location History**: Reads a monthly JSON file. It extracts travel duration and distance (O(N) complexity), filters out points with `LOW` confidence coordinates to prevent signal-drift, and multiplies distance by GWP-AR6 transit emission factors.\n2. **Financial Statements**: Parses standard CSV ledgers. It attempts to match Merchant Category Codes (MCC) to categories, falls back to substring matches on merchant descriptions, and applies EPA Supply Chain intensity factors ($ spend to kg CO2e).\n3. **Receipt Photos**: Uses an HTML5 Canvas to downsample photo uploads to `<200KB` base64 payloads inside the browser. The payload is sent to the Cloudflare Worker proxy where `gpt-4o-mini` extracts items. It then calculates the carbon footprint of the AI inference query itself and adds it to the ledger (AI inception feature). A built-in mock simulation runs automatically when offline or if API keys are missing to ensure testability.\n4. **Digital Services**: Implements first-principles equations converting network data throughput (GBs) and active streaming/video call times (hours) into direct electrical footprints and grid carbon equivalents.\n\n---\n\n## \ud83d\udd0d Key Scientific Assumptions\n* **GWP Vintage**: Carbon calculations are aligned with the **IPCC 6th Assessment Report (AR6)** values to prevent calculation drift.\n* **Agricultural Emissions**: Hardcoded food emission factors are derived from the **Poore & Nemecek (2018)** meta-analysis.\n* **Financial Multipliers**: Monetary carbon intensities conform to the **US EPA Supply Chain Greenhouse Gas Emission Factors v1.3 by NAICS-6**.\n* **AI Carbon Footprint**: Model inference is calculated based on H100 GPU cluster stats (2.0 Wh/M input tokens, 9.9 Wh/M output tokens) multiplied by a hyperscale power usage effectiveness (PUE) of 1.1 and Northern Virginia (US East) grid intensity (365.13 micro-grams CO2e/Wh).\n\n---\n\n## \ud83d\ude80 Local Installation & Testing\n\nVerify that you have Node.js and `pnpm` installed, then run:\n\n```bash\n# Install dependencies\npnpm install\n\n# Start local dev server\npnpm run dev\n\n# Run unit tests (Vitest suite)\npnpm run test\n\n# Build production bundle (<150KB gzipped limit)\npnpm run build\n```\n\n---\n\n## \ud83e\uddea Quality Assurance & Test Coverage\n\nEcoPulse includes a rigorous test suite built on Vitest to guarantee parser accuracy, calculation correctness, and store safety. The suite executes **74 unit tests** covering three major core engines:\n\n1. **Carbon Event Ledger (`src/tests/carbonStore.test.ts`)**\n   * **Calculations**: Verifies mathematical derivations ($rawQuantity \\times co2eIntensity$) and rounds outputs to 4 decimal places to prevent floating-point drift.\n   * **Operations**: Validates newest-first event queue sorting, safe deletion of non-existent event IDs, store wipe commands, and budget overflow indicators.\n2. **Bank Statement parser (`src/tests/csvParser.test.ts`)**\n   * **Format Robustness**: Handles CRLF endings, multi-line quoted entries containing commas, blank lines, and incomplete rows.\n   * **Priority Matching**: Asserts that Category Codes (MCC 5411, 5541, 4511, 5812) successfully override text description keywords.\n   * **Fallbacks**: Validates custom intensity factors and ensures random UUID Generation for events conforms strictly to RFC-4122 (UUID v4).\n3. **Location History Parser (`src/tests/takeoutParser.test.ts`)**\n   * **Data Ingestion**: Ignores `placeVisit` coordinates and isolates `activitySegment` blocks. Rejecting signals marked with `LOW` confidence coordinates.\n   * **Travel Footprint**: Tests GWP-AR6 factors across seven transit models. Zeroes out non-combustion activities (WALKING, CYCLING, STILL).\n   * **Injectability**: Supports custom emission registries for sandboxed testing.\n\n---\n\n## \u267f WCAG Accessibility Standards\n\nEcoPulse is optimized to meet high standards of web accessibility (WCAG 2.1 AA compliant) for users relying on assistive technologies:\n\n* **Semantic Structure**: All interface blocks are enclosed in native HTML5 landmark tags (`<section>`, `<article>`, `<header>`) allowing screen readers to quickly scan the page layout.\n* **Dynamic Content Announcements**: Operations that alter the state of the UI\u2014such as the typing indicator, file processing progression, and parsed item lists\u2014utilize ARIA Live regions (`role=\"status\"`, `aria-live=\"polite\"`, `aria-atomic=\"true\"`) to announce state changes.\n* **Form & Input Associations**: Inputs use descriptive labels and `aria-describedby` links pointing to instruction texts. The digital and manual logging inputs are grouped within semantic `<fieldset>` elements complete with visual-hidden `<legend>` prompts for voice and Braille readouts.\n* **Accessible Tables**: Layout data tables employ standard row/column headers linked via explicit `scope` attributes, wrapped in `<figure>` and `<figcaption>` elements for clear contextual explanations.\n* **Visual Adaptations**: Elements avoid CSS display-none for screen-reader-only labels, utilizing Tailwind-compatible `sr-only` styles to deliver descriptive timestamps and ingestion alerts.\n\n---\n\n## \u2601\ufe0f Google Cloud Deployment Guide\n\nEcoPulse is dockerized and optimized to run on **Google Cloud Run**, which provides serverless scaling (scaling to zero when inactive for zero baseline cost).\n\n### Prerequisites\n* Install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install).\n* Initialize your project: `gcloud init`\n\n### 1. Build and Submit the Container to Artifact Registry\nReplace `PROJECT_ID` with your Google Cloud Project ID and `REPO_NAME` with your Artifact Registry repository name:\n\n```bash\n# Configure Docker to authenticate with Google Cloud\ngcloud auth configure-docker us-central1-docker.pkg.dev\n\n# Build the container image locally\ndocker build -t us-central1-docker.pkg.dev/PROJECT_ID/REPO_NAME/ecopulse:latest .\n\n# Push the container image to Artifact Registry\ndocker push us-central1-docker.pkg.dev/PROJECT_ID/REPO_NAME/ecopulse:latest\n```\n\n*Alternatively, you can build directly on Google Cloud using Cloud Build:*\n```bash\ngcloud builds submit --tag us-central1-docker.pkg.dev/PROJECT_ID/REPO_NAME/ecopulse:latest .\n```\n\n### 2. Deploy to Google Cloud Run\nDeploy the container to Cloud Run with public access:\n\n```bash\ngcloud run deploy ecopulse \\\n    --image us-central1-docker.pkg.dev/PROJECT_ID/REPO_NAME/ecopulse:latest \\\n    --platform managed \\\n    --region us-central1 \\\n    --allow-unauthenticated \\\n    --port 8080\n```\n\nOnce deployment completes, the CLI will output a secure HTTPS Service URL (for example, our live instance: `https://pollution-check-site-453397284615.us-central1.run.app`) where your live Google Cloud website is active!\n",
     "ScopeCreep.ai": "# \ud83d\udef0\ufe0f ScopeCreep.ai\n\n**AI-powered sprint watchdog that catches silent scope creep before it derails your release.**\n\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)\n[![Hackathon](https://img.shields.io/badge/Mind%20the%20Product-Everyone%20Ships%20Now-blueviolet?style=flat-square)](https://www.mindtheproduct.com/)\n[![Telemetry](https://img.shields.io/badge/Telemetry-Novus.ai-0099ff?style=flat-square)](https://novus.ai)\n\n---\n\n## The Problem\n\nDevelopers routinely slip unauthorized work into active sprints \u2014 a dark-mode toggle during a layout fix, a UX overhaul during a copy change, an OAuth integration during a validation bugfix. None of it is malicious, but by the time the PM catches it at sprint review, testing debt has compounded and the launch target is blown.\n\n**ScopeCreep.ai automates the surveillance.** It ingests a Product Requirement Document, monitors developer communication in real time, and uses an LLM to flag any work that falls outside the approved scope \u2014 instantly.\n\n---\n\n## How It Works\n\n```\nPRD Baseline \u2500\u2500\u2192 Passive Monitor \u2500\u2500\u2192 AI Delta Engine \u2500\u2500\u2192 Real-Time Alert\n     \u2502                  \u2502                    \u2502                   \u2502\n PM pastes the    Ingests dev chat     LLM compares chat    Dashboard lights\n approved scope   & commit messages    against PRD scope    up with severity-\n document         from Slack/GitHub    to detect drift      coded creep alerts\n```\n\nThe PM then **Dismisses** (false positive) or **Escalates to Slack** (confirmed creep).\n\n---\n\n## Tech Stack\n\n| Layer | Technology |\n|---|---|\n| **Frontend** | React \u00b7 Vite \u00b7 Tailwind CSS v4 |\n| **Animations** | Framer Motion |\n| **Icons** | Lucide React |\n| **Backend** | Node.js (Express) / Python (FastAPI) |\n| **AI Engine** | OpenAI / Anthropic Claude SDK |\n| **Telemetry** | Novus.ai |\n\n---\n\n## Quick Start\n\n```bash\n# Clone\ngit clone https://github.com/ADITYA-TUMMURI/ScopeCreep.ai.git\ncd ScopeCreep.ai\n\n# Install & run the frontend\ncd frontend\nnpm install\nnpm run dev\n# \u2192 http://localhost:5173\n```\n\n> The frontend runs standalone with mock data. No backend required to demo the full UI.\n\n---\n\n## Project Structure\n\n```\nScopeCreep.ai/\n\u251c\u2500\u2500 frontend/\n\u2502   \u251c\u2500\u2500 src/\n\u2502   \u2502   \u251c\u2500\u2500 App.jsx                    # Root shell \u2014 navbar + dashboard\n\u2502   \u2502   \u251c\u2500\u2500 main.jsx                   # Entry point\n\u2502   \u2502   \u251c\u2500\u2500 index.css                  # Design tokens (Slate & Crimson)\n\u2502   \u2502   \u251c\u2500\u2500 components/\n\u2502   \u2502   \u2502   \u251c\u2500\u2500 DashboardLayout.jsx    # 3-column grid + state management\n\u2502   \u2502   \u2502   \u251c\u2500\u2500 PrdInputHub.jsx        # PRD baseline input panel\n\u2502   \u2502   \u2502   \u251c\u2500\u2500 DevChatSimulator.jsx   # Developer chat simulator\n\u2502   \u2502   \u2502   \u251c\u2500\u2500 WatchdogAlertsFeed.jsx # Alert feed with dismiss/escalate\n\u2502   \u2502   \u2502   \u251c\u2500\u2500 StatusBadge.jsx        # Severity pill (HIGH/MEDIUM/LOW)\n\u2502   \u2502   \u2502   \u2514\u2500\u2500 ActionButton.jsx       # Animated button primitive\n\u2502   \u2502   \u2514\u2500\u2500 data/\n\u2502   \u2502       \u2514\u2500\u2500 mockAlerts.json        # 3 realistic scope creep scenarios\n\u2502   \u251c\u2500\u2500 index.html\n\u2502   \u251c\u2500\u2500 vite.config.js\n\u2502   \u2514\u2500\u2500 package.json\n\u251c\u2500\u2500 docs/\n\u2502   \u251c\u2500\u2500 project_overview.md            # System architecture spec\n\u2502   \u2514\u2500\u2500 roles_mind_the_product.md      # 4 async development roles\n\u251c\u2500\u2500 LICENSE\n\u2514\u2500\u2500 README.md\n```\n\n---\n\n## API Contract\n\nThe frontend is wired to `POST /api/analyze` with the following schema:\n\n**Request:**\n```json\n{\n  \"prdContext\": \"Only email/password validation fixes are authorized for Sprint 14.\",\n  \"chatInput\": \"Adding OAuth2 support for Google while I'm in the auth module.\"\n}\n```\n\n**Response:**\n```json\n{\n  \"alert_id\": \"alert_20260617_001\",\n  \"is_scope_creep\": true,\n  \"severity\": \"HIGH\",\n  \"flagged_action\": \"Adding OAuth2 support for Google.\",\n  \"prd_violation\": \"PRD scopes auth work to email/password validation only.\",\n  \"recommendation\": \"Pause OAuth2 work. Raise a new ticket for PM review.\"\n}\n```\n\n---\n\n## Telemetry (Novus.ai)\n\nTwo behavioral events are instrumented on the alert action buttons:\n\n| Event | Trigger | Payload |\n|---|---|---|\n| `Alert Dismissed` | PM closes a false positive | `{ severity }` |\n| `Alert Escalated` | PM confirms real scope creep | `{ duration_ms }` |\n\n> The **Dismiss vs. Escalate ratio** is the north-star product metric for prompt tuning.\n\n---\n\n## License\n\nMIT \u2014 see [LICENSE](./LICENSE) for details.\n\nBuilt for the **Mind the Product \"Everyone Ships Now\" Hackathon** \u00a9 2026.\n",
     "Kavach-UPI": "# \ud83d\udee1\ufe0f Kavach-UPI: Active On-Device Threat Interception & Fraud Prevention Shield\n\nAn edge-computed, zero-cloud-dependency security service engineered for native Android platforms to defend users against social engineering scams, remote-access exploits, and screen-sharing fraud during financial operations.\n\n---\n\n## \ud83d\udccc The Core Problem & Vulnerability Context\nUnified Payments Interface (UPI) ecosystems in India have suffered massive exploitation via highly coordinated remote social engineering traps. \n\n* **The Security Blind Spot:** Attackers trick users into installing legal screen-sharing or remote management utilities (e.g., AnyDesk, TeamViewer, RustDesk). Standard banking and payment applications operate inside application-level sandboxes that cannot programmatically detect when underlying OS-level media projection or virtual display frameworks are active.\n* **The Exploitation Flow:** The threat actor monitors the user's screen in real-time, intercepts incoming multi-factor authentication tokens or one-time passwords (OTPs), and records or scripts touch layouts to execute unauthorized fund transfers.\n\nKavach-UPI directly bridges this architectural visibility gap at the system level.\n\n---\n\n## \u2699\ufe0f Architectural Solution & Hybrid Detection Engine\n\nKavach-UPI does not handle transactions; it acts as a low-overhead automated shield running silently in the background. By leveraging the native Android Accessibility framework, it monitors active window structures. When an active payment window is detected concurrently with a screen cast or remote execution signature, the service drops a blocking overlay and triggers defensive alerts.\n\n### 1. Dual-Gear Background Polling Framework\nTo balance optimal processing responses with aggressive device battery preservation, the core service uses a dynamic, dual-frequency coroutine loop:\n* **Passive Gear ($3000\\text{ ms}$ interval):** When foreground applications do not match financial package signatures, the background scanner idles in low-power mode, executing sparse system checks.\n* **Aggressive Gear ($1000\\text{ ms}$ interval):** The exact millisecond a targeted payment layout is verified, the loop scales up frequency processing to analyze system flags continuously, reducing vulnerable time windows.\n\n### 2. High-Priority Recursive Layout Traversal (DFS)\nWhen a foreground window change occurs, the service executes a resource-constrained Depth-First Search (DFS) over the active view tree (`AccessibilityNodeInfo`):\n* **Boundaries:** The traversal caps out at a maximum depth of 15 layers and evaluates a maximum of 200 elements per pass to prevent main-thread UI jank.\n* **Target Heuristics:** The engine inspects text metadata and layout components for explicit transaction targets (e.g., \"Enter UPI PIN\", \"Pay \u20b9\", `pin_entry`, `amount_field`) alongside sibling-relative checking near currency signs.\n* **Memory Management:** To stop background Binder proxy exhaustion and avoid system crashes, explicit node-recycling sequences (`recycle()`) are run on every single child element checked.\n\n### 3. API 29+ Media Projection Subsystem\n* On modern devices (Android 10+ / API 29+), the app intercepts `UsageEvents` over a 10-second history window. It filters for active `FOREGROUND_SERVICE_START` indicators and verifies if the service flags match the explicit `FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION` runtime token.\n* **Legacy Fallback:** On devices running below API 29, the engine queries running background signatures dynamically against a localized process store (`ThreatSignatureStore`).\n\n---\n\n## \ud83d\udcca System State Machine Matrix\n\nThe execution states are evaluated locally using a thread-safe atomic merging sequence that updates the system state engine sequentially on every polling cycle:\n\n$$\\text{Overlay State} = \\begin{cases} \\text{Active (Block Input)} & \\text{if } C_{\\text{UPI}} \\land (P_{\\text{Media}} \\lor D_{\\text{Virtual}}) \\\\ \\text{Inactive (Pass Input)} & \\text{otherwise} \\end{cases}$$\n\n### Anti-Flicker Hysteresis Stabilization\nTo maintain absolute stability during rapid activity redraws, the system integrates a 2-cycle hysteresis rule. The threat state engine must record exactly two consecutive clean, risk-free polling cycles before dropping an active shield, completely eliminating overlay flickering or race conditions.\n\n---\n\n## \ud83d\udee0\ufe0f Deep Technical Stack & Core Modules\n* **Core Language:** Native Kotlin matching Java 17 JVM targets.\n* **Concurrency:** `kotlinx-coroutines-android` bound to a thread-safe `SupervisorJob` managing distinct IO/Default dispatch pipelines.\n* **UI Layer:** Opaque glassmorphism container built entirely via programmatic window layout parameters (`#0F0F12` to `#1C1E26` canvas with glowing rings driven by a custom `ValueAnimator`).\n* **Audio Warning Engine:** Bilingual (English & Hindi) Text-to-Speech warnings injected dynamically into system alert paths with a hardcoded `ToneGenerator` hardware beep fallback.\n\n---\n\n## \ud83d\udd10 Required System Permissions & Access Tokens\n\nBecause Kavach-UPI operates entirely on-device at the OS boundary layer without dependency on external web servers or cloud telemetry, it requires the following platform permission tokens:\n\n1. `android.permission.BIND_ACCESSIBILITY_SERVICE`  \n   **Usage:** Mandated to capture layout hierarchies and identify live banking contexts.\n2. `android.permission.SYSTEM_ALERT_WINDOW`  \n   **Usage:** Allows the injection of the full-screen programmatic layout overlay on the WindowManager to sink and block unauthorized remote touch streams.\n3. `android.permission.PACKAGE_USAGE_STATS` (Protected Signature Permission)  \n   **Usage:** Essential for parsing system usage timelines to detect API 29+ active media projection services.\n\n* **Onboarding Guard:** If `AppOpsManager` detects that tracking permissions are missing, the `MainActivity` onboarding panel switches the UI to `\u26a0\ufe0f EXTRA SETUP REQUIRED` and blocks local threat testing sandbox modules until the user is directed to the system panel via `Settings.ACTION_USAGE_ACCESS_SETTINGS`.\n\n---\n\n## \u2696\ufe0f Open-Source Evaluation License\nThis prototype is released under the **MIT License**. It offers zero-friction open-source cloning, evaluation, and verification pipelines for all review panels.\n",
-    "SynthScope": "# SynthScope \u26a1\ufe0f\n**The Open-Source, Software-Defined Digital Logic Analyzer.**\n\nSynthScope eliminates the $100+ hardware dependency for ECE students by providing a robust, browser-based engineering sandbox to simulate, manipulate, and decode digital communications.\n\n---\n\n## What It Does\n\n1. **Physical Layer Simulation:** Synthesizes UART protocol transmissions as continuous analog waveforms, injecting realistic Gaussian noise to simulate line impedance and EMI.\n2. **Software Signal Conditioning:** Processes noisy signals through a customizable software Schmitt Trigger, utilizing dual-threshold hysteresis to eliminate chattering and extract clean binary logic.\n3. **Professional Export Integration:** Generates IEEE 1364 VCD (Value Change Dump) files on the fly, allowing students to load virtual signal captures directly into industry-standard desktop viewers like GTKWave.\n\n---\n\n## Repository Architecture\n\n```plaintext\n/synthscope-monorepo\n\u251c\u2500\u2500 /frontend               # Next.js (App Router), Tailwind, Canvas components\n\u251c\u2500\u2500 /backend                # FastAPI (Async), WS Hub, ECE Logic Engine\n\u251c\u2500\u2500 /common-schemas         # The source of truth for all JSON payloads\n\u2514\u2500\u2500 /.agents                # Antigravity IDE context directory\n    \u2514\u2500\u2500 /rules              # Domain-specific constraints for AI agents\n```\n\n*Frontend: Next.js / Canvas API | Backend: FastAPI / Python Math Engine | Telemetry: Novus.ai*\n\n---\n\n## How to Run Locally\n\n### 1. Start the ECE Backend (Python)\n```bash\ncd backend\npython -m venv venv\nsource venv/bin/activate\npip install -r requirements.txt\nuvicorn main:app --reload --port 8000\n```\n\n### 2. Start the Frontend (Next.js)\n```bash\ncd frontend\nnpm install\nnpm run dev\n```\n\nThe application will be available at `http://localhost:3000`. No hardware flashing or USB serial drivers are required.\n\n---\n\n## License\n\nThis project is licensed under the **MIT License** \u2014 see the [LICENSE](LICENSE) file for details. \n"
+    "SynthScope": "# SynthScope \u26a1\ufe0f\n**The Open-Source, Software-Defined Digital Logic Analyzer.**\n\nSynthScope eliminates the $100+ hardware dependency for ECE students by providing a robust, browser-based engineering sandbox to simulate, manipulate, and decode digital communications.\n\n---\n\n## What It Does\n\n1. **Physical Layer Simulation:** Synthesizes UART protocol transmissions as continuous analog waveforms, injecting realistic Gaussian noise to simulate line impedance and EMI.\n2. **Software Signal Conditioning:** Processes noisy signals through a customizable software Schmitt Trigger, utilizing dual-threshold hysteresis to eliminate chattering and extract clean binary logic.\n3. **Professional Export Integration:** Generates IEEE 1364 VCD (Value Change Dump) files on the fly, allowing students to load virtual signal captures directly into industry-standard desktop viewers like GTKWave.\n\n---\n\n## Repository Architecture\n\n```plaintext\n/synthscope-monorepo\n\u251c\u2500\u2500 /frontend               # Next.js (App Router), Tailwind, Canvas components\n\u251c\u2500\u2500 /backend                # FastAPI (Async), WS Hub, ECE Logic Engine\n\u251c\u2500\u2500 /common-schemas         # The source of truth for all JSON payloads\n\u2514\u2500\u2500 /.agents                # Antigravity IDE context directory\n    \u2514\u2500\u2500 /rules              # Domain-specific constraints for AI agents\n```\n\n*Frontend: Next.js / Canvas API | Backend: FastAPI / Python Math Engine | Telemetry: Novus.ai*\n\n---\n\n## How to Run Locally\n\n### 1. Start the ECE Backend (Python)\n```bash\ncd backend\npython -m venv venv\nsource venv/bin/activate\npip install -r requirements.txt\nuvicorn main:app --reload --port 8000\n```\n\n### 2. Start the Frontend (Next.js)\n```bash\ncd frontend\nnpm install\nnpm run dev\n```\n\nThe application will be available at `http://localhost:3000`. No hardware flashing or USB serial drivers are required.\n\n---\n\n## License\n\nThis project is licensed under the **MIT License** \u2014 see the [LICENSE](LICENSE) file for details. \n",
+    "MATLAB_Labsheet_Maker": "# \u26a1 DSP Lab Automation Engine\n\nA clean, reproducible workspace designed to automate the process of executing Digital Signal Processing (DSP) lab sheets, capturing graphical results, and compiling a simple, compact 1st-year BTech student style LaTeX report with student credentials.\n\n---\n\n## \ud83d\udee0\ufe0f System Architecture & Workflow\n\nThe workspace is structured to parse lab requirements, run simulations, and compile reports with zero manual formatting residue:\n\n```\n                      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                      \u2502  input/labsheet.pdf    \u2502 (Raw Input)\n                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                  \u25bc [markitdown]\n                      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                      \u2502  input/labsheet.md     \u2502 (Converted)\n                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                  \u25bc\n                      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                      \u2502    Octave Scripts      \u2502 \u25c4\u2500\u2500\u2500 (Written inside src/)\n                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                  \u25bc\n            \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n            \u25bc                                           \u25bc\n    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510                           \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n    \u2502  src/*.png    \u2502 (Plots)                   \u2502  src/*.txt    \u2502 (Console Logs)\n    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                           \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n            \u2502                                           \u2502\n            \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                  \u25bc\n                      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                      \u2502  output/report.tex     \u2502 \u25c4\u2500\u2500\u2500 (LaTeX)\n                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                  \u25bc\n                      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                      \u2502  output/report.pdf     \u2502 \u25c4\u2500\u2500\u2500 (Compiled PDF)\n                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n```\n\n---\n\n## \u2728 Features\n\n*   **Beginner-Style Code Generation**: Octave scripts are written with simple, clear variables (e.g., `x1`, `yval`) without underscores, matching typical student coding styles.\n*   **One-Click Compilation**: The `generate_report.py` script executes all laboratory tasks sequentially, captures console logs, formats plots side-by-side, and compiles the final LaTeX report.\n*   **LaTeX Report Template**: A simple, compact `report.tex` template designed to look like a student's basic work:\n    *   Uses narrow margins (`geometry`) to keep the page count minimal.\n    *   Stamps name and roll number in a simple block at the top of the report.\n    *   Positions plot images side-by-side using `minipage` elements with minimal labels/captions to save maximum space.\n    *   Uses `listings` to import and highlight `.m` script files directly from the disk.\n    *   Uses `graphicx` to embed plots.\n*   **Clean Repository State**: A robust `.gitignore` isolates build logs, temporary auxiliary files, and plot images so that you can reuse the directory for subsequent labsheets without cluttering Git history.\n\n---\n\n## \ud83d\udcc2 Project Structure\n\n```bash\n.\n\u251c\u2500\u2500 .env                # User config (STUDENT_NAME/ROLL/MATLAB_DIR/INPUT_DIR/OUTPUT_DIR)\n\u251c\u2500\u2500 .env.example        # Environment template file\n\u251c\u2500\u2500 .gitignore          # Keeps your Git repository clean\n\u251c\u2500\u2500 README.md           # This document\n\u251c\u2500\u2500 workflow.md         # Implementation steps & guidelines\n\u251c\u2500\u2500 SKILL.md            # LLM assistant instructions and rules\n\u251c\u2500\u2500 generate_report.py  # Dynamically executes MATLAB scripts and generates LaTeX report\n\u251c\u2500\u2500 input/              # Raw labsheet inputs and converted markdown files\n\u2502   \u2514\u2500\u2500 .gitkeep        # Tracks directory in git\n\u251c\u2500\u2500 output/             # Output LaTeX reports and compiled PDFs\n\u2502   \u2514\u2500\u2500 .gitkeep        # Tracks directory in git\n\u2514\u2500\u2500 src/                # Folder containing all MATLAB/Octave scripts\n    \u251c\u2500\u2500 example.m       # Example task script\n    \u2514\u2500\u2500 ...             # Other lab tasks\n```\n\n---\n\n## \ud83d\ude80 How to Run\n\n### Prerequisites\nMake sure GNU Octave, Python 3, pdfTeX, and Microsoft MarkItDown are installed:\n```bash\nsudo apt install octave python3 texlive-latex-extra\npip install markitdown\n```\n\n### Execution\n1. Place your raw labsheet file (e.g. `labsheet.pdf`) inside the `input/` folder.\n2. Convert it to markdown using `markitdown`:\n   ```bash\n   markitdown input/labsheet.pdf -o input/labsheet.md\n   ```\n3. Read the converted `input/labsheet.md` and write the corresponding MATLAB/Octave `.m` scripts in the `src/` folder.\n4. Run the automation generator script:\n   ```bash\n   python3 generate_report.py\n   ```\nThis will run each script in `src/`, record the output logs, locate any generated plots (`src/taskname*.png`), create `output/report.tex`, and compile it into the final compact report `output/report.pdf`.\n\n---\n\n## \ud83d\udd04 Reusing for Next Labsheets\nTo process a new lab sheet:\n1. Place the new labsheet in `input/` and convert it using `markitdown`.\n2. Clear old `.m` files in `src/` and paste/write the new ones.\n3. Run `python3 generate_report.py`.\n4. Your new `output/report.pdf` will be compiled immediately with your name and roll number.\n\n",
+    "mods": "",
+    "web2api": "# Gemini Web2API Server\n\nA local REST API server that wraps the web interface of Google Gemini (`gemini.google.com`). This project enables developers to query Gemini programmatically for custom applications using a local, cost-free endpoint, effectively routing prompts through a persistent, automated browser session.\n\n## Table of Contents\n\n- [Motivation](#motivation)\n- [Key Features](#key-features)\n- [System Architecture](#system-architecture)\n- [Prerequisites](#prerequisites)\n- [Installation & Quick Start](#installation--quick-start)\n  - [Step 1: Environment Setup](#step-1-environment-setup)\n  - [Step 2: Manual Authentication](#step-2-manual-authentication)\n  - [Step 3: Serve the API](#step-3-serve-the-api)\n- [REST API Reference](#rest-api-reference)\n  - [1. Chat Generation](#1-chat-generation)\n  - [2. Streaming Chat Generation](#2-streaming-chat-generation)\n  - [3. Reset Conversation Thread](#3-reset-conversation-thread)\n  - [4. System Status](#4-system-status)\n  - [5. Browser Screenshot](#5-browser-screenshot)\n  - [6. Execution Logs](#6-execution-logs)\n  - [7. Restart Browser](#7-restart-browser)\n- [Administrative Dashboard](#administrative-dashboard)\n- [Integration Examples](#integration-examples)\n  - [Curl (CLI)](#curl-cli)\n  - [Python (requests)](#python-requests)\n  - [Node.js (Fetch)](#nodejs-fetch)\n  - [Bash CLI Client](#bash-cli-client)\n- [Configuration](#configuration)\n- [Troubleshooting & Maintenance](#troubleshooting--maintenance)\n- [Terms of Service Warning](#terms-of-service-warning)\n\n---\n\n## Motivation\n\nGoogle Gemini's official API can be expensive or subject to low credit limits. The web interface at `gemini.google.com` is free to use but lacks an API. This project solves that by bridging the two: it starts a headless browser in the background, inputs your prompt, waits for the response stream to stabilize, and returns the generated text as clean JSON.\n\n---\n\n## Key Features\n\n- **FastAPI Backend**: Fast, asynchronous, and robust backend providing JSON endpoints.\n- **Persistent Playwright Session**: Saves cookies, localStorage, and browser profile state locally. You only log in manually **once**.\n- **Self-Healing Automation**: Automatically detects browser crashes or tab closures and starts a fresh browser instance.\n- **Text Stabilization Detection**: Checks the streaming response container every 500ms. When the text content stops changing for 1.5 seconds, it returns, ensuring complete responses.\n- **Concurrent Request Queuing**: Uses an `asyncio.Lock` to process requests sequentially, avoiding bot detection flags.\n- **Administrative Dashboard**: A premium, responsive glassmorphic dark UI.\n- **Live View Diagnostician**: Displays real-time screenshots of the headless browser directly in the dashboard, making it easy to see if a CAPTCHA or prompt is blocking the script.\n\n---\n\n## System Architecture\n\n```\n                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                    \u2502  API Clients (curl...) \u2502\n                    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                \u2502 POST /api/chat\n                                \u25bc\n                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                    \u2502     FastAPI Server     \u2502\u25c4\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518        \u2502\n                                \u2502                     \u2502 Status /\n                                \u25bc                     \u2502 Screenshots\n                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510        \u2502\n                    \u2502   asyncio.Lock Queue   \u2502        \u2502\n                    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518        \u2502\n                                \u2502                     \u2502\n                                \u25bc                     \u2502\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510        \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510        \u2502\n  \u2502 Cookies\u2502\u25c4\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 Playwright Session Mgr \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518        \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                \u2502 Automates input\n                                \u25bc\n                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                    \u2502   Headless Chromium    \u2502\n                    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                \u2502 Fetches page\n                                \u25bc\n                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                    \u2502   gemini.google.com    \u2502\n                    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n```\n\n---\n\n## Prerequisites\n\n- Linux, macOS, or Windows\n- **Python 3.8+**\n- **pip** and **virtualenv**\n\n---\n\n## Installation & Quick Start\n\n### Step 1: Environment Setup\n\nClone or place the project files in a folder, then initialize the Python virtual environment and download the Playwright Chromium browser binaries:\n\n```bash\n# Set up environment\n./start.sh setup\n```\n\nThis will automatically create a `.venv` directory, install all required dependencies (FastAPI, Playwright, Jinja2, etc.), and download Chromium.\n\n### Step 2: Manual Authentication\n\nGoogle login uses advanced anti-bot measures (device prompt verification, CAPTCHAs, MFA) which are extremely difficult to bypass programmatically. \n\nTo solve this, run the authentication launcher:\n\n```bash\n./start.sh auth\n```\n\n1. A visible (headful) Chromium browser window will open.\n2. Navigate through the Google Login flow and **authenticate with your Google Account**.\n3. Complete any MFA/2FA steps.\n4. Once you are redirected to the main Gemini chat page and see the text input box (`\"Enter a prompt here...\"`), return to your terminal.\n5. In your terminal, type **`y`** and press **Enter** to verify the input box detection, close the browser, and save the session.\n\nAll cookies and session files are safely stored inside the `.playwright_session` folder.\n\n### Step 3: Serve the API\n\nStart the local server:\n\n```bash\n./start.sh serve\n```\n\nThe API server and the administrative dashboard will now be active at **`http://localhost:8000`**.\n\n---\n\n## REST API Reference\n\n### 1. Chat Generation\n\nSends a text prompt to Gemini, waits for completion, and returns the response.\n\n- **URL**: `/api/chat`\n- **Method**: `POST`\n- **Headers**:\n  - `Content-Type: application/json`\n- **Request Body**:\n  ```json\n  {\n    \"prompt\": \"Write a 3-word slogan for a bakery.\",\n    \"timeout_sec\": 90\n  }\n  ```\n- **Response Schema** (`200 OK`):\n  ```json\n  {\n    \"response\": \"Flour, love, oven.\",\n    \"latency_ms\": 7824.50,\n    \"status\": \"Success\"\n  }\n  ```\n- **Status Codes**:\n  - `200 OK`: Request succeeded.\n  - `401 Unauthorized`: Session not logged in. Re-run `./start.sh auth`.\n  - `503 Service Unavailable`: Browser automation context is initializing or offline.\n  - `500 Internal Server Error`: Playwright timed out or failed to parse the page.\n\n---\n\n### 2. Streaming Chat Generation\n\nStreams text generation deltas in real-time as Server-Sent Events (SSE).\n\n- **URL**: `/api/chat/stream`\n- **Method**: `POST`\n- **Headers**: `Content-Type: application/json`\n- **Request Body**:\n  ```json\n  {\n    \"prompt\": \"Tell me a short joke.\"\n  }\n  ```\n- **Response Format**: `text/event-stream` returning data chunks:\n  ```text\n  data: Why did the computer...\n\n  data:  go to the doctor?\n\n  data:  Because it had a virus!\n\n  data: [DONE]\n  ```\n\n---\n\n### 3. Reset Conversation Thread\n\nClears the active conversation context in Gemini and starts a fresh chat thread.\n\n- **URL**: `/api/chat/reset`\n- **Method**: `POST`\n- **Response Schema** (`200 OK`):\n  ```json\n  {\n    \"status\": \"New conversation thread initialized successfully.\"\n  }\n  ```\n\n---\n\n### 4. System Status\n\nReturns diagnostic indicators of the active browser context and historical request telemetry.\n\n- **URL**: `/api/status`\n- **Method**: `GET`\n- **Response Schema** (`200 OK`):\n  ```json\n  {\n    \"status\": \"Connected & Ready\",\n    \"is_connected\": true,\n    \"session_exists\": true,\n    \"headless\": true,\n    \"last_error\": null,\n    \"last_activity\": \"2026-06-28 14:02:11\",\n    \"total_requests\": 14,\n    \"total_success\": 14,\n    \"avg_latency_ms\": 6824.12\n  }\n  ```\n\n---\n\n### 5. Browser Screenshot\n\nReturns the current page snapshot of the background Chromium browser. Excellent for identifying if the scraper is stuck on a CAPTCHA or pop-up.\n\n- **URL**: `/api/screenshot`\n- **Method**: `GET`\n- **Response Schema** (`200 OK`):\n  ```json\n  {\n    \"screenshot\": \"iVBORw0KGgoAAAANS...\" // Base64 encoded PNG string\n  }\n  ```\n\n---\n\n### 6. Execution Logs\n\nReturns the 50 most recent API calls processed by the server instance.\n\n- **URL**: `/api/logs`\n- **Method**: `GET`\n- **Response Schema** (`200 OK`):\n  ```json\n  [\n    {\n      \"id\": 1,\n      \"timestamp\": \"2026-06-28 14:05:12\",\n      \"prompt\": \"Explain gravity simply...\",\n      \"response\": \"Gravity is the invisible force that pulls objects toward each other...\",\n      \"latency_ms\": 7210.15,\n      \"status\": \"Success\"\n    }\n  ]\n  ```\n\n---\n\n### 7. Restart Browser\n\nSafely terminates the background browser context and launches a new one. Useful if the browser gets stuck or runs out of memory.\n\n- **URL**: `/api/reconnect`\n- **Method**: `POST`\n- **Response Schema** (`200 OK`):\n  ```json\n  {\n    \"status\": \"Reconnect command initiated.\"\n  }\n  ```\n\n\n---\n\n## Administrative Dashboard\n\nWhen you open `http://localhost:8000` in your web browser, you will see a dark-themed admin dashboard:\n\n1. **System Health Widgets**: Displays live request counts, successful calls, and average latencies.\n2. **Live Browser Viewport**: Displays a screenshot of the headless browser that refreshes every 5 seconds.\n3. **Prompt Playground**: An interactive chat window to test prompts and inspect outputs immediately.\n4. **Interactive Log Auditor**: Audit timestamps, latencies, status codes, and prompt snippets.\n5. **Code Snippets Panel**: Quick integration examples for copy-pasting.\n\n---\n\n## Integration Examples\n\n### Curl (CLI)\n\n```bash\ncurl -X POST http://localhost:8000/api/chat \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"prompt\": \"What is the capital of France?\"}'\n```\n\n### Python (requests)\n\n```python\nimport requests\n\nurl = \"http://localhost:8000/api/chat\"\npayload = {\n    \"prompt\": \"Translate 'Hello, world' to Japanese.\",\n    \"timeout_sec\": 60\n}\n\nresponse = requests.post(url, json=payload)\nif response.status_code == 200:\n    data = response.json()\n    print(\"Response:\", data[\"response\"])\n    print(f\"Latency: {data['latency_ms'] / 1000:.2f} seconds\")\nelse:\n    print(f\"Error {response.status_code}: {response.text}\")\n```\n\n### Node.js (Fetch)\n\n```javascript\nconst url = 'http://localhost:8000/api/chat';\nconst payload = {\n  prompt: 'Write a short one-sentence motivational quote.',\n  timeout_sec: 90\n};\n\nfetch(url, {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify(payload)\n})\n  .then(res => res.json())\n  .then(data => {\n    console.log('Response:', data.response);\n    console.log(`Latency: ${(data.latency_ms / 1000).toFixed(2)}s`);\n  })\n  .catch(err => console.error('Request failed:', err));\n```\n\n### Bash CLI Client\n\nYou can save this script as `ask-gemini.sh` and make it executable:\n\n```bash\n#!/bin/bash\nPROMPT=\"$*\"\nif [ -z \"$PROMPT\" ]; then\n    echo \"Usage: $0 <your prompt query>\"\n    exit 1\nfi\n\nRESPONSE=$(curl -s -X POST http://localhost:8000/api/chat \\\n  -H \"Content-Type: application/json\" \\\n  -d \"{\\\"prompt\\\": \\\"$PROMPT\\\"}\")\n\n# Pretty-print using python's json tool (or jq if installed)\necho \"$RESPONSE\" | python3 -m json.tool 2>/dev/null || echo \"$RESPONSE\"\n```\n\n---\n\n## Configuration\n\nYou can customize execution parameters by passing environment variables when starting the server:\n\n| Environment Variable | Description | Default |\n| :--- | :--- | :--- |\n| `PORT` | The port the FastAPI server listens on | `8000` |\n| `HOST` | The server bind IP address | `0.0.0.0` |\n| `HEADLESS` | Whether to run browser context headlessly | `true` |\n\nFor example, to run the server on port `8080` in non-headless mode:\n\n```bash\nPORT=8080 HEADLESS=false ./start.sh serve\n```\n\n---\n\n## Troubleshooting & Maintenance\n\n### Browser Stuck / Screen Frozen\nIf you look at the \"Live Headless View\" on the dashboard and notice the page is frozen, showing an error, or asking for verification:\n1. Click **Reconnect Browser** on the top right. This will restart Chromium in the background.\n2. If it continues to fail, Google may have invalidated your cookies. Run `./start.sh auth` to re-login manually.\n\n### Request Times Out\nIf prompts return a `500 Internal Server Error` or time out:\n- Check if your internet connection is active.\n- Increase the `timeout_sec` field in your JSON request body (default is 90 seconds).\n- Check the dashboard screenshot. If Gemini has popped up a \"What's new\" notification window, it may be blocking the textbox. Run `./start.sh auth` to click through any popup disclosures.\n\n---\n\n## Terms of Service Warning\n\n> [!WARNING]\n> **Important Legal Disclaimer:**\n> Routing automated requests through a personal Google account via browser emulation violates Google's Terms of Service. This tool is meant for personal development, research, and debugging. Using this server aggressively may lead to your Google Account being flagged, CAPTCHA-challenged, or temporarily restricted. It is highly recommended to run this automation using a dedicated, non-critical throwaway Google Account.\n"
 };
         // <!-- PROJECT_READMES_END -->
 
         const openProjectDetailOverlay = (name, descHtml, repoLink) => {
+            window.currentActiveProjectName = name;
             const el = document.getElementById('project-detail-overlay');
             const titleEl = document.getElementById('project-detail-title');
             const repoEl = document.getElementById('project-detail-repo-name');
@@ -5056,7 +5749,11 @@
             const md = projectReadmes[repoKey];
 
             if (md) {
-                bodyEl.innerHTML = marked.parse(md);
+                if (typeof marked !== 'undefined' && typeof marked.parse === 'function') {
+                    bodyEl.innerHTML = marked.parse(md);
+                } else {
+                    bodyEl.innerHTML = `<div style="white-space: pre-wrap; font-family: monospace; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">${md}</div>`;
+                }
             } else {
                 bodyEl.innerHTML = `<p>${descHtml}</p>`;
             }
@@ -5552,6 +6249,52 @@
         "githubLink": "https://github.com/seeramsujay/SynthScope",
         "awardText": null,
         "awardType": null
+    },
+    {
+        "name": "MATLAB_Labsheet_Maker",
+        "date": "Jul 2026",
+        "status": "UTILITY",
+        "category": "tool",
+        "tags": [
+            "PYTHON",
+            "MATLAB",
+            "LATEX",
+            "OCTAVE"
+        ],
+        "description": "An automated workflow engine that converts DSP lab requirements into professional, compact LaTeX reports via Octave script execution.",
+        "githubLink": "https://github.com/seeramsujay/MATLAB_Labsheet_Maker",
+        "awardText": null,
+        "awardType": null
+    },
+    {
+        "name": "mods",
+        "date": "Jun 2026",
+        "status": "SANDBOX",
+        "category": "tool",
+        "tags": [
+            "OPEN SOURCE",
+            "UTILITY"
+        ],
+        "description": "A repository dedicated to custom modifications and modular project enhancements.",
+        "githubLink": "",
+        "awardText": null,
+        "awardType": null
+    },
+    {
+        "name": "web2api",
+        "date": "Jun 2026",
+        "status": "UTILITY",
+        "category": "tool",
+        "tags": [
+            "PYTHON",
+            "FASTAPI",
+            "PLAYWRIGHT",
+            "AUTOMATION"
+        ],
+        "description": "A high-performance local REST API that bridges the Gemini web interface, enabling programmatic LLM access via persistent browser automation.",
+        "githubLink": "https://github.com/seeramsujay/web2api",
+        "awardText": null,
+        "awardType": null
     }
 ];
         // <!-- PROJECTS_DATA_END -->
@@ -5672,7 +6415,61 @@
                 projectGrid.appendChild(card);
             });
 
-            document.querySelectorAll('.timeline-node, .project-item').forEach(card => {
+            const initJackpotTitle = (card, h3) => {
+                const originalName = h3.dataset.originalName || h3.textContent.trim();
+                h3.dataset.originalName = originalName;
+
+                let isHovered = false;
+                let scrambleInterval = null;
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=_";
+
+                const startJackpot = () => {
+                    clearInterval(scrambleInterval);
+                    scrambleInterval = setInterval(() => {
+                        if (isHovered) return;
+                        h3.textContent = originalName.split('').map(char => {
+                            if (char === ' ' || char === '-' || char === '(' || char === ')') return char;
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        }).join('');
+                    }, 140 + Math.random() * 80);
+                };
+
+                const resolveName = () => {
+                    clearInterval(scrambleInterval);
+                    isHovered = true;
+                    let iteration = 0;
+                    scrambleInterval = setInterval(() => {
+                        h3.textContent = originalName.split('').map((char, index) => {
+                            if (char === ' ' || char === '-' || char === '(' || char === ')') return char;
+                            if (index < iteration) return char;
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        }).join('');
+
+                        if (iteration >= originalName.length) {
+                            h3.textContent = originalName;
+                            clearInterval(scrambleInterval);
+                        }
+                        iteration++;
+                    }, 25);
+                };
+
+                card.addEventListener('mouseenter', () => {
+                    resolveName();
+                    card.classList.add('active');
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    isHovered = false;
+                    card.classList.remove('active');
+                    setTimeout(() => {
+                        if (!isHovered) startJackpot();
+                    }, 350);
+                });
+
+                startJackpot();
+            };
+
+            document.querySelectorAll('.timeline-card-content, .project-item').forEach(card => {
                 const h3 = card.querySelector('h3');
                 if (!h3) return;
 
@@ -5680,16 +6477,25 @@
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('a') || e.target.closest('button')) return;
 
-                    const name = h3.textContent.trim();
+                    const name = h3.dataset.originalName || h3.textContent.trim();
                     const descEl = card.querySelector('.font-body, p');
                     const descHtml = descEl ? descEl.innerHTML : 'No description available.';
 
                     const githubLink = card.querySelector('a[href*="github.com"]');
                     const repoLink = githubLink ? githubLink.href : null;
 
+                    console.log("Opening overlay for project:", name);
                     openProjectDetailOverlay(name, descHtml, repoLink);
                 });
+
+                initJackpotTitle(card, h3);
             });
+
+            window.currentProjectsList = sortedProjects;
+
+            if (window.updateInteractiveHovers) {
+                window.updateInteractiveHovers();
+            }
         }
         function initTimelineAnimations() {
             timelineNodes = document.querySelectorAll('.timeline-node');
@@ -5722,8 +6528,417 @@
             wake();
         }
 
+        // --- Custom Cursor Removed ---
+
+        // --- Theme Switching Handler ---
+        (function() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            if (!themeToggleBtn) return;
+
+            themeToggleBtn.addEventListener('click', () => {
+                const isLight = document.documentElement.classList.contains('light-theme');
+                if (isLight) {
+                    document.documentElement.classList.remove('light-theme');
+                    localStorage.setItem('portfolio-theme', 'dark');
+                } else {
+                    document.documentElement.classList.add('light-theme');
+                    localStorage.setItem('portfolio-theme', 'light');
+                }
+            });
+        })();
+
         renderAllProjects();
         initTimelineAnimations();
+
+        // ═══════════════════════════════════════════════════════════════
+        // MOBILE-EXCLUSIVE PUNCH EFFECTS (touch devices only)
+        // ═══════════════════════════════════════════════════════════════
+        (function() {
+            const isTouch = window.matchMedia('(pointer: coarse)').matches;
+            if (!isTouch) return;
+
+            // ── 1. TAP PARTICLE BURST ──────────────────────────────────
+            const PARTICLE_COLORS = [
+                'var(--optimism-mint)',
+                'var(--optimism-teal)',
+                'var(--optimism-cyan)',
+                '#a8edea',
+                '#ffffff'
+            ];
+
+            function spawnParticles(x, y, count = 14) {
+                for (let i = 0; i < count; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'touch-particle';
+
+                    const size = 4 + Math.random() * 6;          // 4–10 px
+                    const angle = (Math.random() * 360) * (Math.PI / 180);
+                    const speed = 40 + Math.random() * 90;        // px travel
+                    const duration = 450 + Math.random() * 400;   // ms
+                    const color = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
+
+                    const txF = Math.cos(angle) * speed;
+                    const tyF = Math.sin(angle) * speed;
+
+                    Object.assign(p.style, {
+                        width:  `${size}px`,
+                        height: `${size}px`,
+                        left:   `${x}px`,
+                        top:    `${y}px`,
+                        background: color,
+                        boxShadow: `0 0 ${size * 2}px ${color}`,
+                        '--tx0': '0px',
+                        '--ty0': '0px',
+                        '--txF': `${txF}px`,
+                        '--tyF': `${tyF}px`,
+                        animation: `particle-scatter ${duration}ms cubic-bezier(0.2, 0.8, 0.4, 1) forwards`,
+                    });
+
+                    document.body.appendChild(p);
+                    p.addEventListener('animationend', () => p.remove());
+                }
+            }
+
+            // Fire on every tap (touchstart so it feels instant)
+            document.addEventListener('touchstart', (e) => {
+                const t = e.touches[0];
+                // Fewer particles on cards (to not obscure content), more on empty areas
+                const onCard = !!e.target.closest('.timeline-card-content, .project-item, .glass-card');
+                spawnParticles(t.clientX, t.clientY, onCard ? 8 : 14);
+            }, { passive: true });
+
+
+            // ── 2. GYROSCOPE 3D HERO PARALLAX ─────────────────────────
+            const heroSection   = document.getElementById('hero');
+            const heroTitle     = document.querySelector('.hero-title');
+            const heroQuote     = document.querySelector('.hero-quote');
+            const heroMeta      = document.querySelector('.hero-metadata');
+            const heroLinks     = document.querySelector('.hero-links');
+
+            let gyroSupported = false;
+            let baseGamma = null;  // left-right tilt
+            let baseBeta  = null;  // forward-back tilt
+
+            function applyGyroParallax(gamma, beta) {
+                if (baseGamma === null) { baseGamma = gamma; baseBeta = beta; return; }
+
+                const dGamma = Math.max(-25, Math.min(25, gamma - baseGamma));  // clamped ±25°
+                const dBeta  = Math.max(-20, Math.min(20, beta  - baseBeta ));
+
+                // Title shifts most (big depth)
+                if (heroTitle)  heroTitle.style.transform  = `translate3d(${dGamma * 0.8}px, ${dBeta * 0.5}px, 0)`;
+                // Quote shifts medium
+                if (heroQuote)  heroQuote.style.transform  = `translate3d(${dGamma * 0.4}px, ${dBeta * 0.3}px, 0)`;
+                // Meta and links shift least (closest to camera plane)
+                if (heroMeta)   heroMeta.style.transform   = `translate3d(${dGamma * 0.15}px, ${dBeta * 0.1}px, 0)`;
+                if (heroLinks)  heroLinks.style.transform  = `translate3d(${dGamma * 0.2}px, ${dBeta * 0.15}px, 0)`;
+            }
+
+            function requestGyroPermission() {
+                if (typeof DeviceOrientationEvent === 'undefined') return;
+
+                const activate = () => {
+                    // iOS 13+ requires explicit permission
+                    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                        DeviceOrientationEvent.requestPermission()
+                            .then(state => {
+                                if (state === 'granted') initGyro();
+                            })
+                            .catch(() => {});
+                    } else {
+                        initGyro();
+                    }
+                    document.removeEventListener('touchend', activate);
+                };
+                // Trigger on first intentional tap
+                document.addEventListener('touchend', activate, { once: true, passive: true });
+            }
+
+            function initGyro() {
+                window.addEventListener('deviceorientation', (e) => {
+                    if (e.gamma === null) return;
+                    gyroSupported = true;
+                    applyGyroParallax(e.gamma, e.beta);
+                }, { passive: true });
+            }
+
+            requestGyroPermission();
+
+            // Smooth transitions on hero elements during gyro
+            [heroTitle, heroQuote, heroMeta, heroLinks].forEach(el => {
+                if (el) el.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            });
+
+
+            // ── 3. MAGNETIC CARD TILT ON TOUCH ────────────────────────
+            // Cards physically lean toward the user's finger
+            let activeTiltCard = null;
+            let tiltRAF = null;
+            let targetTiltX = 0, targetTiltY = 0;
+            let currentTiltX = 0, currentTiltY = 0;
+
+            function lerp(a, b, t) { return a + (b - a) * t; }
+
+            function tiltLoop() {
+                if (!activeTiltCard) return;
+                currentTiltX = lerp(currentTiltX, targetTiltX, 0.12);
+                currentTiltY = lerp(currentTiltY, targetTiltY, 0.12);
+                activeTiltCard.style.transform =
+                    `perspective(600px) rotateY(${currentTiltX}deg) rotateX(${-currentTiltY}deg) scale3d(1.025, 1.025, 1.025)`;
+                activeTiltCard.style.boxShadow =
+                    `0 20px 60px rgba(var(--theme-color-1-rgb), 0.25), 0 0 0 1px var(--glass-border-hover)`;
+                tiltRAF = requestAnimationFrame(tiltLoop);
+            }
+
+            function resetCard(card) {
+                cancelAnimationFrame(tiltRAF);
+                if (card) {
+                    card.style.transform = '';
+                    card.style.boxShadow = '';
+                }
+                activeTiltCard = null;
+                currentTiltX = 0; currentTiltY = 0;
+                targetTiltX  = 0; targetTiltY  = 0;
+            }
+
+            document.addEventListener('touchmove', (e) => {
+                const t = e.touches[0];
+                const card = e.target.closest('.timeline-card-content, .project-item');
+                if (!card) { resetCard(activeTiltCard); return; }
+
+                if (activeTiltCard !== card) {
+                    resetCard(activeTiltCard);
+                    activeTiltCard = card;
+                    tiltRAF = requestAnimationFrame(tiltLoop);
+                }
+
+                const rect  = card.getBoundingClientRect();
+                const relX  = (t.clientX - rect.left) / rect.width  - 0.5;  // -0.5 to 0.5
+                const relY  = (t.clientY - rect.top)  / rect.height - 0.5;
+                targetTiltX = relX * 12;   // max ±6° horizontal
+                targetTiltY = relY * 8;    // max ±4° vertical
+            }, { passive: true });
+
+            document.addEventListener('touchend', () => {
+                resetCard(activeTiltCard);
+            }, { passive: true });
+
+        })();
+
+        // ═══════════════════════════════════════════════════════════════
+        // DESKTOP-EXCLUSIVE PREMIUM EFFECTS (mouse/pointer: fine only)
+        // ═══════════════════════════════════════════════════════════════
+        (function() {
+            const isDesktop = window.matchMedia('(pointer: fine)').matches;
+            if (!isDesktop) return;
+
+            // ── 1. HERO MULTI-LAYER MOUSE PARALLAX ────────────────────
+            const heroEl     = document.getElementById('hero');
+            const heroTitle  = document.querySelector('.hero-title');
+            const heroQuote  = document.querySelector('.hero-quote');
+            const heroMeta   = document.querySelector('.hero-metadata');
+            const heroLinks  = document.querySelector('.hero-links');
+
+            let heroMouseX = 0, heroMouseY = 0;
+            let heroLerpX  = 0, heroLerpY  = 0;
+            let heroRAF = null;
+
+            function lerpHero(a, b, t) { return a + (b - a) * t; }
+
+            function heroParallaxLoop() {
+                heroLerpX = lerpHero(heroLerpX, heroMouseX, 0.06);
+                heroLerpY = lerpHero(heroLerpY, heroMouseY, 0.06);
+
+                if (heroTitle) heroTitle.style.transform =
+                    `translate3d(${heroLerpX * 22}px, ${heroLerpY * 14}px, 0)`;
+                if (heroQuote) heroQuote.style.transform =
+                    `translate3d(${heroLerpX * 10}px, ${heroLerpY * 7}px, 0)`;
+                if (heroMeta)  heroMeta.style.transform  =
+                    `translate3d(${heroLerpX * 4}px, ${heroLerpY * 2}px, 0)`;
+                if (heroLinks) heroLinks.style.transform =
+                    `translate3d(${heroLerpX * 6}px, ${heroLerpY * 4}px, 0)`;
+
+                // Self-cancel when converged (saves GPU when mouse is still)
+                const dx = Math.abs(heroLerpX - heroMouseX);
+                const dy = Math.abs(heroLerpY - heroMouseY);
+                if (dx > 0.0005 || dy > 0.0005) {
+                    heroRAF = requestAnimationFrame(heroParallaxLoop);
+                } else {
+                    heroRAF = null;
+                }
+            }
+
+            if (heroEl) {
+                [heroTitle, heroQuote, heroMeta, heroLinks].forEach(el => {
+                    if (el) el.style.transition = 'none';
+                });
+
+                heroEl.addEventListener('mousemove', (e) => {
+                    const rect = heroEl.getBoundingClientRect();
+                    heroMouseX = ((e.clientX - rect.left) / rect.width  - 0.5);
+                    heroMouseY = ((e.clientY - rect.top)  / rect.height - 0.5);
+                    if (!heroRAF) heroParallaxLoop();
+                });
+
+                heroEl.addEventListener('mouseleave', () => {
+                    heroMouseX = 0; heroMouseY = 0;
+                });
+            }
+
+
+            // ── 2. 3D CARD TILT ON HOVER ──────────────────────────────
+            // Cards tilt toward the cursor in real 3D (like Stripe/Linear)
+            let cardTiltRAF = null;
+            let activeTiltEl = null;
+            let tX = 0, tY = 0, cX = 0, cY = 0;
+
+            function cardTiltLoop() {
+                if (!activeTiltEl) return;
+                cX = lerpHero(cX, tX, 0.1);
+                cY = lerpHero(cY, tY, 0.1);
+                activeTiltEl.style.transform =
+                    `perspective(700px) rotateY(${cX}deg) rotateX(${-cY}deg) scale3d(1.02, 1.02, 1.02)`;
+                activeTiltEl.style.boxShadow =
+                    `0 25px 60px rgba(var(--theme-color-1-rgb), 0.2), 0 0 0 1px var(--glass-border-hover),
+                     ${-cX * 0.5}px ${-cY * 0.5}px 30px rgba(var(--theme-color-2-rgb), 0.12)`;
+                cardTiltRAF = requestAnimationFrame(cardTiltLoop);
+            }
+
+            function bindCardTilt(card) {
+                if (card.dataset.tiltBound) return;
+                card.dataset.tiltBound = 'true';
+                card.style.transition = 'box-shadow 0.3s ease';
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const relX = (e.clientX - rect.left) / rect.width  - 0.5;
+                    const relY = (e.clientY - rect.top)  / rect.height - 0.5;
+                    tX = relX * 16;
+                    tY = relY * 10;
+
+                    if (activeTiltEl !== card) {
+                        if (activeTiltEl) {
+                            activeTiltEl.style.transform = '';
+                            activeTiltEl.style.boxShadow = '';
+                        }
+                        activeTiltEl = card;
+                        cancelAnimationFrame(cardTiltRAF);
+                        cX = 0; cY = 0;
+                        cardTiltLoop();
+                    }
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    cancelAnimationFrame(cardTiltRAF);
+                    card.style.transition = 'transform 0.5s cubic-bezier(0.25,1,0.5,1), box-shadow 0.5s ease';
+                    card.style.transform  = '';
+                    card.style.boxShadow  = '';
+                    activeTiltEl = null;
+                    tX = 0; tY = 0; cX = 0; cY = 0;
+                    // Reset transition after snap-back
+                    setTimeout(() => { if (card) card.style.transition = ''; }, 500);
+                });
+            }
+
+            // Bind now and after any dynamic re-render
+            const bindAllCards = () => {
+                document.querySelectorAll('.timeline-card-content, .project-item').forEach(bindCardTilt);
+            };
+            bindAllCards();
+            window.addEventListener('projectsRendered', bindAllCards);
+            // Fallback: re-bind 500ms after render
+            setTimeout(bindAllCards, 800);
+
+
+            // ── 3. MAGNETIC CURSOR PULL ────────────────────────────────
+            // Buttons and nav links gently attract cursor and shift themselves
+            const MAGNETIC_TARGETS = 'a, button, .filter-btn, .nav-link, [role="button"]';
+            const MAGNETIC_RADIUS  = 90;  // px activation zone
+            const MAGNETIC_STRENGTH_CURSOR = 0.35;
+            const MAGNETIC_STRENGTH_EL     = 0.18;
+
+            let magMouseX = 0, magMouseY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                magMouseX = e.clientX;
+                magMouseY = e.clientY;
+            });
+
+            function applyMagnet(el) {
+                if (el.dataset.magnetBound) return;
+                el.dataset.magnetBound = 'true';
+                el.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
+                el.style.display = el.style.display || 'inline-flex';
+
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const elCX = rect.left + rect.width  / 2;
+                    const elCY = rect.top  + rect.height / 2;
+                    const dx   = e.clientX - elCX;
+                    const dy   = e.clientY - elCY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < MAGNETIC_RADIUS) {
+                        const pull = (1 - dist / MAGNETIC_RADIUS);
+                        // Move element toward cursor
+                        el.style.transform = `translate(${dx * MAGNETIC_STRENGTH_EL * pull}px, ${dy * MAGNETIC_STRENGTH_EL * pull}px)`;
+                    }
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = '';
+                });
+            }
+
+            // Bind nav links + hero links (not every link — performance)
+            document.querySelectorAll('.nav-links a, .hero-links a, .nav-cta, button').forEach(applyMagnet);
+
+
+            // ── 4. TEXT SCRAMBLE ON SECTION LABEL ENTRY ──────────────
+            const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%—/·';
+
+            function scrambleText(el) {
+                const original = el.dataset.originalText || el.textContent;
+                el.dataset.originalText = original;
+
+                let iteration = 0;
+                const totalFrames = original.length * 3;
+                const revealStep  = totalFrames / original.length;
+
+                clearInterval(el._scrambleInterval);
+                el._scrambleInterval = setInterval(() => {
+                    el.textContent = original
+                        .split('')
+                        .map((char, i) => {
+                            if (char === ' ' || char === '/' || char === '—' || char === '·') return char;
+                            // Reveal characters progressively left-to-right
+                            if (i < Math.floor(iteration / revealStep)) return char;
+                            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+                        })
+                        .join('');
+
+                    if (iteration >= totalFrames) {
+                        el.textContent = original;
+                        clearInterval(el._scrambleInterval);
+                    }
+                    iteration++;
+                }, 28);
+            }
+
+            // Observe section labels with IntersectionObserver
+            const scrambleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        scrambleText(entry.target);
+                        scrambleObserver.unobserve(entry.target); // fire once
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('.section-label').forEach(el => scrambleObserver.observe(el));
+
+        })();
+
     </script>
 </body>
 
