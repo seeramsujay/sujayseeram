@@ -579,6 +579,12 @@
             background: linear-gradient(to bottom, var(--optimism-mint), transparent);
         }
 
+        @media (max-width: 768px), (max-height: 720px) {
+            .scroll-hint {
+                display: none !important;
+            }
+        }
+
         /* About */
         .about-grid {
             display: grid;
@@ -1285,8 +1291,21 @@
                 display: none;
             }
 
+            .hero-metadata {
+                margin-bottom: 1.25rem;
+            }
+
             .hero-title {
                 font-size: 3.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-quote {
+                margin-bottom: 2rem;
+            }
+
+            .hero-links {
+                gap: 1.5rem;
             }
 
             .glass-card {
