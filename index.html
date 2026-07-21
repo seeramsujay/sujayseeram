@@ -5830,7 +5830,7 @@
             if (repoLink) {
                 repoEl.innerHTML = `<a href="${repoLink}" target="_blank" style="border: none; color: var(--optimism-teal); font-weight: 500;">seeramsujay/${name} ↗</a>`;
             } else {
-                repoEl.textContent = 'LOCAL_ARCHIVE';
+                repoEl.textContent = 'SECRET';
             }
 
             const repoKey = name === 'Word-Association-Test-SSB' ? 'Word-Association-Test-SSB-' : name;
@@ -6447,10 +6447,13 @@
 
             const sortedProjects = [...projects].sort((a, b) => parseProjectDate(b.date) - parseProjectDate(a.date));
 
+            // Only public projects appear in the Timeline
+            const timelineProjects = sortedProjects.filter(project => project.githubLink && project.githubLink.trim() !== '');
+
             let currentYear = null;
             let yearIndex = 0;
 
-            sortedProjects.forEach((project) => {
+            timelineProjects.forEach((project) => {
                 const dateObj = parseProjectDate(project.date);
                 const year = dateObj.getFullYear();
 
@@ -6510,12 +6513,15 @@
 
                 const tagsHtml = (project.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('\n');
 
-                const githubLinkHtml = (project.githubLink && project.githubLink.trim() !== '')
+                const isSecret = !project.githubLink || project.githubLink.trim() === '';
+                const githubLinkHtml = (!isSecret)
                     ? `<a href="${project.githubLink}" target="_blank" class="font-mono"
                           style="font-size: 10px; color: var(--optimism-mint); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
                           VIEW_REPO <span class="material-symbols-outlined" style="font-size: 12px;">arrow_right_alt</span>
                        </a>`
-                    : '';
+                    : `<div class="font-mono" style="font-size: 10px; color: var(--optimism-teal); opacity: 0.8; margin-top: 1rem; letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.35rem;">
+                          <span class="material-symbols-outlined" style="font-size: 12px;">lock</span> SECRET_VAULT
+                       </div>`;
 
                 card.innerHTML = `
                     <div class="flex justify-between items-start">

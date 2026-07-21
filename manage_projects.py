@@ -308,7 +308,7 @@ def run_tui(projects):
         clear_screen()
         print_box_header("PORTFOLIO MANAGER - PROJECT PUBLISHING CONTROL")
         print("  Use Up/Down or j/k to navigate.")
-        print(f"  Actions: {color_text('[p]', 'green')} Public, {color_text('[a]', 'yellow')} Archive (Local), {color_text('[d]', 'red')} Nuke (Opt-out)")
+        print(f"  Actions: {color_text('[p]', 'green')} Public, {color_text('[a]', 'yellow')} Secret (Local Vault), {color_text('[d]', 'red')} Nuke (Opt-out)")
         print(f"  Press {color_text('[s]', 'cyan')} to Save & Commit, or {color_text('[q]', 'bold')} to Quit without saving.")
         print("-" * term_width)
         
@@ -320,8 +320,8 @@ def run_tui(projects):
             state = p['state']
             if state == 'P':
                 state_str = color_text("[ P ] Public ", "green")
-            elif state == 'A':
-                state_str = color_text("[ A ] Archive", "yellow")
+            elif state in ('A', 'S'):
+                state_str = color_text("[ S ] Secret ", "yellow")
             else:
                 state_str = color_text("[ D ] Nuked  ", "red")
                 
@@ -346,10 +346,10 @@ def run_tui(projects):
         print("-" * term_width)
         
         count_p = sum(1 for x in projects if x['state'] == 'P')
-        count_a = sum(1 for x in projects if x['state'] == 'A')
+        count_a = sum(1 for x in projects if x['state'] in ('A', 'S'))
         count_d = sum(1 for x in projects if x['state'] == 'D')
         
-        status_line = f"  Total: {len(projects)} | {color_text('P', 'green')}: {count_p} | {color_text('A', 'yellow')}: {count_a} | {color_text('D', 'red')}: {count_d}"
+        status_line = f"  Total: {len(projects)} | {color_text('P', 'green')}: {count_p} | {color_text('S', 'yellow')}: {count_a} | {color_text('D', 'red')}: {count_d}"
         print(status_line)
         
         if projects:
@@ -364,7 +364,7 @@ def run_tui(projects):
                 desc_disp += "..."
                 
             print(f"  {color_text('Project:', 'yellow')} {sel_p['name']}")
-            print(f"  {color_text('URL:', 'yellow')} {sel_p.get('githubLink') or sel_p.get('repo_url') or 'Local Archive'}")
+            print(f"  {color_text('URL:', 'yellow')} {sel_p.get('githubLink') or sel_p.get('repo_url') or 'Local Secret'}")
             print(f"  {color_text('Desc:', 'yellow')} {desc_disp}")
             
         key = get_key()
@@ -377,7 +377,7 @@ def run_tui(projects):
             selected_idx = min(len(projects) - 1, selected_idx + 1)
         elif key == 'p':
             projects[selected_idx]['state'] = 'P'
-        elif key == 'a':
+        elif key in ('a', 's'):
             projects[selected_idx]['state'] = 'A'
         elif key == 'd':
             projects[selected_idx]['state'] = 'D'
@@ -385,7 +385,8 @@ def run_tui(projects):
             clear_screen()
             print_box_header("CONFIRM PORTFOLIO COMMISSION")
             print(f"  {color_text('Public (P):', 'green'):<15} {count_p} projects (will be displayed with GitHub links)")
-            print(f"  {color_text('Archived (A):', 'yellow'):<15} {count_a} projects (will be displayed without GitHub links)")
+            print(f"  {color_text('Secret (S):', 'yellow'):<15} {count_a} projects (will be displayed in Vault only, without GitHub links)")
+            print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
             print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
             print("-" * 65)
             confirm = input("  Apply changes and update portfolio? (y/n): ").strip().lower()
