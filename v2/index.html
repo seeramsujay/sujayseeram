@@ -4,17 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sujay Seeram — Cyber-Physical Systems & Physics-Informed Design</title>
-  <meta name="description" content="Personal portfolio of Sujay Seeram (Suzaykid) — ECE Student at Amrita Vishwa Vidyapeetham. Specializing in resource-constrained cyber-physical systems, physics-informed computing, and sovereign edge AI." />
+  <meta name="description" content="Personal portfolio of Sujay Seeram — First-Year ECE @ Amrita Vishwa Vidyapeetham. Specializing in resource-constrained cyber-physical systems, physics-informed computing, and sovereign edge AI." />
   
-  <!-- Modern Awwwards Fonts: Syne & Inter -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   
   <link rel="stylesheet" href="./src/styles/main.css" />
 </head>
 <body>
-  <!-- 3D Three.js WebGL Interactive Morphing Canvas -->
+
+  <!-- Subtle Film Grain Overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- Ambient 3D Three.js Micro-Geometry Canvas -->
   <div id="canvas-container">
     <canvas id="hero-canvas"></canvas>
   </div>
@@ -32,17 +36,16 @@
   <!-- Top Navigation Header -->
   <header class="cyber-header">
     <div class="header-inner">
-      <a href="#about" class="brand-logo">
+      <a href="#hero" class="brand-logo">
         <span class="brand-name">SUJAY SEERAM</span>
         <span class="brand-version">V2.0</span>
       </a>
 
       <nav class="cyber-nav">
         <a href="#about" class="nav-link">About</a>
-        <a href="#timeline" class="nav-link">Timeline</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#philosophy" class="nav-link">Philosophy</a>
         <a href="#contact" class="nav-link">Contact</a>
+        <a href="#odyssey" class="nav-link">Odyssey</a>
+        <a href="#vault" class="nav-link">Vault</a>
       </nav>
 
       <div class="header-actions">
@@ -57,76 +60,122 @@
   <!-- Main Scrollable Content -->
   <main class="content-wrapper">
 
-    <!-- HERO SECTION - GIANT IGLOO.INC STYLE TYPOGRAPHY & SPACING -->
-    <section id="about" class="hero-section">
-      <div class="hero-badge">
-        <span>👋 SUJAY SEERAM (SUZAYKID)</span>
-      </div>
+    <!-- SECTION 1: HERO & ABOUT SUJAY FIRST -->
+    <section id="hero" class="hero-section">
+      <div class="container">
+        <div class="hero-metadata">
+          First-Year ECE · Amrita Vishwa Vidyapeetham · 2025–Present
+        </div>
 
-      <h1 class="hero-title">
-        EXTREME <br />
-        <span class="gradient-text">ECONOMIC ENGINEERING</span>
-      </h1>
+        <h1 class="hero-title">
+          Sujay Seeram.
+        </h1>
 
-      <h2 class="hero-subtitle">Electronics &amp; Communication Engineering Student @ Amrita Vishwa Vidyapeetham</h2>
+        <blockquote class="hero-quote">
+          "I don't wait for a prompt. I build because the problem is in the room."
+        </blockquote>
 
-      <p class="hero-bio">
-        I apply physics first principles to build highly economical, hardware-optimized devices and sovereign local intelligence. I specialize in resource-constrained cyber-physical systems, embedded hardware design, and physics-informed computing.
-      </p>
+        <p class="hero-bio">
+          I am an Electronics and Communication Engineering undergraduate at Amrita Vishwa Vidyapeetham, running on a 2017 MacBook Air with Linux Mint. My environment is the terminal. My canvas is the physical world. I build local-first systems — models that run on my hardware, tools that answer to no one's server but mine.
+        </p>
 
-      <div class="hero-chips">
-        <span class="chip">ECE '27 Candidate</span>
-        <span class="chip">Physics-Informed VAE Nets</span>
-        <span class="chip">Bare-Metal ESP32 C++</span>
-        <span class="chip">Zero-Hallucination Local RAG</span>
-        <span class="chip">Low-Compute Non-GPU Systems</span>
-      </div>
+        <!-- Builder Tenets -->
+        <div class="hero-principles-grid">
+          <div class="principle-card">
+            <h4 class="principle-title">⚡ LOCAL-FIRST</h4>
+            <p class="principle-desc">Privacy is the architecture, not a feature. Systems built for sovereignty.</p>
+          </div>
+          <div class="principle-card">
+            <h4 class="principle-title">🔬 SIMULATION</h4>
+            <p class="principle-desc">Simulate first. Deploy second. Break nothing.</p>
+          </div>
+          <div class="principle-card">
+            <h4 class="principle-title">🛠️ SOVEREIGNTY</h4>
+            <p class="principle-desc">Code your environment. Don't let it code you.</p>
+          </div>
+        </div>
 
-      <div class="hero-actions">
-        <a href="#timeline" class="btn btn-primary">
-          <span>EXPLORE TIMELINE</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-        </a>
-        <a href="#projects" class="btn btn-secondary">
-          <span>VIEW REPOSITORIES</span>
-        </a>
-        <button id="hero-terminal-btn" class="btn btn-secondary">
-          <span>OPEN CLI TERMINAL (⌘K)</span>
-        </button>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">
+            <span>TRANSMIT SIGNAL (CONTACT)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#odyssey" class="btn btn-secondary">
+            <span>ENTER THE ODYSSEY (TIMELINE)</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- SECTION: CHRONOLOGICAL TIMELINE -->
-    <section id="timeline" class="section-padding bg-offwhite">
+    <!-- SECTION 2: CONTACT PORTAL (PLACED DIRECTLY ABOVE TIMELINE AS REQUESTED) -->
+    <section id="contact" class="section-padding contact-section">
+      <div class="container text-center">
+        <span class="section-badge">// CONNECTION COORDINATES</span>
+        <h2 class="section-title">TRANSMIT DIRECT SIGNAL</h2>
+        <p class="section-desc" style="margin:10px auto 36px auto;">Have a novel hardware challenge, physics ML problem, or project opportunity? Reach out directly.</p>
+
+        <div class="contact-box">
+          <form id="contact-form" class="cyber-form">
+            <div class="form-group">
+              <label for="contact-name">CALLSIGN / NAME</label>
+              <input type="text" id="contact-name" placeholder="Your Name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email">FREQUENCY / EMAIL</label>
+              <input type="email" id="contact-email" placeholder="sujayat2007@gmail.com" required />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message">TRANSMISSION PAYLOAD</label>
+              <textarea id="contact-message" rows="4" placeholder="Describe the physics model, hardware project, or opportunity..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="justify-content:center;width:100%;">
+              <span>DISPATCH TRANSMISSION</span>
+            </button>
+          </form>
+
+          <div style="margin-top:32px;padding-top:20px;border-top:var(--border-subtle);display:flex;justify-content:space-around;font-family:var(--font-mono);font-size:0.85rem;">
+            <div>Email: <a href="mailto:sujayat2007@gmail.com" style="color:var(--accent-violet);font-weight:700;">sujayat2007@gmail.com</a></div>
+            <div>GitHub: <a href="https://github.com/seeramsujay" target="_blank" style="color:var(--accent-violet);font-weight:700;">github.com/seeramsujay</a></div>
+            <div>LinkedIn: <a href="https://linkedin.com/in/sujayseeram" target="_blank" style="color:var(--accent-violet);font-weight:700;">in/sujayseeram</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: THE ODYSSEY (TIMELINE WITH V1 CONTENTS & LONG FLUID TRANSITION) -->
+    <section id="odyssey" class="section-padding bg-offwhite">
       <div class="container">
         <div class="section-header">
-          <span class="section-badge">// CHRONOLOGICAL TIMELINE (2024 – 2026)</span>
-          <h2 class="section-title">ENGINEERING ROADMAP &amp; MILESTONES</h2>
-          <p class="section-desc">A chronological journey of research developments, hardware prototypes, hackathon entries, and open-source milestones.</p>
+          <span class="section-badge">// 02 / THE ODYSSEY</span>
+          <h2 class="section-title">CHRONICLE OF BUILDS</h2>
+          <p class="section-desc">Every project is a commit to the future. A log of experiments, hackathons, and hardware trials.</p>
         </div>
 
         <div id="timeline-container" class="timeline-wrapper">
-          <!-- Populated dynamically via timeline.js -->
+          <!-- Populated dynamically via V1 data in timeline.js -->
         </div>
       </div>
     </section>
 
-    <!-- SECTION: SELECTED SPACE PROJECTS -->
-    <section id="projects" class="section-padding">
+    <!-- SECTION 4: THE VAULT (PROJECTS MATRIX FROM V1) -->
+    <section id="vault" class="section-padding">
       <div class="container">
         <div class="section-header flex-between">
           <div>
-            <span class="section-badge">// SELECTED SPACE REPOSITORIES</span>
-            <h2 class="section-title">FEATURED PROJECTS</h2>
-            <p class="section-desc">Open-source repositories, hardware designs, and physics ML pipelines built for extreme economic engineering.</p>
+            <span class="section-badge">// 03 / THE VAULT</span>
+            <h2 class="section-title">SELECTED SPACE REPOSITORIES</h2>
+            <p class="section-desc">Full repository index housing active builds, hackathon entries, and secret vaults.</p>
           </div>
 
           <div class="filter-bar">
-            <button class="filter-btn active" data-filter="all">All Repositories</button>
-            <button class="filter-btn" data-filter="physics">Physics &amp; DSP</button>
+            <button class="filter-btn active" data-filter="all">All Projects</button>
             <button class="filter-btn" data-filter="hackathon">Hackathons</button>
+            <button class="filter-btn" data-filter="research">Research</button>
+            <button class="filter-btn" data-filter="tool">Tools &amp; CLI</button>
             <button class="filter-btn" data-filter="hardware">Hardware</button>
-            <button class="filter-btn" data-filter="tool">CLI / Tools</button>
           </div>
         </div>
 
@@ -136,90 +185,11 @@
       </div>
     </section>
 
-    <!-- SECTION: PHILOSOPHY & SOVEREIGNTY -->
-    <section id="philosophy" class="section-padding bg-offwhite">
-      <div class="container">
-        <div class="grid-2col">
-          <div class="philosophy-card glass-card">
-            <span class="section-badge">// ENGINEERING PHILOSOPHY</span>
-            <h3 class="section-title" style="font-size:1.8rem;margin-bottom:16px;">Extreme Economic Engineering</h3>
-            <p style="color:var(--color-text-sub);margin-bottom:20px;font-size:1.05rem;">
-              Maximizing system capabilities while minimizing physical component counts and computational overhead.
-            </p>
-
-            <div style="background:#ffffff;padding:24px;border-radius:12px;border:var(--border-subtle);font-family:var(--font-mono);font-size:0.85rem;color:var(--accent-violet);line-height:1.7;box-shadow:0 4px 15px rgba(0,0,0,0.02);">
-              [ Mathematical Theory &amp; Physics First Principles ]<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
-              [ Economical Hardware: Minimalist Component Budgets ]<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br />
-              [ Sovereign Intelligence: Low-Compute Local Frameworks ]
-            </div>
-          </div>
-
-          <div class="sovereignty-card glass-card">
-            <span class="section-badge">// SOVEREIGN DIGITAL COVENANT</span>
-            <h3 class="section-title" style="font-size:1.8rem;margin-bottom:16px;">PCPPL 1.0 License</h3>
-            <p style="color:var(--color-text-sub);font-size:1.05rem;">
-              All original materials in this repository operate under the Personal Content and Privacy Protection License.
-            </p>
-
-            <div class="covenant-box">
-              <p><strong>Strict Digital Sovereignty Safeguards:</strong></p>
-              <ul>
-                <li>🚫 <strong>NO AI Model Ingestion:</strong> Ingestion of these layouts, text, code, or assets for machine learning models is strictly banned.</li>
-                <li>🚫 <strong>NO Scrapers:</strong> Automated crawling, harvesting, or indexing by bots is prohibited.</li>
-                <li>✅ <strong>Human Evaluation Welcome:</strong> Review by recruiters, engineers, and peer researchers is welcome.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION: CONTACT -->
-    <section id="contact" class="section-padding">
-      <div class="container text-center">
-        <span class="section-badge">// CONNECTION COORDINATES</span>
-        <h2 class="section-title">GET IN TOUCH</h2>
-        <p class="section-desc" style="margin:12px auto 40px auto;">Have a hardware challenge, physics ML problem, or collaboration idea? Send a transmission.</p>
-
-        <div class="contact-box glass-card">
-          <form id="contact-form" class="cyber-form">
-            <div class="form-group">
-              <label for="contact-name">NAME / CALLSIGN</label>
-              <input type="text" id="contact-name" placeholder="Your Name" required />
-            </div>
-
-            <div class="form-group">
-              <label for="contact-email">EMAIL ADDRESS</label>
-              <input type="email" id="contact-email" placeholder="sujayat2007@gmail.com" required />
-            </div>
-
-            <div class="form-group">
-              <label for="contact-message">TRANSMISSION PAYLOAD</label>
-              <textarea id="contact-message" rows="4" placeholder="Describe the project opportunity..." required></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="justify-content:center;width:100%;">
-              <span>DISPATCH ENCRYPTED PAYLOAD</span>
-            </button>
-          </form>
-
-          <div style="margin-top:36px;padding-top:24px;border-top:var(--border-subtle);display:flex;justify-content:space-around;font-family:var(--font-mono);font-size:0.9rem;">
-            <div>Email: <a href="mailto:sujayat2007@gmail.com" style="color:var(--accent-violet);font-weight:700;">sujayat2007@gmail.com</a></div>
-            <div>GitHub: <a href="https://github.com/seeramsujay" target="_blank" style="color:var(--accent-violet);font-weight:700;">github.com/seeramsujay</a></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- FOOTER -->
     <footer class="cyber-footer">
       <div class="container footer-inner">
         <div>SUJAY SEERAM © 2026 · ECE @ AMRITA VISHWA VIDYAPEETHAM</div>
-        <div style="color:var(--accent-violet);font-weight:700;">BUILT WITH THREE.JS &amp; VITE</div>
+        <div style="color:var(--accent-violet);font-weight:700;">LOCAL-FIRST // SOVEREIGN ARCHITECTURE</div>
       </div>
     </footer>
 
@@ -240,14 +210,6 @@
         <span style="color:var(--accent-emerald);font-family:var(--font-mono);">sujay@core:~$</span>
         <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="Type a command (help, bio, projects, clear)..." />
       </div>
-    </div>
-  </div>
-
-  <!-- PROJECT DETAIL MODAL -->
-  <div id="project-modal" class="terminal-overlay hidden">
-    <div class="glass-card" style="max-width:720px;width:100%;padding:40px;position:relative;">
-      <button id="project-modal-close" style="position:absolute;top:20px;right:24px;background:none;border:none;color:var(--color-text-main);font-size:1.6rem;cursor:pointer;">&times;</button>
-      <div id="project-modal-body"></div>
     </div>
   </div>
 
