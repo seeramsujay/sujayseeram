@@ -203,11 +203,20 @@ def build_tui_projects(existing_projects, repos):
         matched_project = existing_by_link.get(url) or existing_by_name.get(name)
         
         if matched_project:
-            tui_state = 'D' if matched_project.get('opted_out') else ('A' if not matched_project.get('githubLink') else 'P')
+            if matched_project.get('opted_out'):
+                tui_state = 'D'
+            elif matched_project.get('archived'):
+                tui_state = 'A'
+            elif matched_project.get('private') or not matched_project.get('githubLink'):
+                tui_state = 'V'
+            else:
+                tui_state = 'P'
             tui_projects.append({
                 "name": matched_project['name'],
                 "githubLink": matched_project.get('githubLink', ''),
                 "opted_out": matched_project.get('opted_out', False),
+                "private": matched_project.get('private', False) or (not matched_project.get('githubLink') and not matched_project.get('opted_out') and not matched_project.get('archived')),
+                "archived": matched_project.get('archived', False),
                 "is_new": False,
                 "is_fork": is_fork,
                 "description": matched_project.get('description', ''),
@@ -224,6 +233,8 @@ def build_tui_projects(existing_projects, repos):
                 "name": name,
                 "githubLink": url,
                 "opted_out": False,
+                "private": False,
+                "archived": False,
                 "is_new": True,
                 "is_fork": is_fork,
                 "description": repo.get('description') or '',
@@ -237,11 +248,20 @@ def build_tui_projects(existing_projects, repos):
             
     for p in existing_projects:
         if p['name'] not in added_names:
-            tui_state = 'D' if p.get('opted_out') else ('A' if not p.get('githubLink') else 'P')
+            if p.get('opted_out'):
+                tui_state = 'D'
+            elif p.get('archived'):
+                tui_state = 'A'
+            elif p.get('private') or not p.get('githubLink'):
+                tui_state = 'V'
+            else:
+                tui_state = 'P'
             tui_projects.append({
                 "name": p['name'],
                 "githubLink": p.get('githubLink', ''),
                 "opted_out": p.get('opted_out', False),
+                "private": p.get('private', False) or (not p.get('githubLink') and not p.get('opted_out') and not p.get('archived')),
+                "archived": p.get('archived', False),
                 "is_new": False,
                 "is_fork": False,
                 "description": p.get('description', ''),
@@ -308,7 +328,11 @@ def run_tui(projects):
         clear_screen()
         print_box_header("PORTFOLIO MANAGER - PROJECT PUBLISHING CONTROL")
         print("  Use Up/Down or j/k to navigate.")
+<<<<<<< HEAD
         print(f"  Actions: {color_text('[p]', 'green')} Public, {color_text('[a]', 'yellow')} Secret (Local Vault), {color_text('[d]', 'red')} Nuke (Opt-out)")
+=======
+        print(f"  Actions: {color_text('[p]', 'green')} Public, {color_text('[v]', 'yellow')} Private, {color_text('[a]', 'cyan')} Archive, {color_text('[d]', 'red')} Nuke (Opt-out)")
+>>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
         print(f"  Press {color_text('[s]', 'cyan')} to Save & Commit, or {color_text('[q]', 'bold')} to Quit without saving.")
         print("-" * term_width)
         
@@ -320,8 +344,15 @@ def run_tui(projects):
             state = p['state']
             if state == 'P':
                 state_str = color_text("[ P ] Public ", "green")
+<<<<<<< HEAD
             elif state in ('A', 'S'):
                 state_str = color_text("[ S ] Secret ", "yellow")
+=======
+            elif state == 'V':
+                state_str = color_text("[ V ] Private", "yellow")
+            elif state == 'A':
+                state_str = color_text("[ A ] Archive", "cyan")
+>>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
             else:
                 state_str = color_text("[ D ] Nuked  ", "red")
                 
@@ -346,10 +377,18 @@ def run_tui(projects):
         print("-" * term_width)
         
         count_p = sum(1 for x in projects if x['state'] == 'P')
+<<<<<<< HEAD
         count_a = sum(1 for x in projects if x['state'] in ('A', 'S'))
         count_d = sum(1 for x in projects if x['state'] == 'D')
         
         status_line = f"  Total: {len(projects)} | {color_text('P', 'green')}: {count_p} | {color_text('S', 'yellow')}: {count_a} | {color_text('D', 'red')}: {count_d}"
+=======
+        count_v = sum(1 for x in projects if x['state'] == 'V')
+        count_a = sum(1 for x in projects if x['state'] == 'A')
+        count_d = sum(1 for x in projects if x['state'] == 'D')
+        
+        status_line = f"  Total: {len(projects)} | {color_text('P', 'green')}: {count_p} | {color_text('V', 'yellow')}: {count_v} | {color_text('A', 'cyan')}: {count_a} | {color_text('D', 'red')}: {count_d}"
+>>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
         print(status_line)
         
         if projects:
@@ -377,16 +416,28 @@ def run_tui(projects):
             selected_idx = min(len(projects) - 1, selected_idx + 1)
         elif key == 'p':
             projects[selected_idx]['state'] = 'P'
+<<<<<<< HEAD
         elif key in ('a', 's'):
+=======
+        elif key == 'v':
+            projects[selected_idx]['state'] = 'V'
+        elif key == 'a':
+>>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
             projects[selected_idx]['state'] = 'A'
         elif key == 'd':
             projects[selected_idx]['state'] = 'D'
         elif key == 's':
             clear_screen()
             print_box_header("CONFIRM PORTFOLIO COMMISSION")
+<<<<<<< HEAD
             print(f"  {color_text('Public (P):', 'green'):<15} {count_p} projects (will be displayed with GitHub links)")
             print(f"  {color_text('Secret (S):', 'yellow'):<15} {count_a} projects (will be displayed in Vault only, without GitHub links)")
             print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
+=======
+            print(f"  {color_text('Public (P):', 'green'):<15} {count_p} projects (will be displayed on main timeline with GitHub links)")
+            print(f"  {color_text('Private (V):', 'yellow'):<15} {count_v} projects (will be displayed on main timeline without GitHub links)")
+            print(f"  {color_text('Archive (A):', 'cyan'):<15} {count_a} projects (will be moved to the Vault page)")
+>>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
             print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
             print("-" * 65)
             confirm = input("  Apply changes and update portfolio? (y/n): ").strip().lower()
@@ -481,7 +532,7 @@ def main():
             repo_url = item['repo_url']
             
             if is_new:
-                if state in ('P', 'A'):
+                if state in ('P', 'V', 'A'):
                     print_status(f"Ingesting new project: {name}", "info")
                     readme = get_readme_content(name)
                     repo_obj = item.get('original_repo') or {}
@@ -497,11 +548,15 @@ def main():
                         "category": metadata.get("category", "tool"),
                         "tags": metadata.get("tags", []),
                         "description": metadata.get("description", gh_desc),
-                        "githubLink": repo_url if state == 'P' else "",
+                        "githubLink": repo_url if state in ('P', 'A') else "",
                         "awardText": metadata.get("awardText"),
                         "awardType": metadata.get("awardType"),
                         "readme": readme
                     }
+                    if state == 'V':
+                        new_project['private'] = True
+                    elif state == 'A':
+                        new_project['archived'] = True
                     existing_projects.append(new_project)
                     db_updated = True
                     print_status(f"Successfully ingested {name}.", "success")
@@ -518,22 +573,41 @@ def main():
                 proj = existing_by_name.get(name)
                 if proj:
                     original_opted_out = proj.get('opted_out', False)
+                    original_private = proj.get('private', False)
+                    original_archived = proj.get('archived', False)
                     original_link = proj.get('githubLink', '')
                     
                     target_opted_out = (state == 'D')
-                    if state == 'P':
+                    target_private = (state == 'V')
+                    target_archived = (state == 'A')
+                    
+                    if state in ('P', 'A'):
                         target_link = repo_url or original_link
-                    elif state == 'A':
+                    elif state == 'V':
                         target_link = ""
                     else:
                         target_link = original_link
                         
-                    if original_opted_out != target_opted_out or original_link != target_link:
+                    if (original_opted_out != target_opted_out or 
+                        original_private != target_private or 
+                        original_archived != target_archived or 
+                        original_link != target_link):
+                        
                         if target_opted_out:
                             proj['opted_out'] = True
                         else:
-                            if 'opted_out' in proj:
-                                proj.pop('opted_out')
+                            proj.pop('opted_out', None)
+                            
+                        if target_private:
+                            proj['private'] = True
+                        else:
+                            proj.pop('private', None)
+                            
+                        if target_archived:
+                            proj['archived'] = True
+                        else:
+                            proj.pop('archived', None)
+                            
                         proj['githubLink'] = target_link
                         db_updated = True
                         print_status(f"Updated status of {name} to {state}.", "info")

@@ -19,3 +19,9 @@ Thumbs.db
 # Logs
 *.log
 node_modules/
+
+# V2 workspace
+v2/node_modules/
+v2/dist/
+v2/.vite/
+uv.lock

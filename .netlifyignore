@@ -1,0 +1,3 @@
+# Ignore v2 folder for root site Netlify builds
+v2/
+v2/*
