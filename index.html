@@ -15,10 +15,28 @@
 </head>
 <body>
 
-  <!-- Subtle Film Grain Overlay -->
+  <!-- Igloo.inc Style Preloader Build Screen -->
+  <div id="preloader" class="preloader-overlay">
+    <div class="preloader-box">
+      <div class="preloader-title">SYSTEM BUILD // SUJAY SEERAM</div>
+      <div class="preloader-bar-bg">
+        <div id="preloader-bar" class="preloader-bar"></div>
+      </div>
+      <div id="preloader-percent" style="font-size:1.5rem;font-weight:700;color:#ffffff;margin-bottom:6px;">0%</div>
+      <div id="preloader-status" class="preloader-status">COMPILING WEBGL SHADERS...</div>
+    </div>
+  </div>
+
+  <!-- Chromatic Vignette & Film Noise Overlay -->
+  <div class="chromatic-overlay"></div>
   <div class="noise-overlay"></div>
 
-  <!-- Ambient 3D Three.js Micro-Geometry Canvas -->
+  <!-- Dynamic 3D Leader Line Callout Badge (Igloo.inc style) -->
+  <div id="leader-callout" class="leader-callout">
+    <span>PORTFOLIO_CO_01 // SUJAY SEERAM</span>
+  </div>
+
+  <!-- Ambient 3D Three.js Procedural Silicon Crystal Canvas (Positioned at Right Side) -->
   <div id="canvas-container">
     <canvas id="hero-canvas"></canvas>
   </div>
@@ -26,7 +44,7 @@
   <!-- HUD Controls -->
   <aside class="hud-controls">
     <button id="sfx-toggle" class="hud-btn" title="Toggle Sound SFX">
-      <span class="hud-label">SFX: ON</span>
+      <span class="hud-label">🔈 Sound: ON</span>
     </button>
     <button id="terminal-quick-btn" class="hud-btn" title="Open Interactive CLI Terminal">
       <span>⌘K CLI</span>
@@ -37,15 +55,14 @@
   <header class="cyber-header">
     <div class="header-inner">
       <a href="#hero" class="brand-logo">
-        <span class="brand-name">SUJAY SEERAM</span>
-        <span class="brand-version">V2.0</span>
+        <span class="brand-name">IGLOO // SUJAY SEERAM</span>
       </a>
 
       <nav class="cyber-nav">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#contact" class="nav-link">Contact</a>
-        <a href="#odyssey" class="nav-link">Odyssey</a>
-        <a href="#vault" class="nav-link">Vault</a>
+        <a href="#hero" class="nav-link">////// ABOUT</a>
+        <a href="#contact" class="nav-link">////// TRANSMIT</a>
+        <a href="#odyssey" class="nav-link">////// ODYSSEY</a>
+        <a href="#vault" class="nav-link">////// VAULT</a>
       </nav>
 
       <div class="header-actions">
@@ -60,49 +77,51 @@
   <!-- Main Scrollable Content -->
   <main class="content-wrapper">
 
-    <!-- SECTION 1: HERO & ABOUT SUJAY FIRST -->
+    <!-- SECTION 1: HERO & ABOUT SUJAY (RESTRICTED TO LEFT 55% FOR ZERO TEXT OVERLAP) -->
     <section id="hero" class="hero-section">
       <div class="container">
-        <div class="hero-metadata">
-          First-Year ECE · Amrita Vishwa Vidyapeetham · 2025–Present
-        </div>
-
-        <h1 class="hero-title">
-          Sujay Seeram.
-        </h1>
-
-        <blockquote class="hero-quote">
-          "I don't wait for a prompt. I build because the problem is in the room."
-        </blockquote>
-
-        <p class="hero-bio">
-          I am an Electronics and Communication Engineering undergraduate at Amrita Vishwa Vidyapeetham, running on a 2017 MacBook Air with Linux Mint. My environment is the terminal. My canvas is the physical world. I build local-first systems — models that run on my hardware, tools that answer to no one's server but mine.
-        </p>
-
-        <!-- Builder Tenets -->
-        <div class="hero-principles-grid">
-          <div class="principle-card">
-            <h4 class="principle-title">⚡ LOCAL-FIRST</h4>
-            <p class="principle-desc">Privacy is the architecture, not a feature. Systems built for sovereignty.</p>
+        <div class="hero-content-left">
+          <div class="hero-metadata">
+            First-Year ECE · Amrita Vishwa Vidyapeetham · 2025–Present
           </div>
-          <div class="principle-card">
-            <h4 class="principle-title">🔬 SIMULATION</h4>
-            <p class="principle-desc">Simulate first. Deploy second. Break nothing.</p>
-          </div>
-          <div class="principle-card">
-            <h4 class="principle-title">🛠️ SOVEREIGNTY</h4>
-            <p class="principle-desc">Code your environment. Don't let it code you.</p>
-          </div>
-        </div>
 
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">
-            <span>TRANSMIT SIGNAL (CONTACT)</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#odyssey" class="btn btn-secondary">
-            <span>ENTER THE ODYSSEY (TIMELINE)</span>
-          </a>
+          <h1 class="hero-title">
+            Sujay Seeram.
+          </h1>
+
+          <blockquote class="hero-quote">
+            "I don't wait for a prompt. I build because the problem is in the room."
+          </blockquote>
+
+          <p class="hero-bio">
+            I am an Electronics and Communication Engineering undergraduate at Amrita Vishwa Vidyapeetham, running on a 2017 MacBook Air with Linux Mint. My environment is the terminal. My canvas is the physical world. I build local-first cyber-physical systems — models that run on my hardware, tools that answer to no one's server but mine.
+          </p>
+
+          <!-- Builder Tenets -->
+          <div class="hero-principles-grid">
+            <div class="principle-card">
+              <h4 class="principle-title">⚡ LOCAL-FIRST</h4>
+              <p class="principle-desc">Privacy is the architecture, not a feature. Systems built for sovereignty.</p>
+            </div>
+            <div class="principle-card">
+              <h4 class="principle-title">🔬 SIMULATION</h4>
+              <p class="principle-desc">Simulate first. Deploy second. Break nothing.</p>
+            </div>
+            <div class="principle-card">
+              <h4 class="principle-title">🛠️ SOVEREIGNTY</h4>
+              <p class="principle-desc">Code your environment. Don't let it code you.</p>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">
+              <span>TRANSMIT SIGNAL (CONTACT)</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#odyssey" class="btn btn-secondary">
+              <span>ENTER THE ODYSSEY (TIMELINE)</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -145,7 +164,7 @@
       </div>
     </section>
 
-    <!-- SECTION 3: THE ODYSSEY (TIMELINE WITH V1 CONTENTS & LONG FLUID TRANSITION) -->
+    <!-- SECTION 3: THE ODYSSEY (TIMELINE WITH V1 CONTENTS) -->
     <section id="odyssey" class="section-padding bg-offwhite">
       <div class="container">
         <div class="section-header">
@@ -155,12 +174,12 @@
         </div>
 
         <div id="timeline-container" class="timeline-wrapper">
-          <!-- Populated dynamically via V1 data in timeline.js -->
+          <!-- Populated dynamically via timeline.js -->
         </div>
       </div>
     </section>
 
-    <!-- SECTION 4: THE VAULT (PROJECTS MATRIX FROM V1) -->
+    <!-- SECTION 4: THE VAULT (SELECTED SPACE REPOSITORIES) -->
     <section id="vault" class="section-padding">
       <div class="container">
         <div class="section-header flex-between">
