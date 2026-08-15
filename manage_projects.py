@@ -328,11 +328,7 @@ def run_tui(projects):
         clear_screen()
         print_box_header("PORTFOLIO MANAGER - PROJECT PUBLISHING CONTROL")
         print("  Use Up/Down or j/k to navigate.")
-<<<<<<< HEAD
-        print(f"  Actions: {color_text('[p]', 'green')} Public, {color_text('[a]', 'yellow')} Secret (Local Vault), {color_text('[d]', 'red')} Nuke (Opt-out)")
-=======
         print(f"  Actions: {color_text('[p]', 'green')} Public, {color_text('[v]', 'yellow')} Private, {color_text('[a]', 'cyan')} Archive, {color_text('[d]', 'red')} Nuke (Opt-out)")
->>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
         print(f"  Press {color_text('[s]', 'cyan')} to Save & Commit, or {color_text('[q]', 'bold')} to Quit without saving.")
         print("-" * term_width)
         
@@ -344,15 +340,10 @@ def run_tui(projects):
             state = p['state']
             if state == 'P':
                 state_str = color_text("[ P ] Public ", "green")
-<<<<<<< HEAD
-            elif state in ('A', 'S'):
-                state_str = color_text("[ S ] Secret ", "yellow")
-=======
             elif state == 'V':
                 state_str = color_text("[ V ] Private", "yellow")
             elif state == 'A':
                 state_str = color_text("[ A ] Archive", "cyan")
->>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
             else:
                 state_str = color_text("[ D ] Nuked  ", "red")
                 
@@ -377,18 +368,11 @@ def run_tui(projects):
         print("-" * term_width)
         
         count_p = sum(1 for x in projects if x['state'] == 'P')
-<<<<<<< HEAD
-        count_a = sum(1 for x in projects if x['state'] in ('A', 'S'))
-        count_d = sum(1 for x in projects if x['state'] == 'D')
-        
-        status_line = f"  Total: {len(projects)} | {color_text('P', 'green')}: {count_p} | {color_text('S', 'yellow')}: {count_a} | {color_text('D', 'red')}: {count_d}"
-=======
         count_v = sum(1 for x in projects if x['state'] == 'V')
         count_a = sum(1 for x in projects if x['state'] == 'A')
         count_d = sum(1 for x in projects if x['state'] == 'D')
         
         status_line = f"  Total: {len(projects)} | {color_text('P', 'green')}: {count_p} | {color_text('V', 'yellow')}: {count_v} | {color_text('A', 'cyan')}: {count_a} | {color_text('D', 'red')}: {count_d}"
->>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
         print(status_line)
         
         if projects:
@@ -416,28 +400,18 @@ def run_tui(projects):
             selected_idx = min(len(projects) - 1, selected_idx + 1)
         elif key == 'p':
             projects[selected_idx]['state'] = 'P'
-<<<<<<< HEAD
-        elif key in ('a', 's'):
-=======
         elif key == 'v':
             projects[selected_idx]['state'] = 'V'
         elif key == 'a':
->>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
             projects[selected_idx]['state'] = 'A'
         elif key == 'd':
             projects[selected_idx]['state'] = 'D'
         elif key == 's':
             clear_screen()
             print_box_header("CONFIRM PORTFOLIO COMMISSION")
-<<<<<<< HEAD
-            print(f"  {color_text('Public (P):', 'green'):<15} {count_p} projects (will be displayed with GitHub links)")
-            print(f"  {color_text('Secret (S):', 'yellow'):<15} {count_a} projects (will be displayed in Vault only, without GitHub links)")
-            print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
-=======
             print(f"  {color_text('Public (P):', 'green'):<15} {count_p} projects (will be displayed on main timeline with GitHub links)")
             print(f"  {color_text('Private (V):', 'yellow'):<15} {count_v} projects (will be displayed on main timeline without GitHub links)")
             print(f"  {color_text('Archive (A):', 'cyan'):<15} {count_a} projects (will be moved to the Vault page)")
->>>>>>> 98e46b7 (refactor: extract CSS to index.css and expand project publishing states)
             print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
             print("-" * 65)
             confirm = input("  Apply changes and update portfolio? (y/n): ").strip().lower()

@@ -1,5 +1,6 @@
 // Main Entry Point for Sujay Seeram Portfolio V2
 import './styles/main.css';
+import { initPreloader } from './components/preloader.js';
 import { initHeroScene } from './three/heroScene.js';
 import { initTimeline } from './components/timeline.js';
 import { initProjectsMatrix } from './components/projects.js';
@@ -7,35 +8,38 @@ import { initTerminal } from './components/terminal.js';
 import { toggleSFX, playClickSFX, playHoverSFX } from './audio/soundEngine.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize Three.js Ambient Constellation Scene
-  const heroCanvas = document.getElementById('hero-canvas');
-  if (heroCanvas) {
-    initHeroScene(heroCanvas);
-  }
+  // 1. Initialize Igloo Build Preloader
+  initPreloader(() => {
+    // 2. Initialize Three.js Icy Monolith Scene after build complete
+    const heroCanvas = document.getElementById('hero-canvas');
+    if (heroCanvas) {
+      initHeroScene(heroCanvas);
+    }
+  });
 
-  // 2. Initialize Chronological Timeline
+  // 3. Initialize Chronological Timeline (V1 Odyssey)
   initTimeline();
 
-  // 3. Initialize Projects Matrix & Category Filters
+  // 4. Initialize Vault Projects Grid (V1 Repositories)
   initProjectsMatrix();
 
-  // 4. Initialize CLI Terminal Drawer
+  // 5. Initialize CLI Terminal Drawer
   initTerminal();
 
-  // 5. Setup Audio SFX Toggle
+  // 6. Setup Audio SFX Toggle
   const sfxToggleBtn = document.getElementById('sfx-toggle');
   if (sfxToggleBtn) {
     sfxToggleBtn.addEventListener('click', () => {
       const enabled = toggleSFX();
       const label = sfxToggleBtn.querySelector('.hud-label');
       if (label) {
-        label.textContent = enabled ? 'SFX: ON' : 'SFX: OFF';
+        label.textContent = enabled ? '🔈 Sound: ON' : '🔇 Sound: OFF';
       }
       playClickSFX();
     });
   }
 
-  // 6. Setup Form Dispatch Simulation
+  // 7. Setup Form Dispatch Simulation
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
@@ -46,14 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn) {
         btn.textContent = 'TRANSMISSION DISPATCHED ✔';
         setTimeout(() => {
-          btn.textContent = 'SEND TRANSMISSION';
+          btn.textContent = 'DISPATCH TRANSMISSION';
           contactForm.reset();
         }, 3000);
       }
     });
   }
 
-  // 7. Attach Sound Events to Interactive Elements
+  // 8. Attach Sound Events to Interactive Elements
   attachSoundEvents();
 });
 
