@@ -5,6 +5,7 @@ import json
 import subprocess
 import base64
 import re
+import shutil
 from datetime import datetime
 
 # ANSI Colors
@@ -575,6 +576,81 @@ def inject_data(projects_list):
         
     print_status("index.html updated successfully!", "success")
 
+def open_in_browser(file_path):
+    print_status(f"Opening {os.path.basename(file_path)} in Zen browser...", "info")
+    url = f"file://{os.path.abspath(file_path)}"
+    
+    zen_candidates = [
+        os.path.expanduser("~/zen/zen"),
+        os.path.expanduser("~/.local/bin/zen"),
+        shutil.which("zen"),
+        shutil.which("zen-browser"),
+    ]
+    for zen_cmd in zen_candidates:
+        if zen_cmd and os.path.isfile(zen_cmd) and os.access(zen_cmd, os.X_OK):
+            try:
+                subprocess.Popen([zen_cmd, url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                print_status(f"Opened preview in Zen browser ({zen_cmd}).", "success")
+                return
+            except Exception as e:
+                print_status(f"Could not launch Zen ({e}), trying system default...", "warning")
+                break
+
+    if shutil.which("xdg-open"):
+        try:
+            subprocess.Popen(["xdg-open", url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            print_status("Opened preview using system default browser (xdg-open).", "success")
+            return
+        except Exception:
+            pass
+
+    try:
+        import webbrowser
+        webbrowser.open(url)
+        print_status("Opened preview using default browser.", "success")
+    except Exception as e:
+        print_status(f"Could not open browser automatically: {e}", "warning")
+        print_status(f"Preview manually at: {url}", "info")
+
+def git_commit_and_push():
+    print_status("Preparing Git commit...", "info")
+    repo_dir = os.path.dirname(os.path.abspath(__file__))
+    try:
+        # Stage projects_db.json and index.html
+        subprocess.run(
+            ["git", "add", "projects_db.json", "index.html"],
+            cwd=repo_dir, capture_output=True, text=True, check=True
+        )
+        
+        # Check if there are staged differences
+        res_diff = subprocess.run(
+            ["git", "diff", "--staged", "--quiet"],
+            cwd=repo_dir
+        )
+        if res_diff.returncode != 0:
+            commit_msg = "update new projects"
+            subprocess.run(
+                ["git", "commit", "-m", commit_msg],
+                cwd=repo_dir, capture_output=True, text=True, check=True
+            )
+            print_status(f"Committed changes: '{commit_msg}'", "success")
+        else:
+            print_status("No changes detected between working tree and HEAD to commit.", "info")
+            
+        print_status("Pushing changes to GitHub remote...", "info")
+        res_push = subprocess.run(
+            ["git", "push"],
+            cwd=repo_dir, capture_output=True, text=True, check=True
+        )
+        print_status("Successfully pushed to GitHub!", "success")
+        if res_push.stdout.strip():
+            print(f"  {res_push.stdout.strip()}")
+    except subprocess.CalledProcessError as e:
+        err_msg = e.stderr.strip() if e.stderr else str(e)
+        print_status(f"Git error: {err_msg}", "error")
+    except Exception as e:
+        print_status(f"Error during git commit & push: {e}", "error")
+
 def main():
     clear_screen()
     print_box_header("PORTFOLIO SYNCHRONIZATION PIPELINE")
@@ -700,6 +776,23 @@ def main():
             
         active_projects = [p for p in existing_projects if not p.get('opted_out')]
         inject_data(active_projects)
+        
+        # Open preview in Zen / default browser
+        html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'index.html')
+        open_in_browser(html_path)
+        
+        # Prompt to commit and push
+        print("\n" + "-" * 65)
+        print_box_header("DEPLOYMENT & PUBLISHING")
+        try:
+            upload_confirm = input("  Upload and push changes to GitHub? (Y/n): ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            upload_confirm = 'n'
+            
+        if upload_confirm in ('', 'y', 'yes'):
+            git_commit_and_push()
+        else:
+            print_status("Upload skipped. Changes remain saved locally.", "info")
     else:
         print_status("Quit. No changes saved.", "warning")
 

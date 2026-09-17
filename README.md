@@ -102,6 +102,7 @@ python3 manage_projects.py
 - **Dual SDK Support**: Uses modern `google-genai` with fallback to `google-generativeai` and multi-model fallbacks (`gemini-3.1-flash-lite`, `gemini-2.5-flash`, `gemini-2.0-flash`).
 - **Graceful GitHub CLI Fallback**: If `gh` is missing, unauthenticated, or offline, the tool warns gracefully and continues using existing records in [`projects_db.json`](file:///home/suzaykid/Projects/sujayseeram/projects_db.json).
 - **Self-Contained DB Recovery**: If `projects_db.json` is missing, it automatically extracts and reconstructs the database directly from [`index.html`](file:///home/suzaykid/Projects/sujayseeram/index.html).
+- **Automated Browser Preview & Git Push**: After commissioning changes, it automatically opens `index.html` in Zen browser for preview, prompts to upload (`Y/n`), and commits (`"update new projects"`) and pushes directly to GitHub.
 
 #### TUI Keyboard Controls:
 - `Up` / `Down` or `k` / `j`: Navigate repository list
@@ -109,7 +110,7 @@ python3 manage_projects.py
 - `[v]`: Set to **Private** (displayed on main timeline without GitHub link)
 - `[a]`: Set to **Archive** (moved to the Vault section)
 - `[d]`: Set to **Nuked** (opted-out / hidden completely)
-- `[s]`: Save changes, commit to `projects_db.json`, and inject into `index.html`
+- `[s]`: Save changes, update `projects_db.json` & `index.html`, preview in Zen browser, and optionally push to GitHub
 - `[q]`: Quit without saving
 
 ---
