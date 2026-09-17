@@ -32,9 +32,9 @@ def clear_screen():
 def print_box_header(title):
     width = 65
     title_len = len(title)
-    padding = (width - title_len - 2) // 2
+    padding = max(0, (width - title_len - 2) // 2)
     left_pad = " " * padding
-    right_pad = " " * (width - title_len - 2 - padding)
+    right_pad = " " * max(0, width - title_len - 2 - padding)
     
     border_color = 'cyan'
     print(color_text("╔" + "═" * (width - 2) + "╗", border_color))
@@ -67,16 +67,25 @@ def load_env():
                     if key not in os.environ:
                         os.environ[key] = val
 
-def get_gemini_key():
+def get_gemini_key(interactive=False):
     load_env()
     key = os.environ.get('GEMINI_API_KEY')
-    if not key or key == 'your_gemini_api_key_here':
-        clear_screen()
-        print_box_header("ERROR: CONFIGURATION MISSING")
-        print_status("GEMINI_API_KEY is not set in environment or .env file.", "error")
-        print("\n  Please set GEMINI_API_KEY and run again.")
-        sys.exit(1)
-    return key
+    if key and key != 'your_gemini_api_key_here':
+        return key.strip()
+    if interactive:
+        try:
+            print("\n" + "-" * 65)
+            print_status("GEMINI_API_KEY is needed to analyze project READMEs with AI.", "info")
+            entered_key = input("  Enter GEMINI_API_KEY (or press Enter to use repo defaults): ").strip()
+            print("-" * 65 + "\n")
+            if entered_key and entered_key != 'your_gemini_api_key_here':
+                return entered_key
+        except (EOFError, KeyboardInterrupt):
+            pass
+    return None
+
+def get_github_username():
+    return os.environ.get('GITHUB_USERNAME', 'seeramsujay')
 
 def get_db_path():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'projects_db.json')
@@ -84,14 +93,31 @@ def get_db_path():
 def init_db():
     db_path = get_db_path()
     if not os.path.exists(db_path):
-        src_path = '/home/suzaykid/.gemini/antigravity/brain/c67151dd-61fc-4de3-a66b-955427176ba6/scratch/projects_extracted.json'
-        if os.path.exists(src_path):
-            import shutil
-            shutil.copy(src_path, db_path)
-            print_status(f"Initialized projects_db.json from backup.", "success")
-        else:
-            with open(db_path, 'w', encoding='utf-8') as f:
-                json.dump([], f)
+        # Attempt to recover projects array from index.html if present
+        html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'index.html')
+        projects = []
+        if os.path.exists(html_path):
+            try:
+                with open(html_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                start_proj = '// <!-- PROJECTS_DATA_START -->'
+                end_proj = '// <!-- PROJECTS_DATA_END -->'
+                start_idx = content.find(start_proj)
+                end_idx = content.find(end_proj)
+                if start_idx != -1 and end_idx != -1:
+                    block = content[start_idx + len(start_proj):end_idx]
+                    match = re.search(r'const\s+projects\s*=\s*(\[.*?\])\s*;', block, re.DOTALL)
+                    if match:
+                        projects = json.loads(match.group(1))
+                        print_status("Initialized projects_db.json from index.html.", "success")
+            except Exception as e:
+                print_status(f"Could not extract existing projects from index.html: {e}", "warning")
+        
+        with open(db_path, 'w', encoding='utf-8') as f:
+            json.dump(projects, f, indent=4)
+        if not projects:
+            print_status("Created new empty projects_db.json.", "info")
+
     with open(db_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
@@ -102,20 +128,33 @@ def save_db(projects):
     print_status(f"Database saved to {db_path}", "success")
 
 def get_public_repos():
-    print_status("Fetching public repositories from GitHub...", "info")
+    username = get_github_username()
+    print_status(f"Fetching public repositories for @{username} from GitHub...", "info")
     try:
-        res = subprocess.run(["gh", "repo", "list", "seeramsujay", "--visibility=public", "--json", "name,createdAt,description,url,isFork", "--limit", "100"],
-                             capture_output=True, text=True, check=True)
+        res = subprocess.run(
+            ["gh", "repo", "list", username, "--visibility=public", "--json", "name,createdAt,description,url,isFork", "--limit", "100"],
+            capture_output=True, text=True, check=True
+        )
         return json.loads(res.stdout)
+    except FileNotFoundError:
+        print_status("GitHub CLI ('gh') is not installed. Proceeding with existing local projects only.", "warning")
+        return []
+    except subprocess.CalledProcessError as e:
+        err_msg = e.stderr.strip() if e.stderr else str(e)
+        print_status(f"Warning: gh CLI error ({err_msg}). Proceeding with existing local projects only.", "warning")
+        return []
     except Exception as e:
-        print_status(f"Error calling gh CLI: {e}", "error")
-        sys.exit(1)
+        print_status(f"Warning: Could not fetch GitHub repositories ({e}). Proceeding with existing database.", "warning")
+        return []
 
 def get_readme_content(repo_name):
+    username = get_github_username()
     print_status(f"Fetching README for {repo_name}...", "info")
     try:
-        res = subprocess.run(["gh", "api", f"repos/seeramsujay/{repo_name}/readme", "--jq", ".content"],
-                             capture_output=True, text=True)
+        res = subprocess.run(
+            ["gh", "api", f"repos/{username}/{repo_name}/readme", "--jq", ".content"],
+            capture_output=True, text=True
+        )
         if res.returncode == 0:
             b64_content = res.stdout.strip()
             return base64.b64decode(b64_content).decode('utf-8', errors='ignore')
@@ -123,16 +162,27 @@ def get_readme_content(repo_name):
         print_status(f"Warning: could not fetch README for {repo_name}: {e}", "warning")
     return ""
 
-def generate_metadata_with_gemini(repo_name, repo_desc, readme_content, api_key):
-    print_status(f"Analyzing repository content with Gemini 3.1 Flash Lite...", "info")
-    try:
-        import google.generativeai as genai
-    except ImportError:
-        print_status("google-generativeai package is not installed.", "error")
-        sys.exit(1)
+def _parse_json_response(raw_text):
+    cleaned = raw_text.strip()
+    if cleaned.startswith("```"):
+        cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
+        cleaned = re.sub(r"\s*```$", "", cleaned)
+    return json.loads(cleaned.strip())
 
-    genai.configure(api_key=api_key)
+def generate_metadata_with_gemini(repo_name, repo_desc, readme_content, api_key):
+    default_metadata = {
+        "status": "COMPLETED",
+        "category": "tool",
+        "tags": [],
+        "description": (repo_desc or f"Portfolio project {repo_name}.")[:150],
+        "awardText": None,
+        "awardType": None
+    }
     
+    if not api_key:
+        print_status("No Gemini API key provided. Using repository details for metadata.", "info")
+        return default_metadata
+
     prompt = f"""
 You are an expert developer portfolio assistant. Your task is to analyze the GitHub repository details and README content, and generate metadata suitable for a premium portfolio.
 
@@ -154,32 +204,49 @@ Strict JSON Schema to output:
 
 Response MUST be a single JSON object matching the schema.
 """
-    model = genai.GenerativeModel('gemini-3.1-flash-lite')
-    response = model.generate_content(
-        prompt,
-        generation_config={"response_mime_type": "application/json"}
-    )
-    
+
+    print_status("Analyzing repository content with Gemini AI...", "info")
+
+    # 1. Try modern google.genai SDK
     try:
-        data = json.loads(response.text.strip())
-        return data
-    except Exception:
-        text = response.text.strip()
-        if text.startswith("```"):
-            text = re.sub(r"^```json\s*", "", text)
-            text = re.sub(r"^```\s*", "", text)
-            text = re.sub(r"\s*```$", "", text)
-        try:
-            return json.loads(text.strip())
-        except Exception:
-            return {
-                "status": "COMPLETED",
-                "category": "tool",
-                "tags": [],
-                "description": repo_desc or "Portfolio project.",
-                "awardText": None,
-                "awardType": None
-            }
+        from google import genai
+        client = genai.Client(api_key=api_key)
+        for model_name in ['gemini-3.1-flash-lite', 'gemini-2.5-flash', 'gemini-2.0-flash']:
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt,
+                    config={"response_mime_type": "application/json"}
+                )
+                if response and response.text:
+                    return _parse_json_response(response.text)
+            except Exception:
+                continue
+    except ImportError:
+        pass
+
+    # 2. Try legacy google.generativeai SDK
+    try:
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            import google.generativeai as legacy_genai
+        legacy_genai.configure(api_key=api_key)
+        for model_name in ['gemini-3.1-flash-lite', 'gemini-2.5-flash', 'gemini-1.5-flash']:
+            try:
+                model = legacy_genai.GenerativeModel(model_name)
+                response = model.generate_content(
+                    prompt,
+                    generation_config={"response_mime_type": "application/json"}
+                )
+                if response and response.text:
+                    return _parse_json_response(response.text)
+            except Exception:
+                continue
+    except Exception as e:
+        print_status(f"Gemini analysis warning ({e}). Falling back to repository defaults.", "warning")
+
+    return default_metadata
 
 def format_date(created_at_str):
     try:
@@ -276,11 +343,20 @@ def build_tui_projects(existing_projects, repos):
 
 def get_key():
     import sys
+    if not sys.stdin.isatty():
+        line = sys.stdin.readline()
+        return line.strip() if line else 'q'
+    
     import tty
     import termios
     import select
     fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
+    try:
+        old_settings = termios.tcgetattr(fd)
+    except Exception:
+        line = sys.stdin.readline()
+        return line.strip() if line else 'q'
+
     try:
         tty.setraw(fd)
         ch = sys.stdin.read(1)
@@ -299,11 +375,22 @@ def get_key():
             return 'esc'
         return ch
     finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        try:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        except Exception:
+            pass
 
 def run_tui(projects):
     selected_idx = 0
     start_idx = 0
+
+    if not projects:
+        clear_screen()
+        print_box_header("PORTFOLIO MANAGER - NO PROJECTS FOUND")
+        print("  No projects found in database or GitHub.")
+        print("  Press any key to exit.")
+        get_key()
+        return 'quit'
     
     while True:
         try:
@@ -379,7 +466,7 @@ def run_tui(projects):
             sel_p = projects[selected_idx]
             p_desc = sel_p.get('description', 'No description.')
             wrapped_lines = []
-            desc_limit = term_width - 8
+            desc_limit = max(10, term_width - 8)
             for j in range(0, len(p_desc), desc_limit):
                 wrapped_lines.append(p_desc[j:j+desc_limit])
             desc_disp = "\n            ".join(wrapped_lines[:2])
@@ -414,14 +501,20 @@ def run_tui(projects):
             print(f"  {color_text('Archive (A):', 'cyan'):<15} {count_a} projects (will be moved to the Vault page)")
             print(f"  {color_text('Nuked (D):', 'red'):<15} {count_d} projects (will be hidden from the portfolio)")
             print("-" * 65)
-            confirm = input("  Apply changes and update portfolio? (y/n): ").strip().lower()
-            if confirm == 'y':
-                return 'save'
+            try:
+                confirm = input("  Apply changes and update portfolio? (y/n): ").strip().lower()
+                if confirm == 'y':
+                    return 'save'
+            except (EOFError, KeyboardInterrupt):
+                return 'quit'
         elif key == 'q':
             clear_screen()
             print_box_header("QUIT WITHOUT SAVING")
-            confirm = input("  Are you sure you want to discard all changes? (y/n): ").strip().lower()
-            if confirm == 'y':
+            try:
+                confirm = input("  Are you sure you want to discard all changes? (y/n): ").strip().lower()
+                if confirm == 'y':
+                    return 'quit'
+            except (EOFError, KeyboardInterrupt):
                 return 'quit'
 
 def inject_data(projects_list):
@@ -444,6 +537,10 @@ def inject_data(projects_list):
     readmes_json = json.dumps(readmes_dict, indent=4)
     
     html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'index.html')
+    if not os.path.exists(html_path):
+        print_status(f"index.html not found at {html_path}", "warning")
+        return
+
     with open(html_path, 'r', encoding='utf-8') as f:
         content = f.read()
         
@@ -479,11 +576,16 @@ def inject_data(projects_list):
     print_status("index.html updated successfully!", "success")
 
 def main():
-    api_key = get_gemini_key()
-    
     clear_screen()
     print_box_header("PORTFOLIO SYNCHRONIZATION PIPELINE")
     
+    api_key = get_gemini_key(interactive=False)
+    if not api_key:
+        print_status("GEMINI_API_KEY not set in environment or .env file.", "warning")
+        print_status("Project browser will run in standard mode (no AI generation).", "info")
+    else:
+        print_status("GEMINI_API_KEY detected.", "success")
+        
     existing_projects = init_db()
     repos = get_public_repos()
     
@@ -496,6 +598,11 @@ def main():
         clear_screen()
         print_box_header("SAVING AND COMMISSIONING CHANGES")
         
+        # If new projects need ingestion and no api_key yet, prompt once
+        has_new_published = any(item['is_new'] and item['state'] in ('P', 'V', 'A') for item in tui_projects)
+        if has_new_published and not api_key:
+            api_key = get_gemini_key(interactive=True)
+
         existing_by_name = {p['name']: p for p in existing_projects}
         db_updated = False
         
