@@ -1,0 +1,95 @@
+Repository,Visibility,Overall_Rank,ECE_Importance_Rank,CS_Importance_Rank,Domain_Category,Tech_Stack,Resume_Bullet_Summary,README_Path
+EVolvAI,Public,1.5,2,1,AI / Physics-Informed Computing,"PyTorch, Generative GCD-VAE, Genetic Algorithms, Streamlit",Physics-informed generative EV charging demand pipeline optimizing node placement under distribution grid and climate constraints.,Public/EVolvAI.md
+motor-safe,Public,3.5,3,4,Cyber-Physical / Edge-AI Diagnostics,"ESP32, Isolation Forest, FFT DSP, MQTT, Three.js Digital Twin","Tri-modal edge-AI predictive maintenance system fusing current, voltage, and vibration telemetry for industrial motor degradation isolation.",Public/motor-safe.md
+specRAG,Public,4.0,5,3,Developer Tools / Firmware Systems,"Python, TypeScript, Model Context Protocol (MCP), Vector Search",Zero-hallucination firmware auditing gateway and VS Code extension bridging hardware datasheets with C/C++ firmware validation.,Public/specRAG.md
+smartRing,Private,5.0,1,9,Embedded / Wearables / Cyber-Physical,"Rust (no_std, Embassy), nRF52, I2C, Hall-Effect, Edge-Interrupts",Asynchronous Rust-powered wearable biometric ring and gesture interface with cooperative scheduling and dual-magnet Hall sensing.,Private/smartRing.md
+AI-based-PID-tuning-controller,Private,7.0,7,7,Control Theory & Machine Learning,"Python, Reinforcement Learning, MATLAB/Simulink, Control Systems",Neural-network and RL-assisted automated PID tuning controller dynamically adapting to plant parameter drifts.,Private/AI-based-PID-tuning-controller.md
+pheno-speak,Public,8.0,8,8,Edge DSP & Acoustic Biomarkers,"Python, Audio DSP, MFCC Feature Extraction, Edge-ML, TFLite",Real-time edge acoustic vocal biomarker extractor for non-invasive digital phenotyping and disease screening (SDG 3.4).,Public/pheno-speak.md
+ytstr,Public,8.5,15,2,Systems & Audio DSP,"Python, Psychoacoustic DecisionEngine, Spectral DSP, TUI",Terminal-native audio streamer with psychoacoustic auto-DJ transitions and active backpressure delivering 70% RAM reduction.,Public/ytstr.md
+controlled-haptics,Private,9.0,4,14,Embedded Hardware & Control,"C/C++, ESP32, LRA Haptic Actuators, PWM Control, FreeRTOS",Precision closed-loop haptic feedback engine optimizing waveform resonant frequency tracking for cyber-physical interfaces.,Private/controlled-haptics.md
+auto-worker,Private,9.5,9,10,Hardware HID & Computer Vision,"ESP32 USB HID, Python, OpenCV Fast-Path RoI, Low-Latency C++",Anti-bot automation engine coupling real-time computer vision region-of-interest processing with physical ESP32 hardware HID emulation.,Private/auto-worker.md
+ADAS-Sensor,Private,10.5,6,15,Automotive / Embedded Cyber-Physical,"C++, Arduino, Ultrasonic/Radar Sensors, SPI/UART Telemetry",Automotive driver-assistance sensor telemetry cluster with hardware obstacle tracking and collision warning algorithms.,Private/ADAS-Sensor.md
+SAFE-inventory,Public,10.5,10,11,Embedded IoT & Mobile,"Flutter, ESP32, BLE 5.0, SQLite, Swipe Progression UI",Resilient warehouse asset inventory system featuring single-product batch scanning and set-and-forget hardware pairing.,Public/SAFE-inventory.md
+AntigravityHelper,Private,10.5,16,5,Developer Platforms / Distributed Runtimes,"Rust (Actix-Web), React Native, WebSockets, eBPF, PTY",Autonomous developer workflow triage framework and high-performance Rust PTY orchestration agent.,Private/AntigravityHelper.md
+dust-vision,Public,12.0,11,13,Computer Vision & Edge Environmental,"OpenCV, YOLO, Python, FastAPI, Environmental Sensors",Construction site particulate air pollution tracking system leveraging computer vision and edge sensory data.,Public/dust-vision.md
+informed-poll,Public,12.0,18,6,Civic Tech / RAG Systems,"Vite, React 18, LanceDB, Gemini 3.1 Flash Lite, FastAPI, Cloud Run",Mobile-first civic election companion combining swipe mechanics with neural RAG grounded in Election Commission records.,Public/informed-poll.md
+dust-sim,Public,14.5,12,17,Physics Simulation,"Python, Physics Particle Kinematics, Pygame/OpenGL",Physics particle simulation modeling particulate dispersion dynamics under varied thermal and wind conditions.,Public/dust-sim.md
+lunel-gravity,Public,16.0,20,12,Cloud Platforms & Dev Tools,"TypeScript, Rust, Docker, WebSockets, Mobile IDE Architecture",AI-powered cloud development runtime and mobile IDE interface supporting sub-millisecond remote terminal interaction.,Public/lunel-gravity.md
+hardware-qwen,Public,16.5,17,16,Edge AI & Hardware Acceleration,"C++, GGML/llama.cpp, NPU/DSP Quantization, Embedded Linux",Quantized Small Language Model inference pipeline optimized for resource-limited embedded processors.,Public/hardware-qwen.md
+oneWheel,Private,17.5,13,22,Robotics & Power Electronics,"C++, ESP32, BLDC Motor Controller, MPU6050 Kalman Filter, PID",Inverted-pendulum single-wheel self-balancing vehicle with IMU sensor fusion and high-current BLDC commutation.,Private/oneWheel.md
+lora-connect,Private,18.5,14,23,RF Communications & IoT,"C++, SX1278 LoRa, ESP32, TDMA Mesh Protocol",Long-range off-grid resilient sensor telemetry mesh protocol operating over 433/868MHz LoRa packets.,Private/lora-connect.md
+city-mind,Public,19.0,19,19,Smart City IoT & Analytics,"Python, FastAPI, GIS Mapping, Streamlit, Time-Series Anomaly",Urban infrastructure telemetry monitoring suite analyzing municipal utility load distributions.,Public/city-mind.md
+Kavach-UPI,Public,20.0,22,18,Mobile Security & Operating Systems,"Kotlin/Java, Android Accessibility API, System Overlay Security",On-device security shield preventing remote screen-sharing exploits and social engineering scams during financial transactions.,Public/Kavach-UPI.md
+slingshot,Public,20.5,21,20,Data Pipelines & Control,"Python, Scikit-Learn, FastAPI, Real-Time Ingestion",Adaptive particulate matter mitigation engine synchronizing sensor streams with automated suppression triggers.,Public/slingshot.md
+mixer,Private,22.0,23,21,Digital Audio DSP,"Python, NumPy, PyAudio, Psychoacoustic Crossfade Engine",Automated multi-track audio mixing engine with loudness equalization and beat-matched crossfading.,Private/mixer.md
+legal-ease,Public,60.0,50,50,Tool,"PYTHON, CYTHON, NVIDIA NEMOTRON, FASTAPI","A privacy-first, local-AI legal navigator utilizing Cython-accelerated heuristics to analyze contract risks and generate attorney consultation briefs.",Public/legal-ease.md
+sujayseeram,Public,60.0,50,50,Tool,Python / Shell,Personal metadata repository housing global developer configurations and active stats.,Public/sujayseeram.md
+hrm-harness,Public,60.0,50,50,Software / utilities,Python / Shell,The open source coding agent which uses hrm models and saves tokens,Public/hrm-harness.md
+ideation-goat,Public,60.0,50,50,Tool,"PYTHON, MCP, GEMINI, FASTAPI","An enterprise-grade MCP server offering 24 autonomous diagnostic tools for cross-domain AI research, codebase auditing, and scaffolding.",Public/ideation-goat.md
+activity-mapper,Public,60.0,50,50,Tool,"FLUTTER, DART, SQLITE, ANDROID","A high-performance, local-first GPS endurance tracker optimized for low-end hardware with smart turn-back navigation and multi-format data export.",Public/activity-mapper.md
+web2api,Public,60.0,50,50,Tool,"PYTHON, FASTAPI, PLAYWRIGHT, AUTOMATION","A high-performance local REST API that bridges the Gemini web interface, enabling programmatic LLM access via persistent browser automation.",Public/web2api.md
+aqua-pulse,Public,60.0,50,50,Hardware,"TINYML, FREERTOS, REACT, STM32","A cognitive, software-defined sonar payload for AUVs featuring TinyML edge policy engines and a high-performance WebGL digital twin console.",Public/aqua-pulse.md
+bare-minimum,Public,60.0,50,50,Tool,"PYTHON, POETRY","A streamlined, minimal baseline template for rapid Python development, designed to accelerate project setup and workflow efficiency.",Public/bare-minimum.md
+SIH-Problem-Statements-2026,Public,60.0,50,50,Hackathon,"PYTHON, PANDAS, DATA EXTRACTION, WEB SCRAPING","A structured, cleaned dataset of 226 Smart India Hackathon 2026 problem statements available in JSON, CSV, and Excel formats for analysis.",Public/SIH-Problem-Statements-2026.md
+SimpleFunProjects,Public,60.0,50,50,Tool,"SANDBOX, ARDUINO",Curated archive of micro-hardware and software experiments utilizing the absolute minimum component sets.,Public/SimpleFunProjects.md
+ytp,Public,60.0,50,50,Tool,"SHELL, PYTHON, CLI","A lightweight CLI wrapper for yt-dlp that simplifies playlist management, stream-friendly downloads via aria2c, and custom index-based retrieval.",Public/ytp.md
+mpv-mic,Public,60.0,50,50,Tool,"BASH, PIPEWIRE, MPV, LINUX",A lightweight Bash utility that creates a virtual PipeWire microphone to stream local audio files directly into conferencing applications.,Public/mpv-mic.md
+natural-typer,Public,60.0,50,50,Software / utilities,Python / Shell,"Python application that simulates realistic human typing behavior with natural mistakes, speed fluctuations, and corrections.",Public/natural-typer.md
+EMT---Sims,Public,60.0,50,50,Tool,"WEBGL, JAVASCRIPT, PYTHON, PHYSICS","An interactive 3D WebGL physics suite visualizing electromagnetic theory, vector calculus, and Maxwell's equations for engineering students.",Public/EMT---Sims.md
+MATLAB_Labsheet_Maker,Public,60.0,50,50,Tool,"PYTHON, MATLAB, LATEX, OCTAVE","An automated workflow engine that converts DSP lab requirements into professional, compact LaTeX reports via Octave script execution.",Public/MATLAB_Labsheet_Maker.md
+safe-play,Public,60.0,50,50,Hackathon,"PYTHON, FASTAPI, MQTT, CYTHON","Decentralized edge-intelligence mesh for smart campus crowd safety, leveraging local SLM inference and real-time directed spatial graph analysis.",Public/safe-play.md
+vanguard-arena-os,Public,60.0,50,50,Software / utilities,Python / Shell,Repository utility and codebase,Public/vanguard-arena-os.md
+mods,Public,60.0,50,50,Tool,"OPEN SOURCE, UTILITY",A repository dedicated to custom modifications and modular project enhancements.,Public/mods.md
+mine-clicker,Public,60.0,50,50,Software / utilities,Python / Shell,Repository utility and codebase,Public/mine-clicker.md
+ScopeCreep.ai,Public,60.0,50,50,Hackathon,"REACT, VITE, NODE.JS, PYTHON",An AI-powered sprint watchdog that monitors development activity against PRDs to detect and alert on unauthorized scope creep in real time.,Public/ScopeCreep.ai.md
+pollution-check,Public,60.0,50,50,Tool,"PREACT, TAILWIND, ZUSTAND, CLOUDFLARE","A privacy-first PWA that automates environmental footprint tracking via local parsing of financial, travel, and receipt data.",Public/pollution-check.md
+SynthScope,Public,60.0,50,50,Tool,"PYTHON, FASTAPI, NEXT.JS, SIGNAL PROCESSING","A browser-based digital logic analyzer for ECE, simulating physical signal conditioning and VCD export without expensive hardware.",Public/SynthScope.md
+RanSafe,Public,60.0,50,50,Hackathon,"GEMINI 3, GOOGLE CLOUD, DYNATRACE, KUBERNETES","An autonomous SRE agent using Gemini 3 and Dynatrace to perform real-time, automated cloud infrastructure airgapping during ransomware attacks.",Public/RanSafe.md
+clearer-terms,Public,60.0,50,50,Tool,"JAVASCRIPT, CHROME EXTENSIONS, GEMINI API","An AI-powered Chrome extension that intercepts checkout flows to translate deceptive fine print and hidden pricing into simple, clear mathematics.",Public/clearer-terms.md
+post-pilot,Public,60.0,50,50,Tool,"REACT, VITE, REDIS, DEVVIT","A proactive Reddit moderation portal that shifts policy enforcement to the client-side, eliminating rule-breaking content before submission.",Public/post-pilot.md
+evil-dead,Public,60.0,50,50,Tool,"PYTHON, LANGGRAPH, SIFT, DFIR","An autonomous DFIR threat hunting engine that automates triage, detects memory anomalies, and maps lateral movement with structured forensic data.",Public/evil-dead.md
+conscious-cloud,Public,60.0,50,50,Tool,"GO, ENVOY, AWS, PYTHON",An AI-driven L4/L7 traffic orchestrator that dynamically routes microservices across AWS Spot instances to optimize compute costs with zero downtime.,Public/conscious-cloud.md
+betterbite,Public,60.0,50,50,Research,"NEXTJS, HEALTH_AI",Precision metabolic nutrition engine. Meal analysis using Gemini 3.1 Flash Lite and counterfactual bio-swaps.,Public/betterbite.md
+swiftSeat,Public,60.0,50,50,Research,"EXPO, REACT_NATIVE",Cross-platform smart venue experience platform utilizing the predictive PALO routing algorithm and Gemini.,Public/swiftSeat.md
+Word-Association-Test-SSB-,Public,60.0,50,50,Software / utilities,Python / Shell,A fullscreen Word Association Test (WAT) application built with Python and Pygame to help candidates prepare for the SSB psychological tests.,Public/Word-Association-Test-SSB-.md
+STAC-Tasks,Public,60.0,50,50,Tool,"CI_CD, AUTOMATION",Task runner and CI/CD validator for high-speed local deployments and security compliance.,Public/STAC-Tasks.md
+TechRangers,Public,60.0,50,50,Research,"GIS, AI_ML",AI-powered forest resource tracking and WebGIS decision support system using U-Net visual models.,Public/TechRangers.md
+LabsheetFormatMaker,Public,60.0,50,50,Tool,"CLI, UTILITY","Open-sourced. Automate lab report formatting, reclaim hours for real engineering.",Public/LabsheetFormatMaker.md
+smarter-startup-apps,Public,60.0,50,50,Software / utilities,Python / Shell,Adaptive workflow intelligence engine for Linux by preloading the apps.,Public/smarter-startup-apps.md
+sentinel-mind,Public,60.0,50,50,Hackathon,"FASTAPI, VERTEX_AI",Multi-agent disaster response platform. Gemini 3.1 Flash Lite-powered autonomous coordination.,Public/sentinel-mind.md
+FactionTurf-Suzay,Public,60.0,50,50,Software / utilities,Python / Shell,GitHub PR Controlled Game,Public/FactionTurf-Suzay.md
+maildigest,Private,60.0,60,60,Tool,"PYTHON, AUTOMATION",Automatically summarizes and indexes local email threads and mail directories using NLP.,Private/maildigest.md
+spice-ai,Private,60.0,60,60,Research,"ML, LOCAL_COMPUTE",Private SPICE-to-AI neural net experimentation pushing the limits of local CPU topologies.,Private/spice-ai.md
+mopper,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/mopper.md
+blind-nav,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/blind-nav.md
+Semantic-Mapping-Engine,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/Semantic-Mapping-Engine.md
+swarm-security,Private,60.0,60,60,Software / utilities,Python / Shell,"Autonomous warehouse surveillance robot. 29-class perception, face recognition, ROS autonomy.",Private/swarm-security.md
+bid-bud,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/bid-bud.md
+maintenence,Private,60.0,60,60,Tool,"CLI, WORKSPACE","Sovereign workspace state-machine managing local skill structures, security constraints, and workspace automation.",Private/maintenence.md
+audio-lib-cleaner,Private,60.0,60,60,Tool,"LINUX, PYTHON",Automate tag restoration and acoustic fingerprinting for massive music libraries.,Private/audio-lib-cleaner.md
+moon-mapper,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/moon-mapper.md
+louder-voice,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/louder-voice.md
+magic-touch,Private,60.0,60,60,Hardware,"CV, HARDWARE",Monocular virtual touchscreen system. Turn any passive screen into a touch surface using smartphone cameras.,Private/magic-touch.md
+smart-home-assistant-framework,Private,60.0,60,60,Hardware,"IOT, DOCKER","Private Docker-based home automation stack integrating Home Assistant, ESPHome, Node-RED, and Wyoming.",Private/smart-home-assistant-framework.md
+MIRAI,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/MIRAI.md
+github-semantic-searcher,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/github-semantic-searcher.md
+GSC26-Challenge3-248,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/GSC26-Challenge3-248.md
+GSC26-Challenge2-248,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/GSC26-Challenge2-248.md
+GSC26-Challenge1-248,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/GSC26-Challenge1-248.md
+better-bite,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/better-bite.md
+healthcare-android-ai,Private,60.0,60,60,Research,"ANDROID, HEALTH_AI",Sandbox for testing PyTorch and Gemini-based AI models within Android healthcare applications.,Private/healthcare-android-ai.md
+mc-bot,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/mc-bot.md
+intuitive-os,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/intuitive-os.md
+adaptive-repo,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/adaptive-repo.md
+gem-bud,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/gem-bud.md
+informedpoll,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/informedpoll.md
+swift-seat,Private,60.0,60,60,Software / utilities,Python / Shell,Repository utility and codebase,Private/swift-seat.md
+magicspice,Private,60.0,60,60,Tool,"SPICE, COMPILER",Headless SPICE netlist compiler and LTspice automation interface. Part of the AI-to-SPICE ecosystem.,Private/magicspice.md
+stride-tech,Private,60.0,60,60,Research,"AI, SYSTEMS",The current frontier. More when it's ready.,Private/stride-tech.md
+ieeemaker,Private,60.0,60,60,Tool,"PYTHON, COMPILER","Markdown-to-LaTeX compiler strictly conforming to IEEE formatting rules, bibliography, and author blocks.",Private/ieeemaker.md
+evolvai-dash,Private,60.0,60,60,Tool,"STREAMLIT, GEOSPATIAL",Dashboard making EVolvAI's outputs legible for the Melbourne audience.,Private/evolvai-dash.md
+motor-sim,Private,60.0,60,60,Research,"PHYSICS, SIMULATION",Physics model for motor vibration stress testing. The unglamorous work that matters.,Private/motor-sim.md
+recordBro,Private,60.0,60,60,Tool,"CLI, LINUX",Local voice recording and transcription app with obsidian indexing and whisper.cpp integration.,Private/recordBro.md
+LabsheetMaker,Private,60.0,60,60,Tool,"PYTHON, UTILITY",A lightweight desktop application to automatically assemble and format academic labsheets from source directories.,Private/LabsheetMaker.md
+ytm-cli,Private,60.0,60,60,Tool,"CLI, AUDIO_DSP",Gapless music from the terminal. No GUI. No compromise.,Private/ytm-cli.md
+PersonalAssistant,Private,60.0,60,60,Research,"LOCAL_AI, OFFLINE","First experiment in data sovereignty. 100% local inference, no API calls home.",Private/PersonalAssistant.md
