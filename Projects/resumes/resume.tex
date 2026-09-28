@@ -16,7 +16,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \setlength{\footskip}{12pt}
-\rfoot{\footnotesize Page \thepage\ of 2}
+\rfoot{\footnotesize Page \thepage\ of 3}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
@@ -24,8 +24,8 @@
 \addtolength{\oddsidemargin}{-0.55in}
 \addtolength{\evensidemargin}{-0.55in}
 \addtolength{\textwidth}{1.1in}
-\addtolength{\topmargin}{-.6in}
-\addtolength{\textheight}{1.2in}
+\addtolength{\topmargin}{-.65in}
+\addtolength{\textheight}{1.3in}
 
 \urlstyle{same}
 
@@ -51,7 +51,7 @@
 
 \newcommand{\resumeSubheading}[4]{
   \vspace{-2pt}\item
-    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \begin{tabular*}{\linewidth}[t]{l@{\extracolsep{\fill}}r}
       \textbf{#1} & #2 \\
       \textit{\small#3} & \textit{\small #4} \\
     \end{tabular*}\vspace{-3pt}
@@ -59,14 +59,14 @@
 
 \newcommand{\resumeProjectHeading}[2]{
   \vspace{-2pt}\item
-    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \begin{tabular*}{\linewidth}[t]{l@{\extracolsep{\fill}}r}
       \textbf{#1} & \textit{\small #2} \\
     \end{tabular*}\vspace{-3pt}
 }
 
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=14pt, labelsep=4pt]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=14pt, labelsep=4pt, itemsep=0.5pt, parsep=0pt]}
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-3pt}}
 
 \begin{document}
@@ -74,11 +74,11 @@
 %----------HEADING-----------------
 \begin{center}
   {\Huge \textbf{Sujay Seeram}} \\ \vspace{3pt}
-  \textbf{Cyber-Physical Systems, Sovereign AI Infrastructure \& Embedded Electronics} \\ \vspace{2pt}
+  \textbf{Cyber-Physical Systems, Embedded Hardware \& AI Infrastructure Engineer} \\ \vspace{3pt}
   \small Email: \href{mailto:sujayat2007@gmail.com}{sujayat2007@gmail.com} \ \ $|$ \ \ 
   GitHub: \href{https://github.com/seeramsujay}{github.com/seeramsujay} \ \ $|$ \ \ 
-  Portfolio: \href{https://seeramsujay.github.io}{seeramsujay.github.io} \ \ $|$ \ \ 
-  Location: Visakhapatnam / Coimbatore, India
+  Portfolio: \href{https://seeramsujay.github.io}{seeramsujay.github.io} \\ \vspace{1pt}
+  \footnotesize Location: Coimbatore, Tamil Nadu / Andhra Pradesh, India
 \end{center}
 
 \vspace{-4pt}
@@ -86,7 +86,7 @@
 \section{Engineering Profile \& Core Philosophy}
 \vspace{1pt}
 \small{
-Undergraduate systems and electronics engineer at Amrita Vishwa Vidyapeetham with an established track record in \textbf{cyber-physical systems}, \textbf{embedded hardware architectures}, and \textbf{physics-informed machine learning}. An open, execution-oriented learner and quick adapter driven by the \textbf{``Extreme Economic Engineering''} paradigm: deriving minimalist hardware and algorithmic configurations from physical first principles to drastically cut component costs, compute overhead, and power consumption without sacrificing capability. Beyond core engineering, deeply committed to applying technological innovation toward \textbf{renewable energy}, \textbf{environmental sustainability}, and \textbf{social responsibility}. Disciplined Naval NCC cadet and 3-time Services Selection Board (SSB) attendee.
+Electronics and Communication Engineering undergraduate at Amrita Vishwa Vidyapeetham operating at the intersection of \textbf{cyber-physical systems}, \textbf{embedded hardware architectures}, and \textbf{high-performance distributed software}. Pioneer of the \textbf{``Extreme Economic Engineering''} paradigm: deriving system configurations from physical first principles and algorithmic efficiency to drastically slash physical component counts, quiescent power consumption, bill-of-materials (BOM), and compute overhead without sacrificing numerical rigor or reliability. Disciplined NCC cadet, 3-time Services Selection Board (SSB) attendee, and certified in Indian Sign Language (ISL).
 }
 
 %-----------EDUCATION-----------------
@@ -96,153 +96,195 @@ Undergraduate systems and electronics engineer at Amrita Vishwa Vidyapeetham wit
       {Amrita Vishwa Vidyapeetham}{Coimbatore, India}
       {Bachelor of Technology in Electronics and Communication Engineering (ECE)}{Expected 2027}
       \resumeItemListStart
-        \item{\textbf{Core Focus}: Cyber-Physical Architectures, Embedded Edge ML, High-Throughput Runtimes, Physics-Informed Modeling.}
+        \item{\textbf{Core Coursework}: Microprocessors \& Microcontrollers (ARM Cortex/8051), Data Structures \& Algorithms, Signals \& Systems, Control Systems, Operating Systems Concepts, Digital System Design, Analog Electronic Circuits, VLSI Design, Communication Networks, Power Electronics.}
+        \item{\textbf{Specialization}: Hardware-Software Co-Design, Edge ML/DSP, Low-Latency Runtimes, Physics-Informed Computing.}
       \resumeItemListEnd
-    \resumeSubheading
-      {Navy Children School (NCS), CBSE}{Visakhapatnam, India}
-      {Senior Secondary (Class XII): \textbf{92.5\%} \quad $|$ \quad Secondary School (Class X): \textbf{95.0\%}}{2021 -- 2023}
   \resumeSubHeadingListEnd
 
 %-----------TECHNICAL SKILLS-----------------
 \section{Technical Skills}
   \resumeSubHeadingListStart
     \item{
-      \textbf{Hardware, MCUs \& Protocols}{: STM32 (ARM Cortex-M4), ESP32, Raspberry Pi, RP2040, SPI, I2C, UART, CAN, DMA synthesis, ADC/DAC.}
+      \textbf{Silicon, SoCs \& Embedded Hardware}{: STM32 (ARM Cortex-M4), ESP32 (Dual-Core Xtensa, RISC-V ULP), Raspberry Pi, RP2040, ATmega328P, LoRa (SX1278).}
     }
     \item{
-      \textbf{Programming Languages}{: Python, Rust, C/C++17, TypeScript, JavaScript, Go, Dart (Flutter), SQL, POSIX Shell/Bash.}
+      \textbf{Firmware, Systems \& Languages}{: Embedded C, C++17/20, Rust, Python, TypeScript, FreeRTOS, TinyML, Go, Dart (Flutter), POSIX Shell.}
     }
     \item{
-      \textbf{Edge AI, DSP \& Machine Learning}{: PyTorch, Scikit-Learn, TinyML, Fast Fourier Transform (FFT) DSP, LanceDB, Model Context Protocol (MCP).}
+      \textbf{Protocols, Buses \& Communications}{: SPI, I2C, UART/USART, CAN bus, PWM, ADC/DAC, DMA waveform synthesis, LoRa (433--915MHz), BLE 5.0, MQTT, WebSockets.}
     }
     \item{
-      \textbf{Systems, Runtimes \& Architecture}{: Tokio async, Actix-Web, FastAPI, FreeRTOS, Linux eBPF, Docker, WebSockets, Linux IPC.}
+      \textbf{AI/ML, DSP \& Agent Protocols}{: PyTorch, Scikit-Learn, FastMCP, Model Context Protocol (MCP), Gemini API, Fast Fourier Transform (FFT), Isolation Forest.}
     }
     \item{
-      \textbf{Sensors \& Prototyping}{: ACS712 current, ZMPT101B voltage, MPU6050 6-DoF IMU, OPA1612 analog filters, KiCad PCB schematic/layout.}
+      \textbf{Runtimes, Cloud \& Frontend}{: Actix-Web, Tokio async, FastAPI, Docker, Flet (Python GUI), React 18, Vite, Three.js / WebGL, Google Cloud Run, PostgreSQL.}
     }
     \item{
-      \textbf{Communication \& Additional Skills}{: Confident Public Speaker; delivered multiple technical club workshops; proficient in \textbf{Basic Sign Language (ISL)}.}
+      \textbf{Hardware Prototyping \& Instrumentation}{: KiCad PCB design, Digital Oscilloscopes, Logic Analyzers, JTAG/SWD, Capacitive Battery Spot Welders.}
+    }
+    \item{
+      \textbf{Accessibility \& Human Languages}{: Certified in Indian Sign Language (ISL) fundamentals for non-verbal human-assistive interaction; English, Telugu, Hindi.}
     }
   \resumeSubHeadingListEnd
 
-%-----------ACHIEVEMENTS, COMPETITIONS & LEADERSHIP-----------------
-\section{Achievements, Distinctions \& Military Discipline}
+%-----------HONORS, MILITARY DISCIPLINE & LEADERSHIP-----------------
+\section{Leadership, Competitions \& Honors}
   \resumeSubHeadingListStart
 
     \resumeProjectHeading
-      {Rapid Prototyping Portfolio \& Engineering Track Record}{Portfolio Metrics}
+      {IIT Madras Smart India Challenge -- 2nd Runner Up \& Youngest Panelist}{IIT Madras}
       \resumeItemListStart
-        \item{\textbf{95 Projects Explored, 50 Executed, 3 Major Hackathons Won}: Interdisciplinary distribution of \textbf{15} AI+CS+ECE cyber-physical projects, \textbf{25} dedicated ECE/embedded systems, \textbf{5} core CS/systems software, and \textbf{24} foundational sandbox builds.}
-        \item{\textbf{Real-Time Production Deployment (SAFE)}: Engineered \textbf{SAFE}, an operational warehouse asset tracking ecosystem featuring low-power BLE duty cycling and high-speed batch scanning \textit{(details reserved for interview discussion)}.}
+        \item{Awarded \textbf{2nd Runner Up} at IIT Madras Smart India Challenge for engineering economical cyber-physical and systems architectures.}
+        \item{Honored as the \textbf{Youngest Panelist} at the summit, presenting on hardware miniaturization, sovereign edge diagnostics, and extreme economic engineering.}
+        \item{Showcased \textbf{\href{https://github.com/seeramsujay/dust-vision}{Dust-Vision}} (computer vision optical particulate tracking on GitHub) and \textbf{\href{https://dust-sim.vercel.app}{Dust-Sim}} (real-time physics dispersion kinematics live on the web), modeling particulate kinetics under dynamic wind and thermal shifts.}
       \resumeItemListEnd
 
     \resumeProjectHeading
-      {Major Competitions, Global Leaderboards \& Distinctions}{Competitive Honors}
+      {High School Autonomous Robotics AI Hackathon -- 1st Place Winner}{11th Standard}
       \resumeItemListStart
-        \item{\textbf{IIT Madras Smart India Challenge}: Awarded \textbf{2nd Runner Up}; honored as \textbf{Youngest Panelist} at the summit; conducted multiple technical workshops across college clubs on embedded systems and AI.}
-        \item{\textbf{Google Virtual PromptWars Global Leaderboard}: Ranked in the \textbf{Top 400 globally across 3 separate challenge cycles} in Google for Developers $\times$ Hack2skill PromptWars, competing against thousands of builders in rapid AI prototyping.}
-        \item{\textbf{HSBC Global Train Green Program (2022)}: Awarded \textbf{Best Junior Sustainability Champion} for environmental innovation.}
-      \resumeItemListEnd
-
-    \resumeProjectHeading
-      {National Cadet Corps (NCC) \& Services Selection Board (SSB)}{Armed Forces Selection}
-      \resumeItemListStart
-        \item{\textbf{NCC Senior Division}: Trained cadet in \textbf{3(A) Naval Unit NCC, Visakhapatnam (VSP)}; developed crisis leadership, nautical discipline, and obstacle course proficiency.}
-        \item{\textbf{Services Selection Board (SSB)}: Attended 3 SSB selection boards (\textbf{Screened-in twice \& Conferenced-out twice}; Screened-out once); demonstrated resilient situational decision-making and psychological adaptability under high-stress evaluations.}
+        \item{Clinched \textbf{1st Place} in an internal school AI robotics hackathon by engineering an autonomous self-parking robot from scratch.}
+        \item{Engineered a specialized optical line-following sensor array paired with a custom damping algorithm that completely eliminated the classic ``snaking'' oscillation issue.}
+        \item{Integrated global floor plan coordinate navigation utilizing the \textbf{A* pathfinding algorithm} for deterministic slot assignment and obstacle-free parking.}
       \resumeItemListEnd
 
     \resumeProjectHeading
       {Global Automotive Research Centre (GARC) Technical Delegation}{Chennai, India}
       \resumeItemListStart
-        \item{Selected technical delegate at \textbf{GARC Chennai Meet}; engaged with engineers on vehicle sensor failure preemption and telemetry standards.}
+        \item{Selected technical delegate at the \textbf{GARC Chennai Meet}, engaging with automotive engineers on homologation standards and vehicle test beds.}
+        \item{Participated in sessions on non-invasive vehicle telemetry, EV battery safety envelopes, and real-time sensor failure preemption.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {National Cadet Corps (NCC) \& Services Selection Board (SSB)}{Armed Forces Selection}
+      \resumeItemListStart
+        \item{Trained cadet in the \textbf{National Cadet Corps (NCC)}, instilling strong leadership, tactical problem-solving, and disciplined execution under pressure.}
+        \item{Recommended for and attended the \textbf{Services Selection Board (SSB) 3 times}, demonstrating high situational resilience and decision-making.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
 
+%================================ PAGE 2 ================================
 \newpage
-%================================ PAGE 2 ================================\n
 
-\section{Featured Engineering Projects (Ordered Portfolio)}
-
-\subsection*{I. Interdisciplinary Cyber-Physical AI (AI, CS \& EC Combined)}
+\section{Flagship Cyber-Physical Systems \& Distributed Infrastructure (High Impact)}
   \resumeSubHeadingListStart
 
     \resumeProjectHeading
-      {1. EVolvAI -- Generative AI \& Physics-Constrained EV Grid Optimization}{\href{https://github.com/seeramsujay/EVolvAI}{Release v1.0.0}}
+      {MotorSafe -- Tri-Modal Edge-AI Predictive Maintenance Ecosystem \ $|$ \ Public}{Link : \href{https://github.com/seeramsujay/motor-safe/releases/tag/v0.01}{Release v0.01}}
       \resumeItemListStart
-        \item{Architected a scalable cyber-physical demand framework in PyTorch coupling a \textbf{Generative Counterfactual VAE (GCD-VAE)} with a Multi-Objective Genetic Algorithm to simulate charging loads under distribution grid bus limits and climate stress anomalies.}
-        \item{Achieved $R^2 \approx 0.5$ predictive accuracy on sparse field data; built an interactive Streamlit simulation console for municipal engineers.}
+        \item{Architected an edge-native predictive maintenance device preventing catastrophic industrial motor degradation days prior to mechanical breakdown.}
+        \item{Synchronized three high-frequency telemetry transducers: \textbf{ACS712} Hall-effect current (torque load), \textbf{ZMPT101B} (power quality), and \textbf{MPU6050} (mechanical vibrations).}
+        \item{Implemented on-chip Fast Fourier Transform (FFT) to extract spectral sidebands and deployed a localized unsupervised \textbf{Isolation Forest} on ESP32 to eliminate cloud latency and false alarms.}
+        \item{Streamed multi-variate telemetry over MQTT into an interactive Three.js 3D digital twin dashboard reflecting motor health in real time.}
       \resumeItemListEnd
 
     \resumeProjectHeading
-      {2. MotorSafe -- Tri-Modal Edge-AI Predictive Maintenance Ecosystem}{\href{https://github.com/seeramsujay/motor-safe}{Release v0.01}}
+      {AQUAPULSE -- Cognitive Software-Defined Sonar Payload for AUVs \ $|$ \ Public}{Link : \href{https://github.com/seeramsujay/aqua-pulse}{Repository}}
       \resumeItemListStart
-        \item{Constructed an edge-native telemetry pipeline fusing 3 synchronized sensor channels: \textbf{ACS712} current, \textbf{ZMPT101B} voltage, and \textbf{MPU6050} vibration.}
-        \item{Engineered on-chip FFT DSP to extract spectral sidebands and deployed an unsupervised \textbf{Isolation Forest} on ESP32 to preempt bearing breakdown without cloud latency, streaming live diagnostics to an interactive Three.js 3D digital twin dashboard.}
+        \item{Engineered a cognitive, software-defined sonar payload for Autonomous Underwater Vehicles (AUVs) meeting the SIH26058 MoES/NIOT mandate.}
+        \item{Implemented zero-CPU DMA-to-DAC acoustic waveform synthesis on \textbf{STM32 / ESP32-S3} paired with active \textbf{OPA1612} Butterworth analog filtering.}
+        \item{Deployed an INT8 quantized \textbf{TinyML} edge policy engine to dynamically adapt ping frequency ($100\text{--}480\text{ kHz}$) across shifting thermoclines, cutting acoustic power consumption by \textbf{38\%}.}
       \resumeItemListEnd
 
     \resumeProjectHeading
-      {3. SpecRAG -- Zero-Hallucination Firmware \& Datasheet Auditing Gateway}{\href{https://github.com/seeramsujay/specRAG}{Release v0.1.0}}
+      {Ideation GOAT -- Autonomous Semantic Multi-Domain Architect Agent \ $|$ \ Public}{Link : \href{https://github.com/seeramsujay/ideation-goat/releases/tag/v1.0.0}{Release v1.0.0}}
       \resumeItemListStart
-        \item{Engineered an enterprise developer tool bridging 1,000-page silicon datasheets with embedded C/C++ firmware using the \textbf{Model Context Protocol (MCP)}.}
-        \item{Performed localized vector retrieval against indexed silicon register banks to preemptively catch peripheral pin collisions, clock-tree prescaler errors, and timing hazards directly in VS Code before compilation.}
-      \resumeItemListEnd
-
-  \resumeSubHeadingListEnd
-
-\vspace{-2pt}
-\subsection*{II. Embedded Systems \& Electronics (ECE)}
-  \resumeSubHeadingListStart
-
-    \resumeProjectHeading
-      {4. AQUAPULSE -- Cognitive Software-Defined Sonar Payload for AUVs}{\href{https://github.com/seeramsujay/aqua-pulse}{Repository}}
-      \resumeItemListStart
-        \item{Engineered a cognitive software-defined sonar payload for Autonomous Underwater Vehicles (AUVs) meeting the SIH26058 MoES mandate.}
-        \item{Implemented zero-CPU DMA-to-DAC acoustic synthesis on \textbf{STM32 / ESP32-S3} with \textbf{OPA1612} active filtering, deploying an INT8 \textbf{TinyML} engine to dynamically adapt ping frequency ($100\text{--}480\text{ kHz}$) across shifting thermoclines, slashing acoustic power consumption by \textbf{38\%}.}
+        \item{Architected an enterprise-grade \textbf{Model Context Protocol (MCP)} server exposing \textbf{24 autonomous diagnostic tools} across codebases, academic research, and visual design.}
+        \item{Leveraged \textbf{Gemini 3.1 Flash Lite} with custom Zod-based auto-healing middleware that dynamically self-corrects malformed LLM tool arguments at runtime.}
+        \item{Engineered multi-domain semantic synthesis pipelines enabling autonomous coding agents to audit supply-chain security, validate API compatibility, and scaffold full-stack architectures.}
       \resumeItemListEnd
 
     \resumeProjectHeading
-      {5. Pheno-Speak -- Edge Acoustic Vocal Biomarker Extraction Engine}{\href{https://github.com/seeramsujay/pheno-speak}{Repository}}
-      \resumeItemListStart
-        \item{Built an edge audio digital signal processing pipeline for non-invasive vocal biomarker extraction aligned with SDG 3.4 (Digital Phenotyping).}
-        \item{Extracted MFCCs, jitter, and shimmer features on lightweight microcontroller hardware without offloading unencrypted audio to external endpoints.}
-      \resumeItemListEnd
-
-    \resumeProjectHeading
-      {6. Dust-Vision \& Dust-Sim -- Edge Particulate Tracking \& Dispersion Engine}{\href{https://github.com/seeramsujay/dust-vision}{Release v0.1}}
-      \resumeItemListStart
-        \item{Deployed computer vision models on edge camera modules to quantify real-time construction site particulate pollution and dust plumes.}
-        \item{Coupled sensor data with a custom particle kinematics physics simulation (\textbf{dust-sim v1.0.0}) modeling dispersion under thermal and wind shifts.}
-      \resumeItemListEnd
-
-  \resumeSubHeadingListEnd
-
-\vspace{-2pt}
-\subsection*{III. Systems Software, Developer Tools \& Computer Science (CS)}
-  \resumeSubHeadingListStart
-
-    \resumeProjectHeading
-      {7. ytstr -- High-Performance Psychoacoustic Audio Engine}{\href{https://github.com/seeramsujay/ytstr}{Release v2.0.0}}
+      {ytstr -- High-Performance Psychoacoustic Audio Engine \ $|$ \ Public}{Link : \href{https://github.com/seeramsujay/ytstr/releases/tag/v2}{Release v2.0.0}}
       \resumeItemListStart
         \item{Developed a terminal-native streaming runtime powered by a psychoacoustic \textbf{DecisionEngine} executing real-time spectral analysis.}
-        \item{Implemented 8 broadcast-grade transition algorithms and built an active backpressure memory pool, slashing runtime RAM by \textbf{70\%} ($<260\text{MB}$).}
+        \item{Implemented 8 broadcast-grade transition algorithms (Bass Swap, Frequency Melt, Tape Stop) and built an active backpressure memory pool, slashing runtime RAM by \textbf{70\%} ($<260\text{MB}$ peak).}
       \resumeItemListEnd
 
     \resumeProjectHeading
-      {8. Informed-Poll -- Swipeable Civic Intelligence Platform}{\href{https://github.com/seeramsujay/informed-poll}{Release v1.0.0}}
+      {TurnBack (Activity-Mapper) -- Local-First GPS Endurance Tracker \ $|$ \ Public}{Link : \href{https://github.com/seeramsujay/activity-mapper/releases/tag/v1.3.0}{Release v1.3.0}}
       \resumeItemListStart
-        \item{Developed a mobile-first civic intelligence companion featured in the Google Solution Challenge, pairing swipe mechanics with verified candidate records.}
-        \item{Integrated localized neural RAG using \textbf{LanceDB} and Gemini 3.1 Flash Lite over a Cloud Run FastAPI backend with zero-hallucination verification.}
+        \item{Built an ultra-lightweight, 100\% serverless, battery-optimized mobile GPS tracking app featuring a proprietary \textbf{54\% Turn-Back Engine}.}
+        \item{Mitigated out-and-back route fatigue asymmetry by alerting users when exactly 54\% of their time budget remains with distinct audio/haptic cues.}
+        \item{Engineered stationary stop detection and \textbf{Ramer-Douglas-Peucker (RDP)} trajectory decimation to guarantee 60 FPS rendering under $<5\text{MB}$ RAM overhead on low-end 2GB Android devices.}
       \resumeItemListEnd
 
     \resumeProjectHeading
-      {9. Kavach-UPI -- Android Accessibility Security Shield}{\href{https://github.com/seeramsujay/Kavach-UPI}{Repository}}
+      {EVolvAI -- Physics-Informed EV Charging Infrastructure Engine \ $|$ \ Public}{Link : \href{https://EVolvAI.vercel.app}{Website} \ $|$ \ \href{https://github.com/seeramsujay/EVolvAI/releases/tag/v1.0.0}{Release v1.0.0}}
       \resumeItemListStart
-        \item{Authored an on-device security shield leveraging Android Accessibility APIs to detect active screen-sharing malware during financial UPI transactions.}
-        \item{Instantly deployed an opaque system window overlay to block remote touch injections while triggering localized security alerts.}
+        \item{Formulated a research-grade cyber-physical framework coupling a \textbf{Physics-Constrained Generative Counterfactual VAE (GCD-VAE)} with a Multi-Objective Genetic Algorithm (GA).}
+        \item{Simulated distribution grid bus voltage drops, transformer thermal constraints, and climate stress anomalies to optimize city-scale charging node placement, achieving $R^2 \approx 0.5$ fidelity on sparse real-world data.}
       \resumeItemListEnd
 
+  \resumeSubHeadingListEnd
+
+%================================ PAGE 3 ================================
+\newpage
+
+\section{Interdisciplinary Platforms, Systems Software \& AI Agents}
+  \resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {SpecRAG -- Zero-Hallucination Firmware \& Datasheet Auditing Gateway \ $|$ \ Public}{Link : \href{https://github.com/seeramsujay/specRAG/releases/tag/v0.1.0}{Release v0.1.0}}
+      \resumeItemListStart
+        \item{Engineered an enterprise developer tool bridging 1,000-page silicon hardware datasheets with embedded C/C++ firmware.}
+        \item{Utilized the \textbf{Model Context Protocol (MCP)} and localized vector search to verify register bitmasks, clock-tree prescalers, and alternate-function pin muxing directly in the IDE prior to board fabrication.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {LoRa-Connect -- Offline Point-to-Point Vehicle Telemetry Link \ $|$ \ Private}{Hardware Prototype \ $|$ \ Private}
+      \resumeItemListStart
+        \item{Developed a subscription-free, offline point-to-point LoRa telemetry system bridging smartphones directly to vehicles without cellular dependence.}
+        \item{Designed a custom USB-C RP2040 dongle establishing an encrypted 915MHz LoRa link to an onboard vehicle ESP32 node integrated into the CAN bus.}
+        \item{Achieved sub-mA standby current and bypassed mobile operating system hardware restrictions via USB CDC-NCM protocol encapsulation.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {Smart Home Assistant Framework (NEXUS) -- Local-First IoT Infrastructure \ $|$ \ Private}{IoT Infrastructure \ $|$ \ Private}
+      \resumeItemListStart
+        \item{Architected a production-ready, containerized, local-first smart home ecosystem designed for absolute privacy and zero cloud dependence.}
+        \item{Integrated Home Assistant Core, ESPHome, Node-RED, and n8n orchestration inside a unified Docker Compose architecture.}
+        \item{Implemented native YAML sensor definitions for custom-built ESP32/ESP8266 ambient sensory nodes with local voice assistance via Wyoming.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {Microintegrated Flet Console -- Embedded Low-Overhead GUI \ $|$ \ Interdisciplinary}{Link : \href{https://flet.dev}{Website} \ $|$ \ \href{https://github.com/seeramsujay/microintegrated-flet}{Repository}}
+      \resumeItemListStart
+        \item{Designed an ultra-lightweight, cross-platform cyber-physical user interface combining microintegrated \textbf{Flet (Python + Flutter)} with embedded microcontrollers.}
+        \item{Engineered asynchronous event loops connecting serial UART/USB streams from embedded devices directly into real-time reactive widgets.}
+        \item{Delivered responsive 60 FPS hardware telemetry plotting and parameter calibration dashboards on low-spec host systems with zero web browser overhead.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {errands-op (op-list) -- Algorithmic Errand Routing Engine \& VRPTW Solver \ $|$ \ Public}{Link : \href{https://github.com/seeramsujay/errands-op}{Repository}}
+      \resumeItemListStart
+        \item{Built an offline-first algorithmic routing engine in \textbf{Flutter/Dart} solving multi-stop Vehicle Routing Problems with Time Windows (VRPTW) and bi-directional Home Assistant WebSocket synchronization.}
+        \item{Engineered 2D Kalman GPS filtering with dual-ring hysteresis geofencing ($40\text{m} / 80\text{m}$) and learned in-store layout walk orders using Feedback Arc Set (FAS) cycle elimination and Kahn's topological sort.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {SAFE-Inventory -- Low-Power BLE Warehouse Asset Tracking Suite \ $|$ \ Public}{Link : \href{https://safe-inventory.vercel.app}{Website} \ $|$ \ \href{https://github.com/seeramsujay/SAFE-inventory/releases/tag/v1.4.0}{Release v1.4.0}}
+      \resumeItemListStart
+        \item{Engineered a resilient warehouse asset management system featuring single-product batch scanning and set-and-forget Bluetooth LE hardware pairing.}
+        \item{Optimized transceiver duty-cycling on mobile and embedded scanners to provide multi-shift operational battery endurance.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS & WORKSHOPS-----------------
+\section{Certifications \& Technical Workshops}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {Indian Sign Language (ISL) Certification}{Certified}
+      \resumeItemListStart
+        \item{Earned formal certification in Indian Sign Language (ISL) fundamentals, enabling inclusive, non-verbal communication and human-assistive interface design.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {Hardware Prototyping Workshop \& Battery Spot Welder Fabrication}{Practical Engineering}
+      \resumeItemListStart
+        \item{Designed and constructed a high-current capacitive discharge battery spot welder for precise nickel strip bonding and custom lithium-ion battery pack assembly.}
+      \resumeItemListEnd
   \resumeSubHeadingListEnd
 
 \end{document}
