@@ -4934,6 +4934,11 @@
                 const originalName = h3.dataset.originalName || h3.textContent.trim();
                 h3.dataset.originalName = originalName;
 
+                if (window.innerWidth <= 768) {
+                    h3.textContent = originalName;
+                    return;
+                }
+
                 // Wrap each character in a styled span
                 h3.innerHTML = originalName.split('').map((char, idx) => {
                     if (char === ' ') return `<span data-char=" " style="white-space: pre;"> </span>`;
@@ -5046,7 +5051,15 @@
         function initTimelineAnimations() {
             timelineNodes = document.querySelectorAll('.timeline-node');
 
-            // Initialize state
+            if (window.innerWidth <= 768) {
+                timelineNodes.forEach(node => {
+                    node.style.opacity = '1';
+                    node.style.transform = 'none';
+                });
+                return;
+            }
+
+            // Initialize state for desktop
             timelineNodes.forEach(node => {
                 nodeStates.set(node, { top: 0, height: 0 });
                 node.style.opacity = '0';
@@ -5057,18 +5070,8 @@
 
             // Observe nodes for entry reveal (desktop only)
             timelineNodes.forEach(n => {
-                if (window.innerWidth > 768) {
-                    revealIO.observe(n);
-                }
+                revealIO.observe(n);
             });
-
-            // Observe nodes for general fade-in (mobile only)
-            if (window.innerWidth <= 768) {
-                timelineNodes.forEach(el => {
-                    el.classList.add('fade-up');
-                    fadeIO.observe(el);
-                });
-            }
 
             // Start loop to lerp them in
             wake();
@@ -5103,7 +5106,7 @@
             const isTouch = window.matchMedia('(pointer: coarse)').matches;
             if (!isTouch) return;
 
-            // ── 1. TAP PARTICLE BURST ──────────────────────────────────
+            // ── 1. TAP PARTICLE BURST (Clean intentional taps only, zero scroll friction) ──
             const PARTICLE_COLORS = [
                 'var(--optimism-mint)',
                 'var(--optimism-teal)',
@@ -5112,15 +5115,15 @@
                 '#ffffff'
             ];
 
-            function spawnParticles(x, y, count = 14) {
+            function spawnParticles(x, y, count = 5) {
                 for (let i = 0; i < count; i++) {
                     const p = document.createElement('div');
                     p.className = 'touch-particle';
 
-                    const size = 4 + Math.random() * 6;          // 4–10 px
+                    const size = 3 + Math.random() * 4;
                     const angle = (Math.random() * 360) * (Math.PI / 180);
-                    const speed = 40 + Math.random() * 90;        // px travel
-                    const duration = 450 + Math.random() * 400;   // ms
+                    const speed = 25 + Math.random() * 45;
+                    const duration = 350 + Math.random() * 250;
                     const color = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
 
                     const txF = Math.cos(angle) * speed;
@@ -5145,46 +5148,57 @@
                 }
             }
 
-            // Fire on every tap (touchstart so it feels instant)
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchStartTime = 0;
+
             document.addEventListener('touchstart', (e) => {
-                const t = e.touches[0];
-                // Fewer particles on cards (to not obscure content), more on empty areas
-                const onCard = !!e.target.closest('.timeline-card-content, .project-item, .glass-card');
-                spawnParticles(t.clientX, t.clientY, onCard ? 8 : 14);
+                if (e.touches.length === 1) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    touchStartTime = Date.now();
+                }
             }, { passive: true });
 
+            document.addEventListener('touchend', (e) => {
+                if (e.changedTouches.length === 1) {
+                    const t = e.changedTouches[0];
+                    const dist = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
+                    const elapsed = Date.now() - touchStartTime;
 
-            // ── 2. GYROSCOPE 3D HERO PARALLAX ─────────────────────────
-            const heroSection   = document.getElementById('hero');
-            const heroTitle     = document.querySelector('.hero-title');
-            const heroQuote     = document.querySelector('.hero-quote');
-            const heroMeta      = document.querySelector('.hero-metadata');
-            const heroLinks     = document.querySelector('.hero-links');
+                    // Only fire if it was a quick intentional tap (< 8px movement and < 300ms)
+                    if (dist < 8 && elapsed < 300) {
+                        const isInteractive = !!e.target.closest('a, button, input, .filter-btn, .theme-toggle-btn, .timeline-close, .mobile-drawer-close, .terminal-close');
+                        if (!isInteractive) {
+                            spawnParticles(t.clientX, t.clientY, 5);
+                        }
+                    }
+                }
+            }, { passive: true });
 
-            let gyroSupported = false;
-            let baseGamma = null;  // left-right tilt
-            let baseBeta  = null;  // forward-back tilt
+            // ── 2. GYROSCOPE 3D HERO PARALLAX (Subtle, clamped for zero overflow) ──
+            const heroTitle = document.querySelector('.hero-title');
+            const heroQuote = document.querySelector('.hero-quote');
+            const heroMeta  = document.querySelector('.hero-metadata');
+
+            let baseGamma = null;
+            let baseBeta  = null;
 
             function applyGyroParallax(gamma, beta) {
                 if (baseGamma === null) { baseGamma = gamma; baseBeta = beta; return; }
 
-                const dGamma = Math.max(-25, Math.min(25, gamma - baseGamma));  // clamped ±25°
-                const dBeta  = Math.max(-20, Math.min(20, beta  - baseBeta ));
+                const dGamma = Math.max(-10, Math.min(10, gamma - baseGamma));
+                const dBeta  = Math.max(-8,  Math.min(8,  beta  - baseBeta ));
 
-                // Title shifts most (big depth)
-                if (heroTitle)  heroTitle.style.transform  = `translate3d(${dGamma * 0.8}px, ${dBeta * 0.5}px, 0)`;
-                // Quote shifts medium
-                if (heroQuote)  heroQuote.style.transform  = `translate3d(${dGamma * 0.4}px, ${dBeta * 0.3}px, 0)`;
-                // Meta and links shift least (closest to camera plane)
-                if (heroMeta)   heroMeta.style.transform   = `translate3d(${dGamma * 0.15}px, ${dBeta * 0.1}px, 0)`;
-                if (heroLinks)  heroLinks.style.transform  = `translate3d(${dGamma * 0.2}px, ${dBeta * 0.15}px, 0)`;
+                if (heroTitle) heroTitle.style.transform = `translate3d(${dGamma * 0.4}px, ${dBeta * 0.3}px, 0)`;
+                if (heroQuote) heroQuote.style.transform = `translate3d(${dGamma * 0.25}px, ${dBeta * 0.2}px, 0)`;
+                if (heroMeta)  heroMeta.style.transform  = `translate3d(${dGamma * 0.1}px, ${dBeta * 0.08}px, 0)`;
             }
 
             function requestGyroPermission() {
                 if (typeof DeviceOrientationEvent === 'undefined') return;
 
                 const activate = () => {
-                    // iOS 13+ requires explicit permission
                     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                         DeviceOrientationEvent.requestPermission()
                             .then(state => {
@@ -5196,79 +5210,17 @@
                     }
                     document.removeEventListener('touchend', activate);
                 };
-                // Trigger on first intentional tap
                 document.addEventListener('touchend', activate, { once: true, passive: true });
             }
 
             function initGyro() {
                 window.addEventListener('deviceorientation', (e) => {
                     if (e.gamma === null) return;
-                    gyroSupported = true;
                     applyGyroParallax(e.gamma, e.beta);
                 }, { passive: true });
             }
 
             requestGyroPermission();
-
-            // Smooth transitions on hero elements during gyro
-            [heroTitle, heroQuote, heroMeta, heroLinks].forEach(el => {
-                if (el) el.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            });
-
-
-            // ── 3. MAGNETIC CARD TILT ON TOUCH ────────────────────────
-            // Cards physically lean toward the user's finger
-            let activeTiltCard = null;
-            let tiltRAF = null;
-            let targetTiltX = 0, targetTiltY = 0;
-            let currentTiltX = 0, currentTiltY = 0;
-
-            function lerp(a, b, t) { return a + (b - a) * t; }
-
-            function tiltLoop() {
-                if (!activeTiltCard) return;
-                currentTiltX = lerp(currentTiltX, targetTiltX, 0.12);
-                currentTiltY = lerp(currentTiltY, targetTiltY, 0.12);
-                activeTiltCard.style.transform =
-                    `perspective(600px) rotateY(${currentTiltX}deg) rotateX(${-currentTiltY}deg) scale3d(1.025, 1.025, 1.025)`;
-                activeTiltCard.style.boxShadow =
-                    `0 20px 60px rgba(var(--theme-color-1-rgb), 0.25), 0 0 0 1px var(--glass-border-hover)`;
-                tiltRAF = requestAnimationFrame(tiltLoop);
-            }
-
-            function resetCard(card) {
-                cancelAnimationFrame(tiltRAF);
-                if (card) {
-                    card.style.transform = '';
-                    card.style.boxShadow = '';
-                }
-                activeTiltCard = null;
-                currentTiltX = 0; currentTiltY = 0;
-                targetTiltX  = 0; targetTiltY  = 0;
-            }
-
-            document.addEventListener('touchmove', (e) => {
-                const t = e.touches[0];
-                const card = e.target.closest('.timeline-card-content, .project-item');
-                if (!card) { resetCard(activeTiltCard); return; }
-
-                if (activeTiltCard !== card) {
-                    resetCard(activeTiltCard);
-                    activeTiltCard = card;
-                    tiltRAF = requestAnimationFrame(tiltLoop);
-                }
-
-                const rect  = card.getBoundingClientRect();
-                const relX  = (t.clientX - rect.left) / rect.width  - 0.5;  // -0.5 to 0.5
-                const relY  = (t.clientY - rect.top)  / rect.height - 0.5;
-                targetTiltX = relX * 12;   // max ±6° horizontal
-                targetTiltY = relY * 8;    // max ±4° vertical
-            }, { passive: true });
-
-            document.addEventListener('touchend', () => {
-                resetCard(activeTiltCard);
-            }, { passive: true });
-
         })();
 
         // ═══════════════════════════════════════════════════════════════
