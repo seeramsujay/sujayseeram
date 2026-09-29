@@ -127,6 +127,16 @@ def save_db(projects):
     with open(db_path, 'w', encoding='utf-8') as f:
         json.dump(projects, f, indent=4)
     print_status(f"Database saved to {db_path}", "success")
+    
+    # Mirror to v2/src/data/projects_db.json if v2 exists
+    v2_db = os.path.join(os.path.dirname(db_path), 'v2', 'src', 'data', 'projects_db.json')
+    if os.path.exists(os.path.dirname(v2_db)):
+        try:
+            with open(v2_db, 'w', encoding='utf-8') as f:
+                json.dump(projects, f, indent=4)
+            print_status(f"Database mirrored to {v2_db}", "success")
+        except Exception as e:
+            print_status(f"Notice: Could not mirror database to v2: {e}", "warning")
 
 def get_public_repos():
     username = get_github_username()
@@ -618,7 +628,7 @@ def git_commit_and_push():
     try:
         # Stage projects_db.json and index.html
         subprocess.run(
-            ["git", "add", "projects_db.json", "index.html"],
+            ["git", "add", "projects_db.json", "index.html", "v2/src/data/projects_db.json"],
             cwd=repo_dir, capture_output=True, text=True, check=True
         )
         
