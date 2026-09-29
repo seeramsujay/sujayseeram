@@ -1,42 +1,36 @@
 /**
  * Master Application Entry Point for Sujay Seeram Portfolio V2
+ * Natural Architectural Studio & Horizontal Stage Exhibition
  */
 
-import { CyberScene } from './three/cyberScene.js';
+import { StudioScene } from './three/studioScene.js';
 import { ProjectModal } from './components/modal.js';
-import { CyberTerminal } from './components/terminal.js';
 import { ProjectShowcase } from './components/showcase.js';
+import { StageNavigator } from './components/stageNavigator.js';
 import { synth } from './audio/synth.js';
-import { activeProjects, allProjects } from './data/projectsData.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize Three.js Cybernetic Visuals
-  const canvasEl = document.getElementById('hero-canvas');
-  let cyberScene = null;
+  // 1. Initialize Three.js Natural Physical Studio Scene
+  const canvasEl = document.getElementById('studio-canvas');
+  let studioScene = null;
   if (canvasEl) {
     try {
-      cyberScene = new CyberScene(canvasEl);
+      studioScene = new StudioScene(canvasEl);
     } catch (e) {
-      console.warn('WebGL / Three.js initialization fallback:', e);
+      console.warn('Three.js / WebGL fallback:', e);
     }
   }
 
-  // 2. Initialize Project Markdown Dossier Modal
+  // 2. Initialize Project Markdown Dossier Drawer
   const projectModal = new ProjectModal();
 
-  // 3. Initialize Interactive Cyber Terminal CLI
-  const terminal = new CyberTerminal(projectModal);
+  // 3. Initialize Exhibition & Engineering Archive
+  const showcase = new ProjectShowcase(projectModal);
 
-  // 4. Initialize Odyssey Showcase Matrix & Vault
-  const showcase = new ProjectShowcase(projectModal, cyberScene);
+  // 4. Initialize Horizontal Stage Navigator & Oil-Motion Cursor Tracker
+  const stageNavigator = new StageNavigator(studioScene);
 
-  // 5. Update Metrics Counter
-  const activeCountEl = document.getElementById('active-count-metric');
-  const totalCountEl = document.getElementById('total-count-metric');
-  if (activeCountEl) activeCountEl.textContent = `${activeProjects.length}+`;
-  if (totalCountEl) totalCountEl.textContent = `${allProjects.length}`;
-
-  // 6. Live Telemetry Clock (IST)
+  // 5. Live Telemetry Clock (IST)
   const clockEl = document.getElementById('live-clock');
   function updateClock() {
     if (!clockEl) return;
@@ -48,35 +42,34 @@ document.addEventListener('DOMContentLoaded', () => {
       minute: '2-digit',
       second: '2-digit'
     });
-    clockEl.textContent = `${timeStr} IST`;
+    clockEl.innerHTML = `<span>${timeStr} IST</span>`;
   }
   updateClock();
   setInterval(updateClock, 1000);
 
-  // 7. Audio SFX HUD Toggle
+  // 6. Audio Feedback HUD Toggle
   const sfxBtn = document.getElementById('sfx-toggle-btn');
-  const sfxIcon = document.getElementById('sfx-status-icon');
-  const sfxText = document.getElementById('sfx-status-text');
+  const sfxIcon = document.getElementById('sfx-icon');
+  const sfxText = document.getElementById('sfx-text');
 
   if (sfxBtn) {
     sfxBtn.addEventListener('click', () => {
       const isMuted = synth.toggleMute();
       if (sfxIcon) sfxIcon.textContent = isMuted ? '🔇' : '🔊';
       if (sfxText) sfxText.textContent = isMuted ? 'SFX: OFF' : 'SFX: ON';
-      if (!isMuted) synth.playTick();
+      if (!isMuted) synth.playTick(600);
     });
   }
 
-  // 8. Email Quick Copy Button
+  // 7. Email Quick Copy Button
   const copyEmailBtn = document.getElementById('copy-email-btn');
   if (copyEmailBtn) {
     copyEmailBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      e.stopPropagation();
       synth.playSuccess();
       navigator.clipboard.writeText('sujayat2007@gmail.com').then(() => {
         const orig = copyEmailBtn.innerHTML;
-        copyEmailBtn.innerHTML = `<span>COPIED ✔</span>`;
+        copyEmailBtn.innerHTML = `<span>Copied ✔</span>`;
         setTimeout(() => {
           copyEmailBtn.innerHTML = orig;
         }, 2200);
@@ -84,53 +77,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 9. Interactive Transmit Form Simulation
-  const form = document.getElementById('transmit-form');
-  const submitBtn = document.getElementById('form-submit-btn');
+  // 8. Direct Dispatch Transmission Form
+  const dispatchForm = document.getElementById('dispatch-form');
+  const dispatchBtn = document.getElementById('dispatch-btn');
 
-  if (form && submitBtn) {
-    form.addEventListener('submit', (e) => {
+  if (dispatchForm && dispatchBtn) {
+    dispatchForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      synth.playChirp(880);
+      synth.playChirp(720);
 
-      const origBtn = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span>DISPATCHING PACKETS...</span>`;
+      const origText = dispatchBtn.innerHTML;
+      dispatchBtn.disabled = true;
+      dispatchBtn.innerHTML = `<span>Dispatching...</span>`;
 
       setTimeout(() => {
         synth.playSuccess();
-        submitBtn.innerHTML = `<span>TRANSMISSION CONFIRMED ✔</span>`;
-        form.reset();
+        dispatchBtn.innerHTML = `<span>Message Dispatched ✔</span>`;
+        dispatchForm.reset();
 
         setTimeout(() => {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = origBtn;
+          dispatchBtn.disabled = false;
+          dispatchBtn.innerHTML = origText;
         }, 3000);
-      }, 1200);
+      }, 1000);
     });
   }
 
-  // 10. Nav Links Smooth Active Highlight
-  const navLinks = document.querySelectorAll('.nav-link');
-  const sections = document.querySelectorAll('section[id]');
-
-  window.addEventListener('scroll', () => {
-    let currentId = '';
-    const scrollPos = window.scrollY + 200;
-
-    sections.forEach(sec => {
-      if (scrollPos >= sec.offsetTop) {
-        currentId = sec.getAttribute('id');
-      }
-    });
-
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${currentId}`) {
-        link.classList.add('active');
-      }
-    });
-  }, { passive: true });
-
-  console.log('⚡ Sujay Seeram Sovereign Architecture V2 Initialized.');
+  console.log('⚡ Sujay Seeram Architectural Studio V2 Initialized.');
 });

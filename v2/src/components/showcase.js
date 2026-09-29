@@ -1,203 +1,185 @@
 /**
- * Sovereign Odyssey Showcase Matrix
- * Renders active projects from projects_db.json with category filters,
- * real-time search, award badges, and interactive Dossier triggers.
+ * Project Showcase & Engineering Index Manager
+ * Light-mode architectural presentation for Exhibition & Complete Index
  */
 
-import { activeProjects, vaultProjects } from '../data/projectsData.js';
+import { activeProjects, allProjects } from '../data/projectsData.js';
 import { synth } from '../audio/synth.js';
 
 export class ProjectShowcase {
-  constructor(projectModal, cyberScene) {
-    this.modal = projectModal;
-    this.scene = cyberScene;
+  constructor(modal) {
+    this.modal = modal;
 
-    this.container = document.getElementById('projects-matrix');
-    this.vaultContainer = document.getElementById('vault-matrix');
-    this.searchInput = document.getElementById('project-search');
-    this.filterBtns = document.querySelectorAll('.category-tab');
-    this.countBadge = document.getElementById('project-count-badge');
+    // Elements
+    this.featuredContainer = document.getElementById('featured-grid');
+    this.indexContainer = document.getElementById('archive-grid');
+    this.searchInput = document.getElementById('archive-search');
+    this.filterTabs = document.querySelectorAll('.filter-tab');
+    this.countBadge = document.getElementById('index-count-badge');
 
-    this.currentCategory = 'all';
+    this.activeCategory = 'all';
     this.searchQuery = '';
 
     this.init();
   }
 
   init() {
-    if (!this.container) return;
-
-    this.render();
-    this.renderVault();
-
-    // Category Tabs
-    this.filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        synth.playChirp(720);
-        this.filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        this.currentCategory = btn.getAttribute('data-category') || 'all';
-        if (this.scene) {
-          this.scene.setThemeMood(this.currentCategory);
-        }
-        this.render();
-      });
-    });
-
-    // Real-time Search Input
-    if (this.searchInput) {
-      this.searchInput.addEventListener('input', (e) => {
-        this.searchQuery = e.target.value.toLowerCase().trim();
-        synth.playTick();
-        this.render();
-      });
-    }
+    this.renderFeatured();
+    this.renderIndex();
+    this.bindEvents();
   }
 
-  getFilteredProjects() {
-    return activeProjects.filter(p => {
-      // Category match
-      let matchCat = true;
-      if (this.currentCategory !== 'all') {
-        if (this.currentCategory === 'physics') {
-          matchCat = p.category === 'physics' || p.category === 'research';
-        } else {
-          matchCat = p.category === this.currentCategory;
+  // Curated Landmark Builds for Stage 2 (Exhibition)
+  renderFeatured() {
+    if (!this.featuredContainer) return;
+
+    // Pick top landmark/award-winning builds
+    const landmarkNames = [
+      'Informed-poll',
+      'MotorSafe-An-IoT-Based-Motor-Fault-Prevention-and-Monitoring-System',
+      'Slingshot',
+      'Solar-Dust-Mitigation',
+      'EcoPulse',
+      'Word-Association-Test-SSB'
+    ];
+
+    const featured = allProjects.filter(p => landmarkNames.includes(p.name));
+    // If not enough match, take first 6 active
+    const list = featured.length >= 4 ? featured : activeProjects.slice(0, 6);
+
+    this.featuredContainer.innerHTML = list.map((p, idx) => {
+      const awardBadge = p.awardText
+        ? `<div class="card-award-tag">${p.awardText}</div>`
+        : '';
+      const tags = (p.tags || []).slice(0, 3).map(t => `<span class="tech-tag">${t}</span>`).join('');
+
+      return `
+        <article class="exhibition-card cursor-magnetic" data-project-idx="${p.name}">
+          <div class="card-topline">
+            <span class="card-num">0${idx + 1}</span>
+            <span class="card-category">${(p.category || 'System').toUpperCase()}</span>
+          </div>
+          ${awardBadge}
+          <h3 class="card-title">${p.name}</h3>
+          <p class="card-desc">${p.description || 'Hardware and software systems engineering.'}</p>
+          <div class="card-meta-row">
+            <div class="card-tags-wrap">${tags}</div>
+            <button type="button" class="btn-inspect" data-name="${p.name}">
+              Inspect ↗
+            </button>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    // Attach click listeners to cards
+    this.featuredContainer.querySelectorAll('.btn-inspect, .exhibition-card').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const name = el.dataset.name || el.dataset.projectIdx;
+        const proj = allProjects.find(p => p.name === name);
+        if (proj) {
+          this.modal.open(proj);
         }
+      });
+    });
+  }
+
+  // Complete Archive of 76 Projects for Stage 3 (Index)
+  renderIndex() {
+    if (!this.indexContainer) return;
+
+    const filtered = allProjects.filter(p => {
+      // Category filter
+      if (this.activeCategory !== 'all') {
+        const cat = (p.category || '').toLowerCase();
+        if (!cat.includes(this.activeCategory)) return false;
       }
 
-      // Query match
-      let matchQuery = true;
+      // Search query
       if (this.searchQuery) {
-        const title = p.name.toLowerCase();
-        const desc = p.description.toLowerCase();
-        const tags = (p.tags || []).join(' ').toLowerCase();
-        const status = p.status.toLowerCase();
-        matchQuery = title.includes(this.searchQuery) ||
-                     desc.includes(this.searchQuery) ||
-                     tags.includes(this.searchQuery) ||
-                     status.includes(this.searchQuery);
+        const q = this.searchQuery.toLowerCase();
+        const inName = p.name.toLowerCase().includes(q);
+        const inDesc = (p.description || '').toLowerCase().includes(q);
+        const inTags = (p.tags || []).some(t => t.toLowerCase().includes(q));
+        if (!inName && !inDesc && !inTags) return false;
       }
 
-      return matchCat && matchQuery;
+      return true;
     });
-  }
-
-  render() {
-    if (!this.container) return;
-
-    const list = this.getFilteredProjects();
 
     if (this.countBadge) {
-      this.countBadge.textContent = `${list.length} BUILDS`;
+      this.countBadge.textContent = `${filtered.length} BUILDS DISPLAYED`;
     }
 
-    if (list.length === 0) {
-      this.container.innerHTML = `
+    if (filtered.length === 0) {
+      this.indexContainer.innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">⚡</div>
-          <h3>NO MATCHING BUILDS LOCATED</h3>
-          <p>Zero matching records for query "${this.searchQuery}" in category "${this.currentCategory}".</p>
+          <p>No projects match your current filter criteria.</p>
         </div>
       `;
       return;
     }
 
-    this.container.innerHTML = '';
-
-    list.forEach((project, idx) => {
-      const card = document.createElement('article');
-      card.className = 'cyber-card project-card';
-      card.style.animationDelay = `${Math.min(idx * 0.04, 0.6)}s`;
-
-      const awardHtml = project.awardText 
-        ? `<div class="card-award-pill">${project.awardText}</div>`
+    this.indexContainer.innerHTML = filtered.map(p => {
+      const awardBadge = p.awardText
+        ? `<span class="award-chip-sm">${p.awardText}</span>`
         : '';
+      const tags = (p.tags || []).slice(0, 3).map(t => `<span class="tech-tag">${t}</span>`).join('');
+      const dateStr = p.date || 'Active';
 
-      const tagsHtml = (project.tags || []).map(t => `<span class="cyber-chip">${t}</span>`).join('');
-
-      const ghHtml = project.githubLink && !project.private
-        ? `<a href="${project.githubLink}" target="_blank" rel="noopener noreferrer" class="card-link github" title="Open source repository">
-             <span>GITHUB ↗</span>
-           </a>`
-        : `<span class="card-link private" title="Air-gapped local build">
-             <span>🔒 PRIVATE</span>
-           </span>`;
-
-      card.innerHTML = `
-        <div class="card-header">
-          <div class="card-meta-line">
-            <span class="card-date">${project.date}</span>
-            <span class="card-status-badge ${project.category}">${project.status}</span>
+      return `
+        <div class="index-row-card cursor-magnetic" data-name="${p.name}">
+          <div class="index-info-main">
+            <div class="index-heading-line">
+              <span class="index-title">${p.name}</span>
+              ${awardBadge}
+            </div>
+            <p class="index-desc">${p.description || 'System repository and sovereign codebase.'}</p>
           </div>
-          ${awardHtml}
-        </div>
-
-        <div class="card-body">
-          <h3 class="card-title">${project.name}</h3>
-          <p class="card-desc">${project.description}</p>
-        </div>
-
-        <div class="card-footer">
-          <div class="card-tags">${tagsHtml}</div>
-          <div class="card-actions">
-            ${ghHtml}
-            <button type="button" class="card-dossier-btn" data-project-id="${project.id}">
-              <span>DOSSIER // README ↘</span>
+          <div class="index-meta-col">
+            <span class="index-date">${dateStr}</span>
+            <div class="index-tags">${tags}</div>
+          </div>
+          <div class="index-action-col">
+            <button type="button" class="btn btn-sm btn-ghost open-dossier-btn" data-name="${p.name}">
+              View Dossier ↗
             </button>
           </div>
         </div>
       `;
+    }).join('');
 
-      // Tactile sound & hover effects
-      card.addEventListener('mouseenter', () => synth.playTick());
-
-      // Open Dossier modal on button click or card click
-      const dossierBtn = card.querySelector('.card-dossier-btn');
-      dossierBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (this.modal) this.modal.open(project);
+    // Attach click listeners to rows
+    this.indexContainer.querySelectorAll('.index-row-card, .open-dossier-btn').forEach(el => {
+      el.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        const name = el.dataset.name;
+        const proj = allProjects.find(p => p.name === name);
+        if (proj) {
+          this.modal.open(proj);
+        }
       });
-
-      this.container.appendChild(card);
     });
   }
 
-  renderVault() {
-    if (!this.vaultContainer) return;
-    this.vaultContainer.innerHTML = '';
+  bindEvents() {
+    // Search input
+    if (this.searchInput) {
+      this.searchInput.addEventListener('input', (e) => {
+        this.searchQuery = e.target.value.trim();
+        this.renderIndex();
+      });
+    }
 
-    vaultProjects.forEach((project) => {
-      const row = document.createElement('div');
-      row.className = 'vault-row';
-
-      row.innerHTML = `
-        <div class="vault-cell name">
-          <strong>${project.name}</strong>
-          <span class="vault-date">${project.date}</span>
-        </div>
-        <div class="vault-cell desc">
-          ${project.description}
-        </div>
-        <div class="vault-cell tags">
-          ${(project.tags || []).slice(0, 3).map(t => `<span class="cyber-chip subtle">${t}</span>`).join('')}
-        </div>
-        <div class="vault-cell action">
-          <button type="button" class="btn btn-sm btn-ghost" data-vault-dossier="${project.id}">
-            <span>CAT README</span>
-          </button>
-        </div>
-      `;
-
-      const btn = row.querySelector('[data-vault-dossier]');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          if (this.modal) this.modal.open(project);
-        });
-      }
-
-      this.vaultContainer.appendChild(row);
+    // Category Tabs
+    this.filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        this.filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        this.activeCategory = tab.dataset.category || 'all';
+        synth.playTick(620);
+        this.renderIndex();
+      });
     });
   }
 }

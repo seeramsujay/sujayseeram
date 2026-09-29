@@ -4,410 +4,321 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sujay Seeram — Cyber-Physical Systems & Physics-Informed Design</title>
-  <meta name="description" content="Sovereign engineering portfolio of Sujay Seeram (Suzaykid) — First-Year ECE @ Amrita Vishwa Vidyapeetham. Extreme Economic Engineering, local-first architectures, bare-metal hardware, and physics ML." />
+  <meta name="description" content="Engineering portfolio of Sujay Seeram (Suzaykid) — First-Year ECE @ Amrita Vishwa Vidyapeetham. Extreme Economic Engineering, physical hardware, local-first computing, and physics-informed models." />
 
   <!-- Fonts: Space Grotesk, Plus Jakarta Sans, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="./src/styles/main.css" />
 </head>
 <body>
 
-  <!-- Cyber Overlays -->
-  <div class="cyber-grid-overlay"></div>
-  <div class="noise-overlay"></div>
+  <!-- Natural Background Diffusion & Grid -->
+  <div class="workbench-backdrop"></div>
+  <div class="architect-grid"></div>
 
-  <!-- Three.js Kinetic Cyber-Physical Canvas -->
+  <!-- Three.js Physical Workbench Canvas -->
   <div id="canvas-container">
-    <canvas id="hero-canvas"></canvas>
+    <canvas id="studio-canvas"></canvas>
   </div>
 
-  <!-- TOP HUD HEADER -->
-  <header class="cyber-header">
-    <div class="container header-inner">
-      <a href="#hero" class="brand-logo">
-        <span class="brand-indicator"></span>
-        <span class="brand-title">SUJAY SEERAM<span class="brand-sub">//V2</span></span>
+  <!-- TOP ARCHITECTURAL HEADER -->
+  <header class="studio-header">
+    <div class="header-container">
+      <a href="#" class="brand-block" data-goto-stage="0">
+        <span class="brand-dot"></span>
+        <div>
+          <div class="brand-name">SUJAY SEERAM</div>
+          <div class="brand-sub">ECE @ AMRITA // SOVEREIGN COMPUTING</div>
+        </div>
       </a>
 
-      <nav class="cyber-nav">
-        <a href="#identity" class="nav-link">IDENTITY</a>
-        <a href="#odyssey" class="nav-link">ODYSSEY</a>
-        <a href="#vault" class="nav-link">VAULT</a>
-        <a href="#transmit" class="nav-link">TRANSMIT</a>
+      <!-- Horizontal Stage Navigation Tabs -->
+      <nav class="stage-nav">
+        <button type="button" class="stage-nav-item active" data-stage="0">01. OVERVIEW</button>
+        <button type="button" class="stage-nav-item" data-stage="1">02. EXHIBITION</button>
+        <button type="button" class="stage-nav-item" data-stage="2">03. ALL 76 BUILDS</button>
+        <button type="button" class="stage-nav-item" data-stage="3">04. PROTOCOL</button>
       </nav>
 
-      <div class="header-hud">
-        <div class="hud-pill" id="hud-clock" title="Local System Telemetry">
-          <span class="pulse-dot"></span>
-          <span id="live-clock">--:--:-- IST</span>
+      <div class="header-tools">
+        <div class="btn-icon-pill" id="live-clock">
+          <span>--:--:-- IST</span>
         </div>
-
-        <button type="button" class="hud-btn" id="sfx-toggle-btn" title="Toggle Synthesizer Sound FX">
-          <span id="sfx-status-icon">🔊</span>
-          <span id="sfx-status-text">SFX: ON</span>
-        </button>
-
-        <button type="button" class="hud-btn" id="hud-terminal-btn" data-trigger-terminal title="Open Sovereign Terminal (⌘K)">
-          <span>⌘K CLI</span>
+        <button type="button" class="btn-icon-pill" id="sfx-toggle-btn" title="Toggle audio feedback">
+          <span id="sfx-icon">🔊</span>
+          <span id="sfx-text">SFX: ON</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- MAIN SCROLLABLE CONTENT -->
-  <main class="content-wrapper">
+  <!-- HORIZONTAL STAGES VIEWPORT -->
+  <main class="stages-viewport">
+    <div class="stages-track" id="stages-track">
 
-    <!-- HERO SECTION -->
-    <section id="hero" class="hero-section">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="hero-badge-strip">
-            <span class="hud-pill">
-              <span class="pulse-dot"></span>
-              1ST YEAR ECE @ AMRITA
-            </span>
-            <span class="hud-pill">MACBOOK AIR 2017 · LINUX MINT</span>
-          </div>
-
-          <h1 class="hero-title">
-            Sujay Seeram<span class="text-gradient-mint">.</span>
-          </h1>
-
-          <div class="hero-quote">
-            "I don't wait for a prompt. I build because the problem is in the room."
-          </div>
-
-          <p class="hero-bio">
-            Electronics and Communication Engineering undergraduate at Amrita Vishwa Vidyapeetham. 
-            My environment is the terminal. My canvas is the physical world. I build local-first cyber-physical 
-            systems — models that run on constrained edge hardware, tools that answer to no one's server but mine.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#odyssey" class="btn btn-primary">
-              <span>EXPLORE ODYSSEY ↘</span>
-            </a>
-            <button type="button" class="btn btn-secondary" data-trigger-terminal>
-              <span>OPEN TERMINAL (⌘K)</span>
-            </button>
-            <a href="#vault" class="btn btn-ghost">
-              <span>VIEW VAULT</span>
-            </a>
-          </div>
-
-          <div class="hero-metrics">
-            <div class="metric-card">
-              <span class="metric-val text-gradient-mint" id="active-count-metric">49+</span>
-              <span class="metric-label">Active Builds</span>
-            </div>
-            <div class="metric-card">
-              <span class="metric-val text-gradient-cyan" id="total-count-metric">76</span>
-              <span class="metric-label">Repositories</span>
-            </div>
-            <div class="metric-card">
-              <span class="metric-val" style="color:var(--amber-400);">ZERO</span>
-              <span class="metric-label">Cloud Lock-in</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- IDENTITY & MANIFESTO SECTION -->
-    <section id="identity">
-      <div class="container">
-        <div class="section-tag">IDENTITY & ETHOS</div>
-        <h2 class="section-heading">The Architecture of a Builder</h2>
-        <p class="section-subtitle">
-          Three non-negotiable principles dictate every circuit schematic, every DSP pipeline, and every line of code written.
-        </p>
-
-        <div class="pillars-grid">
-          <!-- Pillar 1 -->
-          <div class="cyber-card">
-            <div class="pillar-icon">🛡️</div>
-            <h3 class="pillar-title">Local-First Sovereignty</h3>
-            <p class="pillar-desc">
-              If a system requires an always-on cloud server to breathe, it is inherently fragile. 
-              Privacy is the architecture, not an afterthought. I engineer local databases, edge RAG parsers, 
-              and offline-first IoT meshes that run completely sovereign on user-owned silicon.
-            </p>
-          </div>
-
-          <!-- Pillar 2 -->
-          <div class="cyber-card">
-            <div class="pillar-icon">⚡</div>
-            <h3 class="pillar-title">Physics-Informed Computing</h3>
-            <p class="pillar-desc">
-              Simulate first. Deploy second. Break nothing. From Fast Fourier Transform (FFT) motor vibration 
-              diagnostics to mathematical models of lunar dust mitigation, software is grounded in differential 
-              equations and real-world physical laws.
-            </p>
-          </div>
-
-          <!-- Pillar 3 -->
-          <div class="cyber-card">
-            <div class="pillar-icon">⚙️</div>
-            <h3 class="pillar-title">Extreme Economic Engineering</h3>
-            <p class="pillar-desc">
-              Building high-impact systems on minimal resources. My daily driver is a 2017 MacBook Air with Linux Mint. 
-              Constraint breeds purity — when memory, compute, and power are strictly rationed, only elegant code survives.
-            </p>
-          </div>
-        </div>
-
-        <!-- Education Odyssey Timeline -->
-        <div style="margin-top:var(--space-12);">
-          <div class="section-tag">ACADEMIC FORGE</div>
-          <h3 class="section-heading" style="font-size:var(--text-2xl);">Trajectory & Milestones</h3>
-
-          <div class="timeline-wrap">
-            <div class="timeline-step">
-              <div class="timeline-marker"></div>
-              <div class="timeline-date">2025 — PRESENT // CURRENT BASE</div>
-              <div class="timeline-institution">Amrita Vishwa Vidyapeetham</div>
-              <div class="timeline-role">B.Tech in Electronics and Communication Engineering (ECE) · Cyber-Physical Systems & Embedded AI</div>
-            </div>
-
-            <div class="timeline-step past">
-              <div class="timeline-marker"></div>
-              <div class="timeline-date">2021 — 2025 // THE TRANSITION PERIOD</div>
-              <div class="timeline-institution">Navy Children School</div>
-              <div class="timeline-role">Higher Secondary Education · Physics, Chemistry & Applied Mathematics · First-principles problem solving</div>
-            </div>
-
-            <div class="timeline-step past">
-              <div class="timeline-marker"></div>
-              <div class="timeline-date">2010 — 2021 // THE EARLY FORGE</div>
-              <div class="timeline-institution">Siva Sivani Public School</div>
-              <div class="timeline-role">Secondary Education · Early exploration with Arduino microcontrollers, electronics tinkering, and automation</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- THE ODYSSEY SHOWCASE MATRIX -->
-    <section id="odyssey">
-      <div class="container">
-        <div class="section-tag">THE ODYSSEY</div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-6);">
-          <div>
-            <h2 class="section-heading" style="margin-bottom:var(--space-2);">Chronicle of Active Builds</h2>
-            <p class="section-subtitle" style="margin-bottom:0;">
-              Filterable index of cyber-physical projects, hackathons, and edge systems parsed live from the repository database.
-            </p>
-          </div>
-          <span class="hud-pill" id="project-count-badge">49 BUILDS</span>
-        </div>
-
-        <!-- Controls: Category Filters & Search -->
-        <div class="showcase-controls">
-          <div class="category-tabs">
-            <button type="button" class="category-tab active" data-category="all">ALL</button>
-            <button type="button" class="category-tab" data-category="hackathon">HACKATHONS</button>
-            <button type="button" class="category-tab" data-category="hardware">HARDWARE & IOT</button>
-            <button type="button" class="category-tab" data-category="physics">PHYSICS & RESEARCH</button>
-            <button type="button" class="category-tab" data-category="tool">TOOLS & CLIS</button>
-          </div>
-
-          <div class="search-box-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="project-search" class="search-input" placeholder="Search builds, tags, tech..." autocomplete="off" />
-          </div>
-        </div>
-
-        <!-- Projects Grid Matrix -->
-        <div class="projects-grid" id="projects-matrix">
-          <!-- Dynamically populated by showcase.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- THE VAULT SECTION -->
-    <section id="vault">
-      <div class="container">
-        <div class="section-tag">CLASSIFIED ARCHIVES</div>
-        <h2 class="section-heading">The Vault</h2>
-        <p class="section-subtitle">
-          Archived experiments, legacy modules, and air-gapped hardware firmware. Still preserved for the record.
-        </p>
-
-        <div class="vault-table">
-          <div class="vault-header-row">
-            <div>IDENTIFIER</div>
-            <div>SPECIFICATION</div>
-            <div>TAGS</div>
-            <div>ACTION</div>
-          </div>
-          <div id="vault-matrix">
-            <!-- Dynamically populated by showcase.js -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TRANSMIT / CONTACT SECTION -->
-    <section id="transmit">
-      <div class="container">
-        <div class="section-tag">DIRECT PROTOCOL</div>
-        <h2 class="section-heading">Transmit Message</h2>
-        <p class="section-subtitle">
-          Available for collaborations on cyber-physical systems, physics-informed AI, or sovereign edge hardware.
-        </p>
-
-        <div class="transmit-grid">
-          <!-- Contact Coordinates -->
-          <div class="contact-card">
-            <a href="mailto:sujayat2007@gmail.com" class="contact-method" id="email-contact-btn">
-              <div class="contact-method-info">
-                <span class="contact-label">DIRECT INBOX</span>
-                <span class="contact-val">sujayat2007@gmail.com</span>
+      <!-- STAGE 01: OVERVIEW & MANIFESTO -->
+      <section class="stage-panel" id="stage-overview">
+        <div class="stage-content">
+          <div class="hero-editorial">
+            <div class="hero-left hero-parallax" data-depth="12">
+              <div class="editorial-tag">
+                <span>●</span> FIRST-YEAR ECE · AMRITA VISHWA VIDYAPEETHAM
               </div>
-              <button type="button" class="btn btn-sm btn-ghost" id="copy-email-btn" title="Copy email address">
-                <span>COPY 📋</span>
-              </button>
-            </a>
-
-            <a href="https://github.com/seeramsujay" target="_blank" rel="noopener noreferrer" class="contact-method">
-              <div class="contact-method-info">
-                <span class="contact-label">CODE FORGE</span>
-                <span class="contact-val">github.com/seeramsujay</span>
-              </div>
-              <span class="card-link github">VISIT ↗</span>
-            </a>
-
-            <a href="https://linkedin.com/in/sujayseeram" target="_blank" rel="noopener noreferrer" class="contact-method">
-              <div class="contact-method-info">
-                <span class="contact-label">PROFESSIONAL DOSSIER</span>
-                <span class="contact-val">linkedin.com/in/sujayseeram</span>
-              </div>
-              <span class="card-link github">CONNECT ↗</span>
-            </a>
-
-            <div class="cyber-card" style="margin-top:var(--space-2);">
-              <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--mint-400);margin-bottom:4px;">
-                STATUS: ACCEPTING NOVEL RESEARCH
-              </div>
-              <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
-                Looking to collaborate on novel engineering projects that demand extreme economy of materials and apply physics to make the world tangibly better.
+              <h1 class="hero-main-title">
+                Sujay Seeram.
+              </h1>
+              <p class="hero-manifesto">
+                "I don't wait for a prompt. I build because the problem is in the room." 
+                Undergraduate engineer building local-first cyber-physical systems, physics-grounded algorithms, 
+                and hardware prototypes that run sovereignly on user-owned silicon without cloud lock-in.
               </p>
+
+              <div class="hero-actions-row">
+                <button type="button" class="btn btn-primary" data-goto-stage="1">
+                  <span>Explore Exhibition →</span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-goto-stage="2">
+                  <span>View All 76 Builds</span>
+                </button>
+                <button type="button" class="btn btn-ghost" data-goto-stage="3">
+                  <span>Contact Protocol</span>
+                </button>
+              </div>
+
+              <div style="display:flex;gap:var(--space-6);font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);">
+                <div><strong>49+</strong> Active Builds</div>
+                <div><strong>76</strong> Repositories</div>
+                <div><strong>Zero</strong> Cloud Dependencies</div>
+              </div>
+            </div>
+
+            <!-- Right Column: 3 Sovereign Pillars -->
+            <div class="pillars-card-stack hero-parallax" data-depth="22">
+              <div class="pillar-paper-card">
+                <div class="pillar-head">
+                  <span class="pillar-head-icon">🛡️</span>
+                  <span>Local-First Sovereignty</span>
+                </div>
+                <p class="pillar-text">
+                  Privacy is the architecture, not an afterthought. Systems, parsers, and edge intelligence 
+                  run completely on local hardware.
+                </p>
+              </div>
+
+              <div class="pillar-paper-card">
+                <div class="pillar-head">
+                  <span class="pillar-head-icon">⚡</span>
+                  <span>Physics-Informed Computing</span>
+                </div>
+                <p class="pillar-text">
+                  Simulate first, deploy second. From FFT motor vibration harmonics to lunar dust mitigation, 
+                  software is grounded in differential equations.
+                </p>
+              </div>
+
+              <div class="pillar-paper-card">
+                <div class="pillar-head">
+                  <span class="pillar-head-icon">⚙️</span>
+                  <span>Extreme Economic Engineering</span>
+                </div>
+                <p class="pillar-text">
+                  Maximizing impact on constrained hardware. Daily driver is a 2017 MacBook Air with Linux Mint. 
+                  Constraint breeds elegant, resilient code.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STAGE 02: EXHIBITION (LANDMARK BUILDS) -->
+      <section class="stage-panel" id="stage-exhibition">
+        <div class="stage-content">
+          <div class="stage-header-block">
+            <div class="editorial-tag">STAGE 02 // EXHIBITION</div>
+            <h2 class="stage-title">Landmark Engineering Works</h2>
+            <p class="stage-desc">
+              Selected builds spanning IoT motor diagnostics, mathematical modeling, and hackathon prototypes.
+            </p>
+          </div>
+
+          <div class="exhibition-grid" id="featured-grid">
+            <!-- Populated dynamically by showcase.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- STAGE 03: THE 76 BUILDS INDEX -->
+      <section class="stage-panel" id="stage-archive">
+        <div class="stage-content">
+          <div class="stage-header-block">
+            <div class="editorial-tag">STAGE 03 // COMPLETE INDEX</div>
+            <h2 class="stage-title">The Engineering Archive</h2>
+            <p class="stage-desc">
+              Exhaustive catalog of all 76 projects and research builds parsed directly from the database.
+            </p>
+          </div>
+
+          <!-- Controls: Category Filters & Search -->
+          <div class="archive-controls">
+            <div class="filter-tabs">
+              <button type="button" class="filter-tab active" data-category="all">ALL</button>
+              <button type="button" class="filter-tab" data-category="hackathon">HACKATHONS</button>
+              <button type="button" class="filter-tab" data-category="hardware">HARDWARE & IOT</button>
+              <button type="button" class="filter-tab" data-category="physics">PHYSICS & SIM</button>
+              <button type="button" class="filter-tab" data-category="tool">TOOLS & UTILITIES</button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:var(--space-3);">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);" id="index-count-badge">76 BUILDS</span>
+              <input type="text" id="archive-search" class="search-field" placeholder="Search archive..." autocomplete="off" />
             </div>
           </div>
 
-          <!-- Dispatch Message Simulator -->
-          <div class="cyber-card">
-            <form id="transmit-form" class="cyber-form">
-              <div class="form-group">
-                <label class="form-label" for="form-name">CALLSIGN / SENDER NAME</label>
-                <input type="text" id="form-name" class="form-input" placeholder="e.g. Dr. Ada Lovelace" required />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="form-email">RETURN COORDINATES / EMAIL</label>
-                <input type="email" id="form-email" class="form-input" placeholder="name@domain.com" required />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="form-message">TRANSMISSION PAYLOAD</label>
-                <textarea id="form-message" class="form-textarea" placeholder="Detail the problem, architecture, or collaboration..." required></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-primary" id="form-submit-btn" style="width:100%;margin-top:var(--space-2);">
-                <span>DISPATCH TRANSMISSION ↗</span>
-              </button>
-            </form>
+          <!-- Archive List Grid -->
+          <div class="archive-list" id="archive-grid">
+            <!-- Populated dynamically by showcase.js -->
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
+      <!-- STAGE 04: STUDIO PROTOCOL & TRANSMISSION -->
+      <section class="stage-panel" id="stage-protocol">
+        <div class="stage-content">
+          <div class="stage-header-block">
+            <div class="editorial-tag">STAGE 04 // PROTOCOL</div>
+            <h2 class="stage-title">Studio Protocol & Transmission</h2>
+            <p class="stage-desc">
+              Direct connection channels for cyber-physical research, robotics, and applied physics collaborations.
+            </p>
+          </div>
+
+          <div class="protocol-grid">
+            <!-- Left: Trajectory & Channels -->
+            <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+              <div class="protocol-card">
+                <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-pcb);font-weight:700;margin-bottom:var(--space-3);">
+                  DIRECT CHANNELS
+                </div>
+
+                <div class="contact-channel-item">
+                  <div>
+                    <div class="channel-label">INBOX</div>
+                    <div class="channel-val">sujayat2007@gmail.com</div>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-secondary" id="copy-email-btn">
+                    <span>Copy 📋</span>
+                  </button>
+                </div>
+
+                <a href="https://github.com/seeramsujay" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+                  <div>
+                    <div class="channel-label">GITHUB</div>
+                    <div class="channel-val">github.com/seeramsujay</div>
+                  </div>
+                  <span style="font-family:var(--font-mono);font-size:0.76rem;color:var(--accent-pcb);">Visit ↗</span>
+                </a>
+
+                <a href="https://linkedin.com/in/sujayseeram" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+                  <div>
+                    <div class="channel-label">LINKEDIN</div>
+                    <div class="channel-val">linkedin.com/in/sujayseeram</div>
+                  </div>
+                  <span style="font-family:var(--font-mono);font-size:0.76rem;color:var(--accent-pcb);">Connect ↗</span>
+                </a>
+              </div>
+
+              <!-- Academic Forge -->
+              <div class="protocol-card">
+                <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-faint);font-weight:700;margin-bottom:var(--space-2);">
+                  ACADEMIC TRAJECTORY
+                </div>
+                <div style="font-size:0.86rem;line-height:1.6;color:var(--text-body);">
+                  <strong>2025–Present:</strong> Amrita Vishwa Vidyapeetham (B.Tech ECE)<br />
+                  <strong>2021–2025:</strong> Navy Children School (Physics & Mathematics)<br />
+                  <strong>2010–2021:</strong> Siva Sivani Public School (Early Electronics Tinkering)
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Direct Message Dispatch -->
+            <div class="protocol-card">
+              <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-pcb);font-weight:700;margin-bottom:var(--space-3);">
+                DISPATCH TRANSMISSION
+              </div>
+              <form id="dispatch-form" class="architect-form">
+                <div class="form-group">
+                  <label class="form-label" for="sender-name">SENDER / CALLSIGN</label>
+                  <input type="text" id="sender-name" class="form-input" placeholder="Your name or affiliation" required />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="sender-email">RETURN COORDINATES</label>
+                  <input type="email" id="sender-email" class="form-input" placeholder="name@domain.com" required />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="sender-message">TRANSMISSION</label>
+                  <textarea id="sender-message" class="form-textarea" placeholder="Detail the inquiry, architecture, or collaboration..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="dispatch-btn" style="width:100%;">
+                  <span>Send Message ↗</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="cyber-footer">
-    <div class="container footer-inner">
-      <div class="footer-left">
-        SUJAY SEERAM // SUZAYKID © 2026 · SOVEREIGN COMPUTING
+  <!-- BOTTOM CONTROL & STAGE STEPPER BAR -->
+  <footer class="bottom-control-bar">
+    <div class="bottom-bar-inner">
+      <div class="bottom-telemetry">
+        BUILT FOR LINUX MINT // 2017 MACBOOK AIR HARDWARE
       </div>
-      <div class="footer-right">
-        RUNNING ON LINUX MINT · 2017 MACBOOK AIR HARDWARE
+
+      <div class="stage-stepper">
+        <button type="button" class="btn-step" id="stage-prev-btn" title="Previous Stage (←)">
+          ← PREV
+        </button>
+        <span class="stage-counter">
+          <span id="stage-indicator-cur">01</span> / 04
+        </span>
+        <button type="button" class="btn-step" id="stage-next-btn" title="Next Stage (→)">
+          NEXT →
+        </button>
       </div>
     </div>
   </footer>
 
-  <!-- INTERACTIVE MARKDOWN DOSSIER MODAL -->
-  <div id="project-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
-    <div class="modal-backdrop-dismiss" id="modal-backdrop"></div>
-    <div class="modal-window">
-      <div class="modal-topbar">
-        <div class="modal-header-meta">
-          <h2 class="modal-title" id="modal-project-title">Project Specification</h2>
-          <div id="modal-project-meta"></div>
-        </div>
-        <div class="modal-actions-bar">
-          <button type="button" class="btn btn-sm btn-ghost" id="modal-copy-md-btn">
-            <span>COPY MD</span>
-          </button>
-          <button type="button" class="btn btn-sm btn-primary" id="modal-close-btn">
-            <span>CLOSE ✕</span>
-          </button>
-        </div>
-      </div>
-
-      <div style="padding:var(--space-3) var(--space-8);background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-        <div id="modal-project-tags" style="display:flex;gap:4px;flex-wrap:wrap;"></div>
-        <div id="modal-project-links"></div>
-      </div>
-
-      <div class="modal-content-scroll markdown-body" id="modal-project-body">
-        <!-- Rendered markdown content -->
-      </div>
-    </div>
-  </div>
-
-  <!-- INTERACTIVE CYBER TERMINAL CLI (⌘K) -->
-  <div id="terminal-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
-    <div class="modal-backdrop-dismiss" id="terminal-backdrop"></div>
-    <div class="terminal-window">
-      <div class="term-topbar">
+  <!-- ARCHITECTURAL SLIDE-OVER DRAWER (PROJECT MODAL) -->
+  <div id="project-drawer" class="drawer-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="drawer-sheet">
+      <div class="drawer-header">
         <div>
-          <span style="color:var(--mint-400);">●</span> 
-          <span>SOVEREIGN TTY // suzay@macbook-2017</span>
+          <h2 class="drawer-title" id="drawer-title">Project Specification</h2>
+          <div id="drawer-meta" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;"></div>
         </div>
-        <button type="button" class="btn btn-sm btn-ghost" id="terminal-close-btn">ESC CLOSE</button>
-      </div>
-
-      <!-- Quick Command Chips -->
-      <div class="term-chips-bar">
-        <span style="color:var(--text-muted);font-size:0.68rem;margin-right:4px;">QUICK EXEC:</span>
-        <button type="button" class="term-quick-chip" data-cmd="help">help</button>
-        <button type="button" class="term-quick-chip" data-cmd="whoami">whoami</button>
-        <button type="button" class="term-quick-chip" data-cmd="projects">projects</button>
-        <button type="button" class="term-quick-chip" data-cmd="skills">skills</button>
-        <button type="button" class="term-quick-chip" data-cmd="awards">awards</button>
-        <button type="button" class="term-quick-chip" data-cmd="tenets">tenets</button>
-        <button type="button" class="term-quick-chip" data-cmd="ping">ping</button>
-        <button type="button" class="term-quick-chip" data-cmd="clear">clear</button>
-      </div>
-
-      <!-- Terminal Output Scroll Area -->
-      <div class="term-output-area" id="terminal-output">
-        <div class="term-line">
-          <span style="color:var(--mint-400);font-weight:600;">SOVEREIGN TELEMETRY DAEMON v2.4 INITIALIZED.</span>
-        </div>
-        <div class="term-line">
-          Type <span class="term-cmd">help</span> to list commands or click any chip above.
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" class="btn btn-sm btn-secondary" id="drawer-copy-btn">Copy MD</button>
+          <button type="button" class="btn btn-sm btn-ghost" id="drawer-close-btn">✕ Close</button>
         </div>
       </div>
 
-      <!-- Interactive Input Prompt -->
-      <div class="term-input-bar">
-        <span class="term-prompt">suzay@macbook-2017:~$</span>
-        <input type="text" id="terminal-input" class="term-input" placeholder="Type command..." autocomplete="off" spellcheck="false" />
+      <div style="padding:var(--space-3) var(--space-6);background:var(--surface-tinted);border-bottom:var(--border-hairline);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <div id="drawer-tags" style="display:flex;gap:4px;flex-wrap:wrap;"></div>
+        <div id="drawer-links"></div>
+      </div>
+
+      <div class="drawer-body-scroll markdown-editorial" id="drawer-body">
+        <!-- Rendered markdown README -->
       </div>
     </div>
   </div>
