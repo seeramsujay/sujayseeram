@@ -1,6 +1,6 @@
 /**
- * Sovereign Cyber Dossier / README Modal Viewer
- * Uses marked to render full markdown documentation from projects_db.json
+ * Architectural Project Dossier Drawer (Light Mode & Editorial)
+ * Powered by Marked to render project READMEs.
  */
 
 import { marked } from 'marked';
@@ -8,15 +8,15 @@ import { synth } from '../audio/synth.js';
 
 export class ProjectModal {
   constructor() {
-    this.modalEl = document.getElementById('project-modal');
-    this.backdropEl = document.getElementById('modal-backdrop');
-    this.closeBtn = document.getElementById('modal-close-btn');
-    this.titleEl = document.getElementById('modal-project-title');
-    this.metaEl = document.getElementById('modal-project-meta');
-    this.tagsEl = document.getElementById('modal-project-tags');
-    this.linksEl = document.getElementById('modal-project-links');
-    this.bodyEl = document.getElementById('modal-project-body');
-    this.copyBtn = document.getElementById('modal-copy-md-btn');
+    this.modalEl = document.getElementById('project-drawer');
+    this.backdropEl = document.getElementById('drawer-backdrop');
+    this.closeBtn = document.getElementById('drawer-close-btn');
+    this.titleEl = document.getElementById('drawer-title');
+    this.metaEl = document.getElementById('drawer-meta');
+    this.tagsEl = document.getElementById('drawer-tags');
+    this.linksEl = document.getElementById('drawer-links');
+    this.bodyEl = document.getElementById('drawer-body');
+    this.copyMdBtn = document.getElementById('drawer-copy-btn');
 
     this.currentProject = null;
     this.init();
@@ -24,6 +24,12 @@ export class ProjectModal {
 
   init() {
     if (!this.modalEl) return;
+
+    // Configure marked for clean, safe rendering
+    marked.setOptions({
+      gfm: true,
+      breaks: true
+    });
 
     if (this.closeBtn) {
       this.closeBtn.addEventListener('click', () => this.close());
@@ -33,128 +39,94 @@ export class ProjectModal {
       this.backdropEl.addEventListener('click', () => this.close());
     }
 
-    if (this.copyBtn) {
-      this.copyBtn.addEventListener('click', () => this.copyMarkdown());
-    }
-
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !this.modalEl.classList.contains('hidden')) {
         this.close();
       }
     });
+
+    if (this.copyMdBtn) {
+      this.copyMdBtn.addEventListener('click', () => this.copyMarkdown());
+    }
   }
 
   open(project) {
-    if (!this.modalEl || !project) return;
+    if (!project) return;
     this.currentProject = project;
 
-    synth.playWhoosh();
+    synth.playTick(580);
 
-    // Populate Header
-    if (this.titleEl) {
-      this.titleEl.textContent = project.name;
-    }
-
+    // Title & Metadata
+    if (this.titleEl) this.titleEl.textContent = project.name;
     if (this.metaEl) {
-      let metaHtml = `<span class="meta-tag date">${project.date}</span>`;
-      metaHtml += `<span class="meta-tag status">${project.status}</span>`;
-      if (project.awardText) {
-        metaHtml += `<span class="meta-tag award">${project.awardText}</span>`;
-      }
-      this.metaEl.innerHTML = metaHtml;
+      const awardBadge = project.awardText
+        ? `<span class="award-chip">${project.awardText}</span>`
+        : '';
+      const dateStr = project.date || 'Active';
+      const catStr = (project.category || 'Engineering').toUpperCase();
+      this.metaEl.innerHTML = `${awardBadge} <span class="meta-tag">${catStr}</span> <span class="meta-date">${dateStr}</span>`;
     }
 
-    // Populate Tags
+    // Tags
     if (this.tagsEl) {
-      this.tagsEl.innerHTML = (project.tags || [])
-        .map(t => `<span class="cyber-chip">${t}</span>`)
+      const tags = Array.isArray(project.tags) ? project.tags : [];
+      this.tagsEl.innerHTML = tags
+        .map(t => `<span class="tech-tag">${t}</span>`)
         .join('');
     }
 
-    // Populate Action Links
+    // Links
     if (this.linksEl) {
-      let linksHtml = '';
-      if (project.githubLink && !project.private) {
-        linksHtml += `
-          <a href="${project.githubLink}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            <span>REPOSITORY // GITHUB ↗</span>
+      if (project.githubLink) {
+        this.linksEl.innerHTML = `
+          <a href="${project.githubLink}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
+            <span>Open Repository ↗</span>
           </a>
         `;
       } else {
-        linksHtml += `
-          <span class="btn btn-disabled">
-            <span>🔒 AIR-GAPPED / PRIVATE SPEC</span>
-          </span>
+        this.linksEl.innerHTML = `
+          <span class="badge-airgapped">Local / Sovereign Build</span>
         `;
       }
-      this.linksEl.innerHTML = linksHtml;
     }
 
-    // Populate Markdown Body
+    // Markdown Content
     if (this.bodyEl) {
-      let rawMd = project.readme && project.readme.trim().length > 0 
-        ? project.readme 
-        : this.generateDefaultDossier(project);
+      const rawReadme = project.readme && project.readme.trim().length > 0
+        ? project.readme
+        : `# ${project.name}\n\n${project.description || 'Architectural project documentation.'}\n\n### System Overview\nThis build operates sovereignly on local hardware without cloud telemetry.`;
 
       try {
-        this.bodyEl.innerHTML = marked.parse(rawMd);
-      } catch (err) {
-        console.error('Marked parsing error:', err);
-        this.bodyEl.textContent = rawMd;
+        this.bodyEl.innerHTML = marked.parse(rawReadme);
+      } catch (e) {
+        this.bodyEl.textContent = rawReadme;
       }
     }
 
-    // Display modal
+    // Show drawer
     this.modalEl.classList.remove('hidden');
-    document.body.classList.add('modal-open');
-  }
-
-  generateDefaultDossier(project) {
-    return `
-# ${project.name}
-
-> **Category:** \`${project.category || 'tool'}\` | **Timeline:** \`${project.date}\`
-
-${project.description}
-
----
-
-## 🛠️ Architecture & Parameters
-
-- **Subsystem Category:** ${project.status}
-- **Stack & Tooling:** ${(project.tags || []).join(', ') || 'Bare-metal C / Python'}
-- **Deployment Profile:** Local-First / Sovereign Computing
-- **Repository Access:** ${project.githubLink ? `[${project.githubLink}](${project.githubLink})` : 'Confidential Local Archive'}
-
-${project.awardText ? `\n> **Honors & Validation:** ${project.awardText}\n` : ''}
-
----
-*Telemetry Dossier generated automatically from Sujay Seeram's Sovereign Engineering Database.*
-`;
-  }
-
-  copyMarkdown() {
-    if (!this.currentProject) return;
-    synth.playTick();
-    const md = this.currentProject.readme || this.generateDefaultDossier(this.currentProject);
-    navigator.clipboard.writeText(md).then(() => {
-      if (this.copyBtn) {
-        const orig = this.copyBtn.innerHTML;
-        this.copyBtn.innerHTML = `<span>COPIED ✔</span>`;
-        setTimeout(() => {
-          this.copyBtn.innerHTML = orig;
-        }, 2000);
-      }
-    }).catch(err => {
-      console.warn('Clipboard write failed:', err);
-    });
+    document.body.style.overflow = 'hidden';
   }
 
   close() {
     if (!this.modalEl) return;
-    synth.playTick();
+    synth.playTick(420);
     this.modalEl.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    this.currentProject = null;
+    document.body.style.overflow = '';
+  }
+
+  copyMarkdown() {
+    if (!this.currentProject) return;
+    const content = this.currentProject.readme || this.currentProject.description || '';
+    navigator.clipboard.writeText(content).then(() => {
+      synth.playSuccess();
+      if (this.copyMdBtn) {
+        const orig = this.copyMdBtn.innerHTML;
+        this.copyMdBtn.innerHTML = `<span>Copied ✔</span>`;
+        setTimeout(() => {
+          this.copyMdBtn.innerHTML = orig;
+        }, 2000);
+      }
+    });
   }
 }
