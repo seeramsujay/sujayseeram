@@ -1,11 +1,12 @@
 /**
- * NarrativeScene — Continuous Story-Driven 3D Canvas
- * Technical Pastel Art Direction & Multi-Model Transitions
- * 1. Hero: Oversized Matte White & Brushed Aluminum ESP32
- * 2. Physical Layer: Procedural FFT Vibration Waveform
- * 3. Logic Layer: Distributed Node Constellation Graph
- * 4. Optimization Layer: Minimalist Edge Device Core & Orbiting Rings
- * 5. Human Element: Volumetric Ambient Particle Field
+ * Three.js Story-Driven WebGL Scene
+ * Technical Pastel Palette & Continuous Narrative Arc
+ *
+ * Stage 1: Oversized ESP32 Microcontroller (Hero - Physical/Clay & Brushed Aluminum)
+ * Stage 2: FFT Acoustic Waveform (Physical Layer - Sound & Sensor Processing)
+ * Stage 3: Distributed Node Graph (Logic Layer - AI Infrastructure & Constellations)
+ * Stage 4: Minimalist Edge Device Core & Orbiting Rings (Optimization Layer)
+ * Stage 5: Volumetric Ambient Particle Field (Human Element / Archive)
  */
 
 import * as THREE from 'three';
@@ -13,20 +14,15 @@ import * as THREE from 'three';
 export class NarrativeScene {
   constructor(canvas) {
     this.canvas = canvas;
-    this.scene = null;
-    this.camera = null;
-    this.renderer = null;
-    this.animId = null;
     this.clock = new THREE.Clock();
 
-    // Oil-motion continuous pointer tracking
+    // Interaction & Scroll State
     this.pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
     this.scrollProgress = 0; // 0.0 to 1.0
 
-    // Groups for the narrative layers
+    // Groups for each stage of the narrative
     this.heroEspGroup = null;
     this.waveGroup = null;
-    this.waveMesh = null;
     this.nodeGraphGroup = null;
     this.optCoreGroup = null;
     this.ambientParticles = null;
@@ -41,10 +37,11 @@ export class NarrativeScene {
     this.scene = new THREE.Scene();
     this.scene.background = null; // transparent to allow pastel CSS gradient background
 
-    // 2. Camera
+    // 2. Camera with responsive FOV / distance
     const aspect = window.innerWidth / window.innerHeight;
+    const isMobile = window.innerWidth < 768;
     this.camera = new THREE.PerspectiveCamera(40, aspect, 0.1, 50);
-    this.camera.position.set(0, 0, 7.5);
+    this.camera.position.set(0, 0, isMobile ? 9.2 : 7.5);
 
     // 3. Renderer with soft clinical lighting
     this.renderer = new THREE.WebGLRenderer({
@@ -73,189 +70,201 @@ export class NarrativeScene {
     // 8. Build Layer 4: Minimalist Edge Device Core (Optimization)
     this.buildOptimizationCore();
 
-    // 9. Build Layer 5: Ambient Particle Field (Human Element)
+    // 9. Build Layer 5: Volumetric Ambient Particle Field
     this.buildAmbientParticles();
 
-    // 10. Bind Events
+    // 10. Listeners
     this.bindEvents();
 
-    // 11. Run Render Loop
+    // 11. Initial progress positioning
+    this.updateScrollProgress(0);
+
+    // 12. Render loop
     this.tick();
   }
 
   setupLighting() {
-    // Soft omni fill
-    const ambient = new THREE.AmbientLight(0xffffff, 1.8);
-    this.scene.add(ambient);
+    // Diffuse ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    this.scene.add(ambientLight);
 
-    // Key Light: Crisp white clinical laboratory light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    keyLight.position.set(5, 8, 6);
+    // Soft key directional light
+    const keyLight = new THREE.DirectionalLight(0xfff8f0, 1.4);
+    keyLight.position.set(5, 8, 5);
     this.scene.add(keyLight);
 
-    // Pastel Mint bounce light from lower left
-    const mintBounce = new THREE.DirectionalLight(0xe6f4ea, 1.2);
-    mintBounce.position.set(-6, -4, 4);
-    this.scene.add(mintBounce);
+    // Soft cool fill light for clay volume
+    const fillLight = new THREE.DirectionalLight(0xe0f2fe, 0.8);
+    fillLight.position.set(-6, -2, 4);
+    this.scene.add(fillLight);
 
-    // Slate Blue rim light from behind
-    const blueRim = new THREE.DirectionalLight(0xbfdbfe, 1.4);
-    blueRim.position.set(2, -6, -5);
-    this.scene.add(blueRim);
+    // Subtle mint rim light
+    const rimLight = new THREE.DirectionalLight(0xd1fae5, 0.6);
+    rimLight.position.set(0, -6, -4);
+    this.scene.add(rimLight);
   }
 
-  // LAYER 1: Oversized ESP32 (Clay/Matte White & Brushed Aluminum)
+  // LAYER 1: Realistic ESP32 Microcontroller Model in Clay / Brushed Aluminum
   buildEsp32Model() {
     this.heroEspGroup = new THREE.Group();
     this.scene.add(this.heroEspGroup);
 
-    // 1. Matte White Clay Substrate PCB
-    const pcbGeo = new THREE.BoxGeometry(4.4, 2.7, 0.14);
+    // 1. PCB Board (Matte Clay White)
+    const pcbGeo = new THREE.BoxGeometry(2.8, 4.8, 0.12);
     const pcbMat = new THREE.MeshStandardMaterial({
-      color: 0xfcfbf9, // Pure architectural matte white
-      roughness: 0.35,
+      color: 0xf8fafc, // Off-white clean clay
+      roughness: 0.45,
       metalness: 0.05
     });
     const pcbMesh = new THREE.Mesh(pcbGeo, pcbMat);
     this.heroEspGroup.add(pcbMesh);
 
-    // 2. Brushed Aluminum RF Shield Can (ESP32-WROOM module)
-    const canGeo = new THREE.BoxGeometry(1.8, 1.9, 0.22);
+    // 2. Metallic RF Shield Can (Brushed Aluminum finish)
+    const canGeo = new THREE.BoxGeometry(1.9, 2.0, 0.22);
     const canMat = new THREE.MeshStandardMaterial({
-      color: 0xe5e7eb, // Brushed silver
+      color: 0xe2e8f0,
       roughness: 0.25,
       metalness: 0.85
     });
     const canMesh = new THREE.Mesh(canGeo, canMat);
-    canMesh.position.set(0.8, 0, 0.14);
+    canMesh.position.set(0, 0.35, 0.14);
     this.heroEspGroup.add(canMesh);
 
-    // 3. Meandered Inverted-F PCB Antenna trace (Gold reflective)
-    const antGeo = new THREE.BoxGeometry(0.3, 2.2, 0.04);
-    const goldMat = new THREE.MeshStandardMaterial({
-      color: 0xd4af37, // Polished gold
+    // 3. Meandered PCB Inverted-F Antenna (Gold/Copper Trace)
+    const antGeo = new THREE.BoxGeometry(1.8, 0.9, 0.02);
+    const antMat = new THREE.MeshStandardMaterial({
+      color: 0xd97706, // Polished copper
+      roughness: 0.3,
+      metalness: 0.9
+    });
+    const antMesh = new THREE.Mesh(antGeo, antMat);
+    antMesh.position.set(0, 1.85, 0.07);
+    this.heroEspGroup.add(antMesh);
+
+    // 4. USB-C / Micro-USB Port (Metallic Silver)
+    const usbGeo = new THREE.BoxGeometry(0.85, 0.65, 0.26);
+    const usbMat = new THREE.MeshStandardMaterial({
+      color: 0x94a3b8,
       roughness: 0.2,
       metalness: 0.95
     });
-    const antMesh = new THREE.Mesh(antGeo, goldMat);
-    antMesh.position.set(1.9, 0, 0.08);
-    this.heroEspGroup.add(antMesh);
+    const usbMesh = new THREE.Mesh(usbGeo, usbMat);
+    usbMesh.position.set(0, -2.4, 0.08);
+    this.heroEspGroup.add(usbMesh);
 
-    // 4. Silicon USB-UART Bridge IC (Matte Black)
-    const icGeo = new THREE.BoxGeometry(0.65, 0.65, 0.1);
+    // 5. Silicon ICs (CP2102 UART bridge & power regulator)
+    const icGeo = new THREE.BoxGeometry(0.55, 0.55, 0.1);
     const icMat = new THREE.MeshStandardMaterial({
-      color: 0x1f2937,
-      roughness: 0.4,
+      color: 0x1e293b,
+      roughness: 0.6,
       metalness: 0.1
     });
     const icMesh = new THREE.Mesh(icGeo, icMat);
-    icMesh.position.set(-0.7, 0, 0.1);
+    icMesh.position.set(-0.55, -1.2, 0.09);
     this.heroEspGroup.add(icMesh);
 
-    // 5. USB-C Interface (Polished Aluminum)
-    const usbGeo = new THREE.BoxGeometry(0.7, 0.55, 0.24);
-    const usbMesh = new THREE.Mesh(usbGeo, canMat);
-    usbMesh.position.set(-2.2, 0, 0.08);
-    this.heroEspGroup.add(usbMesh);
+    // 6. Dual Gold Header Pin Rows (Left & Right)
+    const pinGeo = new THREE.CylinderGeometry(0.025, 0.025, 0.32, 8);
+    const pinMat = new THREE.MeshStandardMaterial({
+      color: 0xf59e0b, // Gold plating
+      roughness: 0.2,
+      metalness: 0.95
+    });
 
-    // 6. Dual Gold Pin Headers (38 pins total)
-    for (let i = -1.8; i <= 1.8; i += 0.22) {
-      // Top header pin
-      const pTop = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.35, 12), goldMat);
-      pTop.rotation.x = Math.PI / 2;
-      pTop.position.set(i, 1.22, 0.1);
-      this.heroEspGroup.add(pTop);
+    const pinRows = 15;
+    for (let i = 0; i < pinRows; i++) {
+      const yPos = 2.0 - i * 0.28;
+      // Left pin
+      const leftPin = new THREE.Mesh(pinGeo, pinMat);
+      leftPin.rotation.x = Math.PI / 2;
+      leftPin.position.set(-1.3, yPos, -0.15);
+      this.heroEspGroup.add(leftPin);
 
-      // Bottom header pin
-      const pBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.35, 12), goldMat);
-      pBottom.rotation.x = Math.PI / 2;
-      pBottom.position.set(i, -1.22, 0.1);
-      this.heroEspGroup.add(pBottom);
+      // Right pin
+      const rightPin = new THREE.Mesh(pinGeo, pinMat);
+      rightPin.rotation.x = Math.PI / 2;
+      rightPin.position.set(1.3, yPos, -0.15);
+      this.heroEspGroup.add(rightPin);
     }
 
-    // 7. Micro SMD Capacitors & LED Indicator Diodes
-    const smdGeo = new THREE.BoxGeometry(0.12, 0.08, 0.06);
-    const smdMat = new THREE.MeshStandardMaterial({ color: 0x9ca3af, metalness: 0.8, roughness: 0.3 });
-    const ledMat = new THREE.MeshBasicMaterial({ color: 0x0f766e }); // Emerald status LED
+    // 7. Micro SMD Status LEDs
+    const ledGeo = new THREE.BoxGeometry(0.1, 0.06, 0.04);
+    const ledPowerMat = new THREE.MeshBasicMaterial({ color: 0x10b981 }); // Mint Green
+    const ledBlueMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6 }); // Slate Blue
 
-    for (let k = 0; k < 6; k++) {
-      const smd = new THREE.Mesh(smdGeo, smdMat);
-      smd.position.set(-1.2 + (k % 3) * 0.25, -0.6 + Math.floor(k / 3) * 0.4, 0.09);
-      this.heroEspGroup.add(smd);
-    }
-    const led = new THREE.Mesh(smdGeo, ledMat);
-    led.position.set(-1.4, 0.8, 0.09);
-    this.heroEspGroup.add(led);
+    const pwrLed = new THREE.Mesh(ledGeo, ledPowerMat);
+    pwrLed.position.set(0.65, -1.8, 0.08);
+    this.heroEspGroup.add(pwrLed);
 
-    // Initial position & tilt
-    this.heroEspGroup.position.set(1.4, 0, 0);
-    this.heroEspGroup.rotation.set(0.15, -0.35, 0.08);
+    const blueLed = new THREE.Mesh(ledGeo, ledBlueMat);
+    blueLed.position.set(0.45, -1.8, 0.08);
+    this.heroEspGroup.add(blueLed);
+
+    // Position Hero Model initially
+    const isMobile = window.innerWidth < 768;
+    this.heroEspGroup.position.set(isMobile ? 0 : 1.4, isMobile ? -0.8 : 0, 0);
+    this.heroEspGroup.rotation.set(0.2, -0.35, 0.1);
   }
 
-  // LAYER 2: Acoustic Waveform / FFT Vibration Simulation
+  // LAYER 2: Acoustic FFT 3D Waveform (Physical Layer)
   buildWaveformModel() {
     this.waveGroup = new THREE.Group();
     this.scene.add(this.waveGroup);
 
-    const width = 12;
+    const width = 8;
     const height = 5;
-    const segW = 60;
-    const segH = 28;
-    const geo = new THREE.PlaneGeometry(width, height, segW, segH);
+    const segmentsX = 40;
+    const segmentsY = 25;
 
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x0f766e, // Technical Pastel Mint
+    const waveGeo = new THREE.PlaneGeometry(width, height, segmentsX, segmentsY);
+    const waveMat = new THREE.MeshStandardMaterial({
+      color: 0x10b981, // Mint wireframe
       wireframe: true,
-      roughness: 0.3,
-      metalness: 0.1,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.65,
+      roughness: 0.3
     });
 
-    this.waveMesh = new THREE.Mesh(geo, mat);
+    this.waveMesh = new THREE.Mesh(waveGeo, waveMat);
     this.waveMesh.rotation.x = -Math.PI / 2.8;
     this.waveGroup.add(this.waveMesh);
 
-    // Store base vertex positions for wave equation
-    this.wavePosAttr = geo.attributes.position;
-    this.waveCount = this.wavePosAttr.count;
-    this.waveInitialZ = new Float32Array(this.waveCount);
-    for (let i = 0; i < this.waveCount; i++) {
-      this.waveInitialZ[i] = this.wavePosAttr.getZ(i);
-    }
-
-    this.waveGroup.position.set(0, 0, -4);
+    this.waveCount = waveGeo.attributes.position.count;
+    this.waveGroup.position.set(0, -0.5, -4);
     this.waveGroup.visible = false;
   }
 
-  // LAYER 3: Distributed Node Graph (Constellation / MCP Network)
+  // LAYER 3: Distributed Constellation Node Graph (Logic Layer)
   buildNodeGraphModel() {
     this.nodeGraphGroup = new THREE.Group();
     this.scene.add(this.nodeGraphGroup);
 
-    const nodeCount = 45;
+    const nodeCount = 36;
     const nodes = [];
-    const sphereGeo = new THREE.SphereGeometry(0.1, 16, 16);
+    const sphereGeo = new THREE.SphereGeometry(0.08, 16, 16);
     const sphereMat = new THREE.MeshStandardMaterial({
-      color: 0x1d4ed8, // Soft Slate Cobalt
-      roughness: 0.2,
-      metalness: 0.5,
-      emissive: 0x60a5fa,
-      emissiveIntensity: 0.3
+      color: 0x2563eb, // Slate Blue
+      emissive: 0x3b82f6,
+      emissiveIntensity: 0.4,
+      roughness: 0.2
     });
 
     for (let i = 0; i < nodeCount; i++) {
       const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+      const radius = 2.8;
+      const phi = Math.acos(-1 + (2 * i) / nodeCount);
+      const theta = Math.sqrt(nodeCount * Math.PI) * phi;
+
       mesh.position.set(
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 5,
-        (Math.random() - 0.5) * 4
+        radius * Math.cos(theta) * Math.sin(phi),
+        radius * Math.sin(theta) * Math.sin(phi),
+        radius * Math.cos(phi)
       );
       this.nodeGraphGroup.add(mesh);
       nodes.push(mesh.position);
     }
 
-    // Connect close neighbors with thin lines
+    // Connect close nodes with lines
     const linePositions = [];
     for (let i = 0; i < nodeCount; i++) {
       for (let j = i + 1; j < nodeCount; j++) {
@@ -343,70 +352,95 @@ export class NarrativeScene {
       this.pointer.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
     };
 
+    this.onTouchMove = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        this.pointer.targetX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+        this.pointer.targetY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+      }
+    };
+
     this.onResize = () => {
       if (!this.canvas) return;
       const w = window.innerWidth;
       const h = window.innerHeight;
+      const isMobile = w < 768;
+
       this.camera.aspect = w / h;
+      this.camera.position.set(0, 0, isMobile ? 9.2 : 7.5);
       this.camera.updateProjectionMatrix();
+
       this.renderer.setSize(w, h);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      this.updateScrollProgress(this.scrollProgress);
     };
 
     window.addEventListener('pointermove', this.onPointerMove, { passive: true });
+    window.addEventListener('touchmove', this.onTouchMove, { passive: true });
     window.addEventListener('resize', this.onResize, { passive: true });
   }
 
   // Driven by GSAP ScrollTrigger / Lenis smooth scroll
   updateScrollProgress(progress) {
     this.scrollProgress = progress; // 0.0 at top to 1.0 at bottom
+    const isMobile = window.innerWidth < 768;
 
-    // Transitions across 5 Narrative Stages:
-    // Stage 1 (Hero): 0.0 -> 0.22
-    // Stage 2 (Physical FFT): 0.22 -> 0.44
-    // Stage 3 (Logic Node Graph): 0.44 -> 0.66
-    // Stage 4 (Optimization Core): 0.66 -> 0.85
-    // Stage 5 (Human Element / Archive): 0.85 -> 1.0
-
+    // Stage 1 (Hero): 0.0 -> 0.25
     if (this.heroEspGroup) {
       if (progress < 0.25) {
         this.heroEspGroup.visible = true;
         const localT = progress / 0.25;
-        this.heroEspGroup.position.set(1.4 - localT * 0.8, -localT * 0.5, -localT * 3);
+        const heroX = isMobile ? 0 : 1.4;
+        const heroY = isMobile ? -0.8 : 0;
+        const heroScale = isMobile ? 0.72 : 1.0;
+
+        this.heroEspGroup.position.set(
+          heroX - localT * (isMobile ? 0.2 : 0.8),
+          heroY - localT * 0.5,
+          -localT * 3
+        );
         this.heroEspGroup.rotation.y = -0.35 + localT * 1.5;
-        this.heroEspGroup.scale.setScalar(1 - localT * 0.4);
+        this.heroEspGroup.scale.setScalar(heroScale * (1 - localT * 0.4));
       } else {
         this.heroEspGroup.visible = false;
       }
     }
 
+    // Stage 2 (Physical FFT Waveform): 0.15 -> 0.50
     if (this.waveGroup) {
       if (progress >= 0.15 && progress < 0.50) {
         this.waveGroup.visible = true;
         const localT = (progress - 0.15) / 0.35;
         this.waveGroup.position.z = -5 + Math.sin(localT * Math.PI) * 4;
-        this.waveGroup.position.y = -0.5 + Math.cos(localT * Math.PI) * 0.5;
+        this.waveGroup.position.y = (isMobile ? -0.7 : -0.5) + Math.cos(localT * Math.PI) * 0.5;
+        this.waveGroup.scale.setScalar(isMobile ? 0.72 : 1.0);
       } else {
         this.waveGroup.visible = false;
       }
     }
 
+    // Stage 3 (Logic Node Graph): 0.42 -> 0.72
     if (this.nodeGraphGroup) {
       if (progress >= 0.42 && progress < 0.72) {
         this.nodeGraphGroup.visible = true;
         const localT = (progress - 0.42) / 0.30;
         this.nodeGraphGroup.position.z = -6 + Math.sin(localT * Math.PI) * 4.5;
+        this.nodeGraphGroup.position.y = isMobile ? -0.6 : 0;
+        this.nodeGraphGroup.scale.setScalar(isMobile ? 0.7 : 1.0);
         this.nodeGraphGroup.rotation.y = localT * Math.PI;
       } else {
         this.nodeGraphGroup.visible = false;
       }
     }
 
+    // Stage 4 (Optimization Core): 0.65 -> 0.90
     if (this.optCoreGroup) {
       if (progress >= 0.65 && progress < 0.90) {
         this.optCoreGroup.visible = true;
         const localT = (progress - 0.65) / 0.25;
         this.optCoreGroup.position.z = -6 + Math.sin(localT * Math.PI) * 4.2;
+        this.optCoreGroup.position.y = isMobile ? -0.6 : 0;
+        this.optCoreGroup.scale.setScalar(isMobile ? 0.7 : 1.0);
       } else {
         this.optCoreGroup.visible = false;
       }
@@ -419,7 +453,7 @@ export class NarrativeScene {
     const delta = this.clock.getDelta();
     const elapsed = this.clock.getElapsedTime();
 
-    // 1. Oil-Motion Pointer Damping
+    // 1. Pointer Damping (Oil-Motion spring physics)
     this.pointer.x += (this.pointer.targetX - this.pointer.x) * 0.05;
     this.pointer.y += (this.pointer.targetY - this.pointer.y) * 0.05;
 
@@ -460,19 +494,19 @@ export class NarrativeScene {
       this.optRing2.rotation.x += 0.018;
     }
 
-    // 6. Ambient Drift Particles
+    // 6. Volumetric Particles Ambient Drift
     if (this.ambientParticles) {
-      this.ambientParticles.rotation.y = elapsed * 0.015;
+      this.ambientParticles.rotation.y = elapsed * 0.02;
     }
 
-    // 7. Render
     this.renderer.render(this.scene, this.camera);
   }
 
-  dispose() {
+  destroy() {
     if (this.animId) cancelAnimationFrame(this.animId);
     window.removeEventListener('pointermove', this.onPointerMove);
+    window.removeEventListener('touchmove', this.onTouchMove);
     window.removeEventListener('resize', this.onResize);
-    if (this.renderer) this.renderer.dispose();
+    this.renderer.dispose();
   }
 }
