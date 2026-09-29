@@ -1,77 +1,65 @@
 /* ==========================================================================
-   SUJAY SEERAM V2 — NATURAL ARCHITECTURAL STUDIO DESIGN TOKENS
-   Light, Natural, Physical Studio Realism
+   TECHNICAL PASTEL DESIGN SYSTEM TOKENS
+   Awwwards Laboratory & Extreme Economic Engineering
    ========================================================================== */
 
 :root {
-  /* Natural Studio Surfaces */
-  --surface-base: #f9f8f6;
-  --surface-card: #ffffff;
-  --surface-tinted: #f3f0ea;
-  --surface-muted: #eae6dd;
-  --surface-overlay: rgba(249, 248, 246, 0.92);
-  --surface-glass: rgba(255, 255, 255, 0.85);
+  /* Pastel Transitions Palette */
+  --bg-hero: #fafafa;
+  --bg-physical: #e6f4ea;    /* Soft pastel mint */
+  --bg-logic: #e8f0fe;       /* Soft slate blue */
+  --bg-opt: #f3e8fd;         /* Soft lavender */
+  --bg-human: #fef7e0;       /* Soft butter amber */
 
-  /* Contrast & Typography (Ink on Paper) */
-  --text-main: #14171d;
-  --text-body: #343a46;
-  --text-muted: #647082;
-  --text-faint: #98a2b3;
+  /* Glassmorphism Specification */
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-blur: blur(16px) saturate(120%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.65);
+  --glass-shadow: 0 8px 32px 0 rgba(100, 110, 140, 0.08);
 
-  /* Natural Material & Engineering Accents */
-  --accent-pcb: #1e5a32;        /* Circuit board deep green */
-  --accent-pcb-light: #e8f5e9;  /* PCB tint badge */
-  --accent-copper: #c25e00;     /* Warm copper trace */
-  --accent-copper-light: #fff3e0;
-  --accent-cobalt: #1a56db;     /* Technical drafting ink */
-  --accent-cobalt-light: #ebf5ff;
-  --accent-brass: #b45309;      /* Caliper brass */
+  --glass-card-hover-shadow: 0 16px 40px 0 rgba(100, 110, 140, 0.14);
 
-  /* Borders & Rules */
-  --border-hairline: 1px solid rgba(20, 23, 29, 0.08);
-  --border-focus: 1px solid #14171d;
-  --border-pcb: 1px solid rgba(30, 90, 50, 0.25);
+  /* Typography Colors */
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --text-faint: #9ca3af;
 
-  /* Shadows (Natural Daylight Diffusion) */
-  --shadow-sm: 0 2px 6px rgba(20, 24, 33, 0.04);
-  --shadow-md: 0 10px 24px -4px rgba(20, 24, 33, 0.07), 0 2px 6px -1px rgba(20, 24, 33, 0.03);
-  --shadow-lg: 0 20px 40px -8px rgba(20, 24, 33, 0.12), 0 4px 12px -2px rgba(20, 24, 33, 0.05);
+  /* Technical Accents */
+  --accent-mint: #0f766e;
+  --accent-mint-bg: rgba(15, 118, 110, 0.08);
+  --accent-blue: #1d4ed8;
+  --accent-blue-bg: rgba(29, 78, 216, 0.08);
+  --accent-amber: #b45309;
+  --accent-amber-bg: rgba(180, 83, 9, 0.08);
+  --accent-purple: #7e22ce;
+  --accent-purple-bg: rgba(126, 34, 206, 0.08);
 
-  /* Typography Scale */
-  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Spacing Grid */
+  /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
-  --space-5: 1.25rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
-  --space-10: 2.5rem;
   --space-12: 3rem;
   --space-16: 4rem;
-  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
 
-  /* Border Radii */
-  --radius-xs: 4px;
+  /* Radii */
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
   --radius-full: 9999px;
 
-  /* Layering Z-Indices */
-  --z-canvas: 1;
-  --z-page: 10;
-  --z-hud: 50;
-  --z-modal: 100;
-
-  /* Motion & Damping */
+  /* Transitions */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-  --duration-fast: 180ms;
-  --duration-normal: 320ms;
-  --duration-slow: 550ms;
+  --duration-fast: 200ms;
+  --duration-normal: 350ms;
 }
