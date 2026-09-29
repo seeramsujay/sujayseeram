@@ -239,6 +239,17 @@
                 </p>
             </div>
 
+            <!-- Mobile-Only Quick Tabs Bar -->
+            <div id="mobile-odyssey-tabs" class="mobile-odyssey-tabs font-mono">
+                <button class="mobile-tab-btn active" data-filter="all">ALL</button>
+                <button class="mobile-tab-btn" data-filter="2026">2026</button>
+                <button class="mobile-tab-btn" data-filter="2025">2025</button>
+                <button class="mobile-tab-btn" data-filter="2024">2024</button>
+                <button class="mobile-tab-btn" data-filter="hardware">HARDWARE</button>
+                <button class="mobile-tab-btn" data-filter="hackathon">HACKATHONS</button>
+                <button class="mobile-tab-btn" data-filter="research">RESEARCH</button>
+            </div>
+
             <div class="perspective-container">
                 <div class="timeline-conduit">
                     <div class="timeline-progress-fill" id="timeline-progress-fill"></div>
@@ -4853,6 +4864,7 @@
                     
                     const yearDiv = document.createElement('div');
                     yearDiv.className = 'timeline-year';
+                    yearDiv.dataset.year = year.toString();
                     if (timelineContainer.children.length > 0) {
                         yearDiv.style.marginTop = '10rem';
                     }
@@ -4865,6 +4877,8 @@
 
                 const node = document.createElement('div');
                 node.className = `timeline-node ${side}`;
+                node.dataset.year = (year && year > 1970 ? year : (project.date ? project.date.split(' ').pop() : '')).toString();
+                node.dataset.category = (project.category || '').toLowerCase();
 
                 const awardBadgeHtml = project.awardText 
                     ? `<div class="award-badge ${project.awardType || 'participation'}">${project.awardText}</div>`
@@ -5048,14 +5062,157 @@
                 window.updateInteractiveHovers();
             }
         }
+        let mobileScrollTicking = false;
+        function updateMobileTimelineCards() {
+            if (window.innerWidth > 768) return;
+            const viewportCenter = window.innerHeight * 0.5;
+            const range = window.innerHeight * 0.44;
+
+            const nodes = document.querySelectorAll('.timeline-node');
+            if (!nodes.length) return;
+
+            let closestNode = null;
+            let closestDist = Infinity;
+
+            nodes.forEach(node => {
+                if (node.style.display === 'none') return;
+                const rect = node.getBoundingClientRect();
+                const cardCenter = rect.top + rect.height * 0.5;
+                const dist = Math.abs(cardCenter - viewportCenter);
+
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    closestNode = node;
+                }
+
+                if (dist < range) {
+                    const norm = 1 - (dist / range);
+                    const ease = norm * norm * (3 - 2 * norm);
+                    const scale = 0.88 + 0.18 * ease;
+                    const opacity = 0.45 + 0.55 * ease;
+
+                    node.style.transform = `scale(${scale.toFixed(3)}) translateZ(0)`;
+                    node.style.opacity = opacity.toFixed(2);
+                } else {
+                    node.style.transform = 'scale(0.88) translateZ(0)';
+                    node.style.opacity = '0.45';
+                }
+            });
+
+            nodes.forEach(node => {
+                if (node === closestNode && closestDist < range * 0.55) {
+                    node.classList.add('mobile-center-active');
+                    if (node.dataset.year && window.syncMobileTabToYear) {
+                        window.syncMobileTabToYear(node.dataset.year);
+                    }
+                } else {
+                    node.classList.remove('mobile-center-active');
+                }
+            });
+        }
+
+        function initMobileOdysseyTabs() {
+            const tabsContainer = document.getElementById('mobile-odyssey-tabs');
+            if (!tabsContainer) return;
+
+            const tabs = tabsContainer.querySelectorAll('.mobile-tab-btn');
+            const nodes = () => document.querySelectorAll('.timeline-node');
+            const years = () => document.querySelectorAll('.timeline-year');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const filter = tab.dataset.filter;
+                    const allNodes = nodes();
+                    const allYears = years();
+
+                    if (filter === 'all') {
+                        allNodes.forEach(n => n.style.display = 'block');
+                        allYears.forEach(y => y.style.display = 'block');
+                        const firstNode = allNodes[0];
+                        if (firstNode) {
+                            firstNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    } else if (['2026', '2025', '2024'].includes(filter)) {
+                        allNodes.forEach(n => n.style.display = 'block');
+                        allYears.forEach(y => y.style.display = 'block');
+                        
+                        const targetCard = Array.from(allNodes).find(n => n.dataset.year === filter);
+                        if (targetCard) {
+                            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    } else {
+                        // Category filter
+                        let firstVisible = null;
+                        allNodes.forEach(n => {
+                            const cat = (n.dataset.category || '').toLowerCase();
+                            if (cat === filter.toLowerCase()) {
+                                n.style.display = 'block';
+                                if (!firstVisible) firstVisible = n;
+                            } else {
+                                n.style.display = 'none';
+                            }
+                        });
+                        allYears.forEach(y => y.style.display = 'none');
+
+                        if (firstVisible) {
+                            firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+
+                    setTimeout(updateMobileTimelineCards, 150);
+                });
+            });
+
+            window.syncMobileTabToYear = (year) => {
+                const activeTab = tabsContainer.querySelector('.mobile-tab-btn.active');
+                if (activeTab && ['all', '2026', '2025', '2024'].includes(activeTab.dataset.filter)) {
+                    tabs.forEach(t => {
+                        if (t.dataset.filter === year) {
+                            t.classList.add('active');
+                            t.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        } else if (t.dataset.filter !== 'all') {
+                            t.classList.remove('active');
+                        }
+                    });
+                }
+            };
+        }
+
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768 && !mobileScrollTicking) {
+                mobileScrollTicking = true;
+                requestAnimationFrame(() => {
+                    updateMobileTimelineCards();
+                    mobileScrollTicking = false;
+                });
+            }
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                updateMobileTimelineCards();
+            } else {
+                document.querySelectorAll('.timeline-node').forEach(node => {
+                    node.style.transform = '';
+                    node.style.opacity = '';
+                    node.style.display = '';
+                    node.classList.remove('mobile-center-active');
+                });
+                document.querySelectorAll('.timeline-year').forEach(y => {
+                    y.style.display = '';
+                });
+            }
+        }, { passive: true });
+
         function initTimelineAnimations() {
             timelineNodes = document.querySelectorAll('.timeline-node');
 
             if (window.innerWidth <= 768) {
-                timelineNodes.forEach(node => {
-                    node.style.opacity = '1';
-                    node.style.transform = 'none';
-                });
+                updateMobileTimelineCards();
                 return;
             }
 
@@ -5098,6 +5255,7 @@
 
         renderAllProjects();
         initTimelineAnimations();
+        initMobileOdysseyTabs();
 
         // ═══════════════════════════════════════════════════════════════
         // MOBILE-EXCLUSIVE PUNCH EFFECTS (touch devices only)
