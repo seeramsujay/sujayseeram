@@ -1,0 +1,110 @@
+/* ==========================================================================
+   DESIGN TOKENS - CYBER-PHYSICAL SYSTEM (v2)
+   Inspired by: Space Grotesk + Plus Jakarta Sans + JetBrains Mono
+   Palettes: Void Obsidian, Optimism Mint, Quantum Cyan, Solar Gold, Electric Violet
+   ========================================================================== */
+
+:root {
+  /* Color Primitives - Obsidian Void & Deep Space */
+  --color-void-0: #030508;
+  --color-void-1: #070a10;
+  --color-void-2: #0b1019;
+  --color-void-3: #111827;
+  --color-void-4: #1a2234;
+  --color-void-border: rgba(0, 245, 160, 0.12);
+  --color-void-glass: rgba(11, 16, 25, 0.72);
+  --color-void-glass-heavy: rgba(7, 10, 16, 0.88);
+
+  /* Primary Brand: Optimism Mint / Bio-Cybernetic Emerald */
+  --mint-300: #6effc6;
+  --mint-400: #00f5a0;
+  --mint-500: #00d984;
+  --mint-glow: rgba(0, 245, 160, 0.35);
+  --mint-subtle: rgba(0, 245, 160, 0.08);
+
+  /* Secondary Brand: Quantum Cyan / Telemetry Blue */
+  --cyan-300: #7ee7ff;
+  --cyan-400: #00d2ff;
+  --cyan-500: #00a8cc;
+  --cyan-glow: rgba(0, 210, 255, 0.35);
+  --cyan-subtle: rgba(0, 210, 255, 0.08);
+
+  /* Tertiary: Solar Amber / Hardware Core */
+  --amber-300: #ffd54f;
+  --amber-400: #ffb800;
+  --amber-500: #ff9100;
+  --amber-glow: rgba(255, 184, 0, 0.35);
+
+  /* Alert / Special: Hyper Violet / Exotic Quirk */
+  --violet-400: #b537f2;
+  --violet-500: #931bd5;
+  --violet-glow: rgba(181, 55, 242, 0.35);
+
+  /* Text Hierarchies */
+  --text-primary: #f0f4f8;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dim: #334155;
+  --text-inverse: #030508;
+
+  /* Typography Scales */
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); /* 24-36px */
+  --text-3xl: clamp(2rem, 1.5rem + 2vw, 3.5rem);       /* 32-56px */
+  --text-4xl: clamp(2.5rem, 1.8rem + 3.2vw, 5rem);     /* 40-80px */
+
+  /* Spacing Scale (8pt Grid System) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6rem;    /* 96px */
+
+  /* Border Radii */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows and Glowing Conduits */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.8);
+  --shadow-mint: 0 0 24px var(--mint-glow);
+  --shadow-cyan: 0 0 24px var(--cyan-glow);
+  --shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+
+  /* Animation and Transitions */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 500ms;
+
+  /* Z-Index Stratification */
+  --z-background: -10;
+  --z-canvas: 1;
+  --z-content: 10;
+  --z-overlay: 20;
+  --z-hud: 40;
+  --z-modal: 100;
+  --z-terminal: 120;
+  --z-cursor: 200;
+}
