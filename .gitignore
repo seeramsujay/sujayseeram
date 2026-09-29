@@ -31,3 +31,6 @@ v2/dist/
 v2/.vite/
 
 Projects/
+.zed/
+.agents
+.agent

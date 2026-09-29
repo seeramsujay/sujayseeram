@@ -11,6 +11,9 @@ importers:
       lucide:
         specifier: ^0.344.0
         version: 0.344.0
+      marked:
+        specifier: ^18.0.14
+        version: 18.0.14
       three:
         specifier: ^0.162.0
         version: 0.162.0
@@ -320,6 +323,11 @@ packages:
   lucide@0.344.0:
     resolution: {integrity: sha512-oK7jwtKJs6U+O4IMrDWMj+d27uJ2ERb84R0tNXqhnG/gBsEiqKrAW5zw4+tZnqZ9qcFsW3Ui8MItCLmomH8CPQ==}
 
+  marked@18.0.14:
+    resolution: {integrity: sha512-mBHK6FBHuBAlhgRe88w9F0O1AbwwXJUcQibUbC/QcdTbVGAD7aWza+xt3N6oT/jCZx3/OMeS+8rnuiHZcQ9s7A==}
+    engines: {node: '>= 20'}
+    hasBin: true
+
   nanoid@3.3.18:
     resolution: {integrity: sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -556,6 +564,8 @@ snapshots:
     optional: true
 
   lucide@0.344.0: {}
+
+  marked@18.0.14: {}
 
   nanoid@3.3.18: {}
 

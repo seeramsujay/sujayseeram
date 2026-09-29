@@ -1,136 +1,60 @@
-// All Space Repositories and Builds loaded from projects_db.json
+// Direct ES Module import of projects_db.json via Vite
+import rawProjects from './projects_db.json';
 
-export const projectsData = [
-  {
-    name: "informed-poll",
-    date: "Apr 2026",
-    status: "HACKATHON (ACTIVE)",
-    category: "hackathon",
-    tags: ["VITE", "LANCEDB", "GEMINI"],
-    description: "Civic tech for first-time voters. RAG assistant + Firebase + swipeable candidate ballot UI.",
-    githubLink: "https://github.com/seeramsujay/informed-poll",
-    awardText: "🇮🇳 Google Solution Challenge",
-    awardType: "participation"
-  },
-  {
-    name: "sentinel-mind",
-    date: "Apr 2026",
-    status: "HACKATHON",
-    category: "hackathon",
-    tags: ["FASTAPI", "VERTEX_AI", "MULTI_AGENT"],
-    description: "Multi-agent disaster response platform. Gemini 3.1 Flash Lite-powered autonomous coordination & SOS deduplication.",
-    githubLink: "https://github.com/seeramsujay/sentinel-mind",
-    awardText: "🏅 Google Promptathon",
-    awardType: "participation"
-  },
-  {
-    name: "slingshot",
-    date: "Apr 2026",
-    status: "HACKATHON",
-    category: "hackathon",
-    tags: ["ML", "AQI_FORECAST", "FASTAPI"],
-    description: "Adaptive Urban Dust Mitigation Framework. Pressure-built solo entry modeling particulate dispersion physics.",
-    githubLink: "https://github.com/seeramsujay/slingshot",
-    awardText: "🎖️ AMD Slingshot",
-    awardType: "participation"
-  },
-  {
-    name: "EVolvAI",
-    date: "Mar 2026",
-    status: "PHYSICS ML",
-    category: "physics",
-    tags: ["PYTORCH", "STREAMLIT", "GENETIC_GA"],
-    description: "Physics-informed generative EV demand prediction pipeline using deep VAE models and genetic optimization.",
-    githubLink: "https://github.com/seeramsujay/EVolvAI",
-    awardText: "🏆 Best Energy AI Solution",
-    awardType: "winner"
-  },
-  {
-    name: "specRAG",
-    date: "Mar 2026",
-    status: "SOVEREIGN RAG",
-    category: "tool",
-    tags: ["SQLITE", "LOCAL_RAG", "PYTHON"],
-    description: "Zero-hallucination local firmware auditing gateway designed to run on non-GPU host machines with extreme accuracy.",
-    githubLink: "https://github.com/seeramsujay/specRAG",
-    awardText: "🛡️ Digital Sovereignty Standard",
-    awardType: "special"
-  },
-  {
-    name: "motor-sim",
-    date: "Feb 2026",
-    status: "SIMULATION",
-    category: "research",
-    tags: ["PHYSICS", "SIMULATION", "DSP", "FFT"],
-    description: "Tri-modal Edge-AI motor diagnostics using Fast Fourier Transform and Isolation Forest for industrial fault prevention.",
-    githubLink: "https://github.com/seeramsujay/motor-sim",
-    awardText: "TRL-4 Lab Validated",
-    awardType: "special"
-  },
-  {
-    name: "AntigravityHelper",
-    date: "Feb 2026",
-    status: "CLI HELPER",
-    category: "tool",
-    tags: ["CLI", "AGENT", "RUST", "ACTIX"],
-    description: "Sovereign assistant helper for managing local skill protocols and automated agent workflows with swipeable PR review UI.",
-    githubLink: "https://github.com/seeramsujay/AntigravityHelper",
-    awardText: "",
-    awardType: ""
-  },
-  {
-    name: "smartRing",
-    date: "Jan 2026",
-    status: "HARDWARE",
-    category: "hardware",
-    tags: ["ESP32", "LOW_POWER_CPP", "I2C"],
-    description: "Open-source biometric hardware interface ring featuring custom I2C sensor drivers and micro-watt sleep states.",
-    githubLink: "https://github.com/seeramsujay/smartRing",
-    awardText: "Open Source Hardware",
-    awardType: "special"
-  },
-  {
-    name: "healthcare-android-ai",
-    date: "Jan 2026",
-    status: "MOBILE RESEARCH",
-    category: "research",
-    tags: ["ANDROID", "HEALTH_AI", "FASTAPI"],
-    description: "Sandbox for testing PyTorch and Gemini-based AI models within Android healthcare applications.",
-    githubLink: "https://github.com/seeramsujay/healthcare-android-ai",
-    awardText: "",
-    awardType: ""
-  },
-  {
-    name: "dust-sim",
-    date: "Dec 2025",
-    status: "SIMULATION",
-    category: "research",
-    tags: ["PHYSICS", "SIMULATION", "REACT"],
-    description: "Physics simulation layer for Shaastra entry. Validate particle trajectories before hardware deployment.",
-    githubLink: "https://github.com/seeramsujay/dust-sim",
-    awardText: "🥈 Shaastra 2nd Place",
-    awardType: "winner"
-  },
-  {
-    name: "ytm-cli",
-    date: "Sep 2025",
-    status: "CLI TOOL",
-    category: "tool",
-    tags: ["CLI", "AUDIO_DSP"],
-    description: "Gapless music from the terminal. No GUI. No compromise.",
-    githubLink: "https://github.com/seeramsujay/ytm-cli",
-    awardText: "",
-    awardType: ""
-  },
-  {
-    name: "sujayseeram",
-    date: "Jan 2024",
-    status: "PROFILE",
-    category: "tool",
-    tags: ["CONFIG", "METADATA"],
-    description: "Personal metadata repository housing global developer configurations and active stats.",
-    githubLink: "https://github.com/seeramsujay/sujayseeram",
-    awardText: "",
-    awardType: ""
+// Helper to safely parse date like "Apr 2026", "Dec 2025", "2024", etc.
+export const parseProjectDate = (dateStr) => {
+  if (!dateStr) return new Date(0);
+  const parts = String(dateStr).trim().split(/\s+/);
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+  if (parts.length === 2) {
+    const month = monthNames.indexOf(parts[0]);
+    const year = parseInt(parts[1], 10);
+    if (month !== -1 && !isNaN(year)) {
+      return new Date(year, month, 1);
+    }
+  } else if (parts.length === 1) {
+    const year = parseInt(parts[0], 10);
+    if (!isNaN(year)) {
+      return new Date(year, 0, 1);
+    }
   }
-];
+  return new Date(0);
+};
+
+// Normalize and sort projects chronologically descending (newest first)
+export const allProjects = rawProjects.map((p, index) => {
+  return {
+    id: p.name ? p.name.toLowerCase().replace(/[^a-z0-9]/g, '-') : `proj-${index}`,
+    name: p.name || 'Untitled Project',
+    date: p.date || 'Present',
+    dateObj: parseProjectDate(p.date),
+    status: p.status || (p.category ? p.category.toUpperCase() : 'BUILD'),
+    category: p.category || 'tool',
+    tags: Array.isArray(p.tags) ? p.tags : [],
+    description: p.description || 'No description provided.',
+    githubLink: p.githubLink || '',
+    awardText: p.awardText || '',
+    awardType: p.awardType || '',
+    readme: p.readme || '',
+    archived: Boolean(p.archived),
+    opted_out: Boolean(p.opted_out),
+    private: Boolean(p.private) || !p.githubLink
+  };
+}).sort((a, b) => b.dateObj.getTime() - a.dateObj.getTime());
+
+// Active projects for Odyssey timeline and main showcase
+export const activeProjects = allProjects.filter(p => !p.opted_out && !p.archived);
+
+// Alias for backwards compatibility
+export const projectsData = activeProjects;
+
+// Vault projects (archived or hidden lab experiments)
+export const vaultProjects = allProjects.filter(p => p.archived || (p.opted_out && p.readme));
+
+// Find single project
+export const getProjectByName = (name) => {
+  if (!name) return null;
+  const target = name.toLowerCase().trim();
+  return allProjects.find(p => p.name.toLowerCase() === target || p.id === target) || null;
+};
