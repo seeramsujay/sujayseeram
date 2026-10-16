@@ -11,7 +11,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           three: ['three'],
-          marked: ['marked'],
           motion: ['gsap', 'lenis']
         }
       }
