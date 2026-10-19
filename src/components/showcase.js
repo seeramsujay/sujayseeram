@@ -1,6 +1,8 @@
 /**
- * Showcase & Complete 76 Archive Manager
- * Technical Pastel Glassmorphic Grid and Dossier Binding
+ * v3/src/components/showcase.js - Project Showcase & Archive Manager (v3)
+ * =======================================================================
+ * Role: Manages the 76-project archive grid with instant category filtering, real-time search,
+ *       audio feedback triggers, and click bindings to open fluid-dynamics project card modals.
  */
 
 import { allProjects } from '../data/projectsData.js';

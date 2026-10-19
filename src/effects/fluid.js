@@ -1,6 +1,9 @@
 /**
- * WebGL Fluid Dynamics Simulation Engine for Project Modal Card
- * GPU-accelerated Navier-Stokes advection, vorticity confinement, pressure Poisson solve.
+ * v3/src/effects/fluid.js - WebGL Fluid Dynamics Simulation Engine (v3)
+ * =====================================================================
+ * Role: High-performance GPU-accelerated Navier-Stokes fluid physics pipeline.
+ *       Computes advection, vorticity confinement, divergence, and pressure Poisson equations
+ *       in custom GLSL shaders to render interactive fluid dye trails behind the user's cursor.
  */
 
 const SMOKE_CONFIG = {

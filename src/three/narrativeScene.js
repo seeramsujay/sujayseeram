@@ -1,12 +1,10 @@
 /**
- * Three.js Story-Driven WebGL Scene
- * Technical Pastel Palette & Continuous Narrative Arc
- *
- * Stage 1: Oversized ESP32 Microcontroller (Hero - Physical/Clay & Brushed Aluminum)
- * Stage 2: FFT Acoustic Waveform (Physical Layer - Sound & Sensor Processing)
- * Stage 3: Distributed Node Graph (Logic Layer - AI Infrastructure & Constellations)
- * Stage 4: Minimalist Edge Device Core & Orbiting Rings (Optimization Layer)
- * Stage 5: Volumetric Ambient Particle Field (Human Element / Archive)
+ * v3/src/three/narrativeScene.js - Three.js WebGL Narrative Engine (v3)
+ * =====================================================================
+ * Role: Renders the continuous 3D story-driven WebGL scene in Technical Pastel daylight styling.
+ *       Procedurally constructs 5 narrative stages (ESP32 Microcontroller, FFT Acoustic Waves,
+ *       Distributed Graph Nodes, Minimalist Edge Core, and Volumetric Particle Field) with
+ *       smooth scroll-driven camera choreography and inertia mouse tracking.
  */
 
 import * as THREE from 'three';

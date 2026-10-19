@@ -1,3 +1,11 @@
+/**
+ * v3/src/styles/main.css - Main Stylesheet for Portfolio Version 3
+ * ===============================================================
+ * Role: Provides the primary CSS rules for the Technical Pastel light-mode aesthetic,
+ *       fixed Three.js narrative background, horizontal stage cards, fluid-canvas modal backdrop,
+ *       floating glass project card, responsive media queries, and clean typography.
+ */
+
 @import './tokens.css';
 
 /* ==========================================================================
