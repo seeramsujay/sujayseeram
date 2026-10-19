@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sujay Seeram — Cyber-Physical Systems & Edge AI</title>
+  <meta name="description" content="Extreme Economic Engineering: Bridging bare-metal silicon and high-level AI infrastructure. Sujay Seeram (Suzaykid) — First-Year ECE @ Amrita Vishwa Vidyapeetham." />
+
+  <!-- Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./src/styles/main.css" />
+</head>
+<body>
+
+  <!-- Ambient Film Grain -->
+  <div class="ambient-grain"></div>
+
+  <!-- 3D Story-Driven WebGL Background Canvas -->
+  <div id="canvas-container">
+    <canvas id="narrative-canvas"></canvas>
+  </div>
+
+  <!-- FLOATING FROSTED GLASS HUD HEADER -->
+  <header class="glass-nav-header">
+    <a href="#hero" class="nav-brand">
+      <span class="brand-dot"></span>
+      <div>
+        <span class="brand-text">SUJAY SEERAM</span>
+        <span class="brand-sub"> // ECE @ AMRITA</span>
+      </div>
+    </a>
+
+    <nav class="nav-links-wrap">
+      <a href="#physical" class="nav-anchor">Physical</a>
+      <a href="#logic" class="nav-anchor">Logic</a>
+      <a href="#optimization" class="nav-anchor">Optimization</a>
+      <a href="#human" class="nav-anchor">Discipline</a>
+      <a href="#archive" class="nav-anchor">76 Archive</a>
+      <a href="#connect" class="nav-anchor">Connect</a>
+    </nav>
+
+    <div class="nav-tools">
+      <span class="pill-badge" id="live-ist-clock">--:-- IST</span>
+      <button type="button" class="pill-badge" id="sfx-toggle-btn" style="cursor:pointer;" title="Toggle audio feedback">
+        <span id="sfx-icon">🔊</span>
+        <span id="sfx-text">SFX</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- STORY-DRIVEN CONTINUOUS SCROLL CONTAINER -->
+  <main class="story-container">
+
+    <!-- SECTION 1: THE HERO (FIRST PRINCIPLES) -->
+    <section class="story-section" id="hero">
+      <div class="content-constrain">
+        <div class="hero-grid">
+          <div class="hero-left-content">
+            <div class="hero-tag">
+              <span>●</span> CYBER-PHYSICAL SYSTEMS & EDGE AI
+            </div>
+
+            <h1 class="hero-title">
+              Sujay Seeram.
+            </h1>
+
+            <div class="hero-subtitle">
+              Extreme Economic Engineering.
+            </div>
+
+            <p class="hero-desc">
+              Slashing BOM and compute without sacrificing rigor. Bridging bare-metal silicon and autonomous AI infrastructure. 
+              Undergraduate at Amrita Vishwa Vidyapeetham engineering local-first cyber-physical systems that run 
+              sovereignly on edge silicon.
+            </p>
+
+            <div style="display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap;margin-bottom:var(--space-8);">
+              <a href="#physical" class="btn btn-primary">
+                <span>Explore The Narrative ↓</span>
+              </a>
+              <a href="#archive" class="btn btn-secondary">
+                <span>All 76 Builds Index ↗</span>
+              </a>
+            </div>
+
+            <div class="hero-metrics-strip">
+              <div class="metric-item">
+                <span class="metric-number">49+</span>
+                <span class="metric-label">Active Builds</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-number">76</span>
+                <span class="metric-label">Repositories</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-number">&lt;260MB</span>
+                <span class="metric-label">Peak Memory</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-number">ZERO</span>
+                <span class="metric-label">Cloud Lock-In</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: THE PHYSICAL LAYER (HARDWARE & SIGNAL PROCESSING) -->
+    <section class="story-section" id="physical">
+      <div class="content-constrain">
+        <div class="section-label">// 01. THE PHYSICAL LAYER</div>
+        <h2 class="section-heading">Hardware & Signal Processing</h2>
+        <p class="section-lead">
+          Transitioning from raw silicon logic gates to physical vibration harmonics, zero-CPU DMA synthesis, 
+          and mathematical modeling.
+        </p>
+
+        <div class="projects-dual-grid">
+          <!-- MotorSafe Card -->
+          <article class="glass-card project-feature-card">
+            <div class="project-card-header">
+              <div>
+                <h3 class="project-name">MotorSafe</h3>
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">IoT Motor Fault Prevention System</span>
+              </div>
+              <span class="badge-award">Shaastra 2nd Place</span>
+            </div>
+
+            <p class="project-summary">
+              ESP32 edge monitor detecting motor faults via on-chip FFT harmonics with zero cloud latency.
+            </p>
+
+            <div class="telemetry-specs-box">
+              <div class="spec-entry">
+                <span class="spec-title">LATENCY</span>
+                <span class="spec-value">&lt;12ms</span>
+              </div>
+              <div class="spec-entry">
+                <span class="spec-title">ANALYSIS</span>
+                <span class="spec-value">On-Chip FFT</span>
+              </div>
+              <div class="spec-entry">
+                <span class="spec-title">HARDWARE</span>
+                <span class="spec-value">ESP32 + IMU</span>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="MotorSafe-An-IoT-Based-Motor-Fault-Prevention-and-Monitoring-System" style="align-self:flex-start;">
+              Inspect Dossier ↗
+            </button>
+          </article>
+
+          <!-- AQUAPULSE Card -->
+          <article class="glass-card project-feature-card">
+            <div class="project-card-header">
+              <div>
+                <h3 class="project-name">AQUAPULSE</h3>
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">Acoustic Subsea Sensor Mesh</span>
+              </div>
+              <span class="badge-award">Hardware Telemetry</span>
+            </div>
+
+            <p class="project-summary">
+              Subsea acoustic transceiver cutting power by 38% via zero-CPU DMA-to-DAC synthesis.
+            </p>
+
+            <div class="telemetry-specs-box">
+              <div class="spec-entry">
+                <span class="spec-title">POWER CUT</span>
+                <span class="spec-value">38.4%</span>
+              </div>
+              <div class="spec-entry">
+                <span class="spec-title">SYNTHESIS</span>
+                <span class="spec-value">DMA to DAC</span>
+              </div>
+              <div class="spec-entry">
+                <span class="spec-title">SUBSTRATE</span>
+                <span class="spec-value">Bare Metal C</span>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="Informed-poll" style="align-self:flex-start;">
+              Inspect Dossier ↗
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: THE LOGIC LAYER (AI INFRASTRUCTURE & AGENTS) -->
+    <section class="story-section" id="logic">
+      <div class="content-constrain">
+        <div class="section-label">// 02. THE LOGIC LAYER</div>
+        <h2 class="section-heading">AI Infrastructure & Agentic Workflows</h2>
+        <p class="section-lead">
+          Scaling from bare-metal constraints to autonomous semantic domains, agentic tool workflows, 
+          and physics-constrained generative algorithms.
+        </p>
+
+        <div class="tri-grid">
+          <!-- Ideation GOAT -->
+          <article class="glass-card project-feature-card">
+            <div class="project-card-header">
+              <h3 class="project-name" style="font-size:1.2rem;">Ideation GOAT</h3>
+              <span class="badge-award">Autonomous AI</span>
+            </div>
+            <p class="project-summary">
+              Autonomous multi-agent pipeline for architectural synthesis and automated design audits.
+            </p>
+            <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="Ideation-goat">
+              Dossier ↗
+            </button>
+          </article>
+
+          <!-- SpecRAG -->
+          <article class="glass-card project-feature-card">
+            <div class="project-card-header">
+              <h3 class="project-name" style="font-size:1.2rem;">SpecRAG</h3>
+              <span class="badge-award">Local RAG</span>
+            </div>
+            <p class="project-summary">
+              Sovereign local RAG answering complex queries over private schematics and datasheets.
+            </p>
+            <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="SpecRAG">
+              Dossier ↗
+            </button>
+          </article>
+
+          <!-- EVolvAI -->
+          <article class="glass-card project-feature-card">
+            <div class="project-card-header">
+              <h3 class="project-name" style="font-size:1.2rem;">EVolvAI</h3>
+              <span class="badge-award">Genetic Sim</span>
+            </div>
+            <p class="project-summary">
+              Physics-constrained genetic algorithms for generative EV charging infrastructure design.
+            </p>
+            <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="EVolvAI">
+              Dossier ↗
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: THE OPTIMIZATION LAYER (SYSTEMS & RUNTIMES) -->
+    <section class="story-section" id="optimization">
+      <div class="content-constrain">
+        <div class="section-label">// 03. THE OPTIMIZATION LAYER</div>
+        <h2 class="section-heading">Systems & Edge Runtimes</h2>
+        <p class="section-lead">
+          Extracting extreme throughput from budget hardware. Running production workflows under rigorous RAM budgets.
+        </p>
+
+        <div class="optimization-split">
+          <div class="glass-card">
+            <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:var(--space-2);">TurnBack & ytstr</h3>
+            <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4);">
+              <strong>TurnBack:</strong> Spatial 54% Turn-Back engine with minimal memory consumption (&lt;260MB peak RAM), designed for rapid routing without GPS satellite dependencies.<br /><br />
+              <strong>ytstr:</strong> High-performance lightweight streaming runtime executing 60 FPS video processing under &lt;5MB overhead.
+            </p>
+            <button type="button" class="btn btn-sm btn-primary open-dossier-btn" data-name="Slingshot">
+              Examine System Architecture ↗
+            </button>
+          </div>
+
+          <div class="glass-card benchmark-card">
+            <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--accent-mint);">
+              BENCHMARK TELEMETRY (2017 MACBOOK AIR / LINUX MINT)
+            </div>
+            <div class="benchmark-row">
+              <span style="color:var(--text-secondary);">TurnBack Peak Memory</span>
+              <span style="font-weight:700;color:var(--accent-mint);">&lt; 260 MB</span>
+            </div>
+            <div class="benchmark-row">
+              <span style="color:var(--text-secondary);">ytstr Video Runtime</span>
+              <span style="font-weight:700;color:var(--accent-mint);">60 FPS @ 4.8MB</span>
+            </div>
+            <div class="benchmark-row">
+              <span style="color:var(--text-secondary);">Zero-CPU DMA Latency</span>
+              <span style="font-weight:700;color:var(--accent-mint);">0.00% CPU Jitter</span>
+            </div>
+            <div class="benchmark-row">
+              <span style="color:var(--text-secondary);">Local LLM Inference</span>
+              <span style="font-weight:700;color:var(--accent-mint);">Quantized Edge GGUF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: THE HUMAN ELEMENT (DISCIPLINE & ACCESSIBILITY) -->
+    <section class="story-section" id="human">
+      <div class="content-constrain">
+        <div class="section-label">// 04. THE HUMAN ELEMENT</div>
+        <h2 class="section-heading">Discipline & Accessibility</h2>
+        <p class="section-lead">
+          Interdisciplinary grounding: High-standard discipline, character under pressure, and human-first engineering.
+        </p>
+
+        <div class="human-pillars-grid">
+          <div class="glass-card human-card">
+            <div class="human-icon">🎖️</div>
+            <h3 class="human-title">NCC Discipline</h3>
+            <p class="human-desc">National Cadet Corps training in physical endurance, leadership, and operational execution.</p>
+          </div>
+
+          <div class="glass-card human-card">
+            <div class="human-icon">🎯</div>
+            <h3 class="human-title">3x SSB Attendee</h3>
+            <p class="human-desc">Tested across 5-day Service Selection Board psychological batteries and obstacle courses.</p>
+          </div>
+
+          <div class="glass-card human-card">
+            <div class="human-icon">🤟</div>
+            <h3 class="human-title">ISL Certified</h3>
+            <p class="human-desc">Indian Sign Language certified. Dedicated to building inclusive, accessible human-computer tools.</p>
+          </div>
+
+          <div class="glass-card human-card">
+            <div class="human-icon">🤖</div>
+            <h3 class="human-title">HuT Labs</h3>
+            <p class="human-desc">Robotics collaboration on assistive mechanisms and cyber-physical rehabilitation devices.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: THE COMPLETE 76 BUILDS ARCHIVE -->
+    <section class="story-section" id="archive">
+      <div class="content-constrain">
+        <div class="section-label">// 05. THE COMPLETE REGISTRY</div>
+        <h2 class="section-heading">The 76 Builds Archive</h2>
+        <p class="section-lead">
+          Exhaustive database of all active builds, hackathon prototypes, and sovereign repositories.
+        </p>
+
+        <div class="archive-filter-bar">
+          <div class="filter-pills">
+            <button type="button" class="filter-btn active" data-category="all">ALL</button>
+            <button type="button" class="filter-btn" data-category="hackathon">HACKATHONS</button>
+            <button type="button" class="filter-btn" data-category="hardware">HARDWARE & IOT</button>
+            <button type="button" class="filter-btn" data-category="physics">PHYSICS & SIM</button>
+            <button type="button" class="filter-btn" data-category="tool">TOOLS & CLIS</button>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);" id="archive-count-tag">76 BUILDS</span>
+            <div class="search-input-wrap">
+              <input type="text" id="archive-search-field" class="archive-search-box" placeholder="Filter builds..." autocomplete="off" />
+            </div>
+          </div>
+        </div>
+
+        <div class="archive-grid-display" id="archive-grid-container">
+          <!-- Populated dynamically by showcase.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: DIRECT PROTOCOL & CONNECT -->
+    <section class="story-section" id="connect">
+      <div class="content-constrain">
+        <div class="section-label">// 06. TRANSMISSION PROTOCOL</div>
+        <h2 class="section-heading">Connect With The Studio</h2>
+        <p class="section-lead">
+          Open to collaborative ventures in cyber-physical systems, edge AI runtimes, and extreme economic engineering.
+        </p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8);align-items:start;">
+          <div class="glass-card">
+            <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:var(--space-4);">Direct Channels</h3>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+              <div>
+                <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);">PRIMARY INBOX</div>
+                <div style="font-weight:700;font-size:0.95rem;">sujayat2007@gmail.com</div>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="copy-email-btn">Copy 📋</button>
+            </div>
+
+            <a href="https://github.com/seeramsujay" target="_blank" rel="noopener noreferrer" style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;border-bottom:1px solid rgba(0,0,0,0.06);text-decoration:none;color:inherit;">
+              <div>
+                <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);">CODE FORGE</div>
+                <div style="font-weight:700;font-size:0.95rem;">github.com/seeramsujay</div>
+              </div>
+              <span style="color:var(--accent-mint);font-weight:600;font-size:0.85rem;">Visit ↗</span>
+            </a>
+
+            <a href="https://linkedin.com/in/sujayseeram" target="_blank" rel="noopener noreferrer" style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;text-decoration:none;color:inherit;">
+              <div>
+                <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);">PROFESSIONAL DOSSIER</div>
+                <div style="font-weight:700;font-size:0.95rem;">linkedin.com/in/sujayseeram</div>
+              </div>
+              <span style="color:var(--accent-mint);font-weight:600;font-size:0.85rem;">Connect ↗</span>
+            </a>
+          </div>
+
+          <!-- Direct Form -->
+          <div class="glass-card">
+            <form id="inquiry-form" style="display:flex;flex-direction:column;gap:var(--space-3);">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:var(--text-muted);">CALLSIGN / SENDER NAME</label>
+                <input type="text" id="inq-name" style="padding:8px 12px;border:1px solid rgba(0,0,0,0.1);border-radius:var(--radius-sm);outline:none;font-size:0.9rem;" placeholder="Your Name" required />
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:var(--text-muted);">RETURN COORDINATES</label>
+                <input type="email" id="inq-email" style="padding:8px 12px;border:1px solid rgba(0,0,0,0.1);border-radius:var(--radius-sm);outline:none;font-size:0.9rem;" placeholder="name@domain.com" required />
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:var(--text-muted);">INQUIRY PAYLOAD</label>
+                <textarea id="inq-msg" style="padding:8px 12px;border:1px solid rgba(0,0,0,0.1);border-radius:var(--radius-sm);outline:none;min-height:90px;font-size:0.9rem;" placeholder="Project scope, robotics collaboration..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" id="inq-submit-btn">
+                <span>Dispatch Transmission ↗</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- INTERACTIVE PROJECT CARD MODAL WITH FLUID DYNAMICS -->
+  <div id="project-card-modal" class="project-card-overlay hidden" role="dialog" aria-modal="true">
+    <!-- WebGL Fluid Simulation Canvas -->
+    <canvas id="fluid-modal-canvas" class="fluid-canvas-bg"></canvas>
+
+    <!-- Foreground Floating Glass Project Card -->
+    <div class="glass-card modal-project-card" id="modal-card-element">
+      <!-- Top Bar: Index/Kicker, Award Badge & Close -->
+      <div class="modal-card-header">
+        <div class="modal-card-header-left">
+          <span class="kicker-chip" id="modal-card-index">// DOSSIER 01</span>
+          <span class="badge-award hidden" id="modal-card-award">Shaastra 2nd Place</span>
+          <span class="category-tag" id="modal-card-category">SYSTEM</span>
+        </div>
+        <button type="button" class="btn-icon-close" id="modal-close-btn" aria-label="Close card">✕</button>
+      </div>
+
+      <!-- Card Title -->
+      <h2 class="modal-project-title" id="modal-card-title">MotorSafe</h2>
+
+      <!-- Punchy Short Description -->
+      <p class="modal-project-desc" id="modal-card-desc">
+        ESP32 edge monitor detecting motor faults via on-chip FFT harmonics with zero cloud latency.
+      </p>
+
+      <!-- Key Engineering Highlights / Telemetry Specs -->
+      <div class="telemetry-specs-box modal-specs-grid" id="modal-card-specs">
+        <!-- Dynamically populated -->
+      </div>
+
+      <!-- Tags Array -->
+      <div class="modal-tags-row" id="modal-card-tags"></div>
+
+      <!-- Action Footer: Repository Link & Copy Summary -->
+      <div class="modal-card-footer">
+        <div id="modal-card-repo-link"></div>
+        <div class="modal-footer-actions">
+          <button type="button" class="btn btn-sm btn-secondary" id="modal-copy-summary-btn">Copy Summary</button>
+          <button type="button" class="btn btn-sm btn-secondary" id="modal-dismiss-btn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
