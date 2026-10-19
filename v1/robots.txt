@@ -1,0 +1,130 @@
+# ==============================================================================
+# ROBOTS.TXT
+# Protecting Personal Privacy & Intellectual Property
+# Copyright (c) 2026 Sujay Seeram. All Rights Reserved.
+# Strict prohibitions on AI training, data scraping, and intelligence gathering.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. ALLOWED USER AGENTS
+# Permitting standard, ethical search engines for human discovery indexation.
+# ------------------------------------------------------------------------------
+User-agent: Googlebot
+Disallow:
+
+User-agent: Bingbot
+Disallow:
+
+User-agent: Slurp
+Disallow:
+
+User-agent: DuckDuckBot
+Disallow:
+
+# ------------------------------------------------------------------------------
+# 2. PROHIBITED AI TRAINING & DATA SCRAPING BOTS
+# Strictly forbidding ingestion, crawling, and AI/LLM intelligence training.
+# ------------------------------------------------------------------------------
+
+# OpenAI
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# Google AI Extended
+User-agent: Google-Extended
+Disallow: /
+
+# Apple AI
+User-agent: Applebot-Extended
+Disallow: /
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+# Common Crawl (Major AI Training Dataset)
+User-agent: CCBot
+Disallow: /
+
+# Amazon AI
+User-agent: Amazonbot
+Disallow: /
+
+# ByteDance/TikTok AI
+User-agent: Bytespider
+Disallow: /
+
+# Cohere
+User-agent: cohere-ai
+Disallow: /
+
+# Perplexity AI Search & Scraper
+User-agent: PerplexityBot
+Disallow: /
+
+# Diffbot
+User-agent: Diffbot
+Disallow: /
+
+# Facebook Scrapers
+User-agent: FacebookBot
+Disallow: /
+
+# Imagesift (AI Image Scraper)
+User-agent: ImagesiftBot
+Disallow: /
+
+# Omegabot
+User-agent: Omegabot
+Disallow: /
+
+# You.com AI Search
+User-agent: YouBot
+Disallow: /
+
+# Webz.io Data Scraper
+User-agent: Omgilibot
+Disallow: /
+
+# Meltwater Scrapers
+User-agent: Meltwater
+Disallow: /
+
+# ------------------------------------------------------------------------------
+# 3. PROHIBITED SEO AUDIT & MARKETING SCRAPERS
+# Forbidding non-consensual site analysis and automated data harvesting.
+# ------------------------------------------------------------------------------
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: SemrushBot-SA
+Disallow: /
+
+User-agent: Rogerbot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# ------------------------------------------------------------------------------
+# 4. GLOBAL BLOCKLIST FOR ALL OTHER AUTOMATED SCRAPERS
+# Fallback rule to protect against all non-disclosed scraping tools.
+# ------------------------------------------------------------------------------
+User-agent: *
+Disallow: /
