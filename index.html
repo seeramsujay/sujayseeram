@@ -131,7 +131,8 @@
             </div>
 
             <p class="project-summary">
-              ESP32 edge monitor detecting motor faults via on-chip FFT harmonics with zero cloud latency.
+              Edge IoT diagnostic platform detecting motor anomalies before catastrophic mechanical failure. 
+              Computes real-time Fast Fourier Transform (FFT) vibration harmonics on-chip with zero cloud latency.
             </p>
 
             <div class="telemetry-specs-box">
@@ -165,7 +166,8 @@
             </div>
 
             <p class="project-summary">
-              Subsea acoustic transceiver cutting power by 38% via zero-CPU DMA-to-DAC synthesis.
+              Underwater acoustic telemetry transceiver implementing zero-CPU DMA-to-DAC synthesis, cutting 
+              acoustic power consumption by 38% while maintaining reliable subsea data transmission.
             </p>
 
             <div class="telemetry-specs-box">
@@ -209,7 +211,8 @@
               <span class="badge-award">Autonomous AI</span>
             </div>
             <p class="project-summary">
-              Autonomous multi-agent pipeline for architectural synthesis and automated design audits.
+              Multi-agent reasoning pipeline for rapid architectural synthesis, continuous concept auditing, 
+              and automated engineering design loops.
             </p>
             <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="Ideation-goat">
               Dossier ↗
@@ -223,7 +226,8 @@
               <span class="badge-award">Local RAG</span>
             </div>
             <p class="project-summary">
-              Sovereign local RAG answering complex queries over private schematics and datasheets.
+              Sovereign local retrieval-augmented generation engine operating over private engineering schematics 
+              and hardware datasheets without external leaks.
             </p>
             <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="SpecRAG">
               Dossier ↗
@@ -237,7 +241,8 @@
               <span class="badge-award">Genetic Sim</span>
             </div>
             <p class="project-summary">
-              Physics-constrained genetic algorithms for generative EV charging infrastructure design.
+              Evolutionary generative algorithms grounded in differential equations and physics constraints 
+              for structural optimization.
             </p>
             <button type="button" class="btn btn-sm btn-secondary open-dossier-btn" data-name="EVolvAI">
               Dossier ↗
@@ -429,46 +434,27 @@
 
   </main>
 
-  <!-- INTERACTIVE PROJECT CARD MODAL WITH FLUID DYNAMICS -->
-  <div id="project-card-modal" class="project-card-overlay hidden" role="dialog" aria-modal="true">
-    <!-- WebGL Fluid Simulation Canvas -->
-    <canvas id="fluid-modal-canvas" class="fluid-canvas-bg"></canvas>
-
-    <!-- Foreground Floating Glass Project Card -->
-    <div class="glass-card modal-project-card" id="modal-card-element">
-      <!-- Top Bar: Index/Kicker, Award Badge & Close -->
-      <div class="modal-card-header">
-        <div class="modal-card-header-left">
-          <span class="kicker-chip" id="modal-card-index">// DOSSIER 01</span>
-          <span class="badge-award hidden" id="modal-card-award">Shaastra 2nd Place</span>
-          <span class="category-tag" id="modal-card-category">SYSTEM</span>
+  <!-- ARCHITECTURAL SLIDE-OVER DRAWER (PROJECT MODAL) -->
+  <div id="project-drawer" class="drawer-overlay hidden" role="dialog" aria-modal="true">
+    <div class="drawer-pane">
+      <div class="drawer-top-bar">
+        <div>
+          <h2 id="drawer-title" style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:4px;">Project Dossier</h2>
+          <div id="drawer-meta" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;"></div>
         </div>
-        <button type="button" class="btn-icon-close" id="modal-close-btn" aria-label="Close card">✕</button>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-sm btn-secondary" id="drawer-copy-btn">Copy MD</button>
+          <button type="button" class="btn btn-sm btn-secondary" id="drawer-close-btn">✕ Close</button>
+        </div>
       </div>
 
-      <!-- Card Title -->
-      <h2 class="modal-project-title" id="modal-card-title">MotorSafe</h2>
-
-      <!-- Punchy Short Description -->
-      <p class="modal-project-desc" id="modal-card-desc">
-        ESP32 edge monitor detecting motor faults via on-chip FFT harmonics with zero cloud latency.
-      </p>
-
-      <!-- Key Engineering Highlights / Telemetry Specs -->
-      <div class="telemetry-specs-box modal-specs-grid" id="modal-card-specs">
-        <!-- Dynamically populated -->
+      <div style="padding:var(--space-3) var(--space-6);background:#f8fafc;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <div id="drawer-tags" style="display:flex;gap:4px;flex-wrap:wrap;"></div>
+        <div id="drawer-links"></div>
       </div>
 
-      <!-- Tags Array -->
-      <div class="modal-tags-row" id="modal-card-tags"></div>
-
-      <!-- Action Footer: Repository Link & Copy Summary -->
-      <div class="modal-card-footer">
-        <div id="modal-card-repo-link"></div>
-        <div class="modal-footer-actions">
-          <button type="button" class="btn btn-sm btn-secondary" id="modal-copy-summary-btn">Copy Summary</button>
-          <button type="button" class="btn btn-sm btn-secondary" id="modal-dismiss-btn">Close</button>
-        </div>
+      <div class="drawer-scroll-body drawer-markdown" id="drawer-body">
+        <!-- Markdown content -->
       </div>
     </div>
   </div>
