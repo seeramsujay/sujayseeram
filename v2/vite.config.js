@@ -1,3 +1,10 @@
+/**
+ * v2/vite.config.js - Vite Configuration for Portfolio Version 2
+ * ==============================================================
+ * Role: Configures the Vite development server and production build pipeline for v2,
+ *       splitting vendor chunks (Three.js, Marked, Motion) for optimized caching and delivery.
+ */
+
 import { defineConfig } from 'vite';
 
 export default defineConfig({

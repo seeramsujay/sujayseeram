@@ -1,6 +1,9 @@
 /**
- * Master Application Entry Point for Sujay Seeram Portfolio V2
- * Technical Pastel Art Direction with Smooth Inertia Scroll (Lenis + GSAP)
+ * v3/src/main.js - Application Entrypoint for Portfolio Version 3
+ * ===============================================================
+ * Role: Boots the v3 client by orchestrating Lenis smooth scrolling, GSAP ScrollTrigger,
+ *       the Three.js NarrativeScene, the horizontal ProjectShowcase stage runner,
+ *       the Web Audio synth, and the WebGL fluid-dynamics ProjectModal card viewer.
  */
 
 import Lenis from 'lenis';

@@ -1,6 +1,9 @@
 /**
- * Sovereign Web Audio Procedural Sound Engine
- * Zero external audio assets. 100% synthesized in real-time.
+ * v3/src/audio/synth.js - Procedural Web Audio Sound Engine (v3)
+ * =============================================================
+ * Role: Real-time procedural audio synthesizer requiring zero audio asset downloads.
+ *       Generates tactile acoustic feedback (clicks, blips, stage transition hums, and modal swooshes)
+ *       using Web Audio API oscillators, biquad filters, and gain nodes.
  */
 
 class CyberSynth {

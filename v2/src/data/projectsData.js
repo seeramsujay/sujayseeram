@@ -1,4 +1,10 @@
-// Direct ES Module import of projects_db.json via Vite
+/**
+ * v2/src/data/projectsData.js - Project Data Normalizer & Bridge (v2)
+ * ==================================================================
+ * Role: Loads raw projects from projects_db.json, parses chronological dates, assigns
+ *       category filters, and exports sorted collections for showcase rendering.
+ */
+
 import rawProjects from './projects_db.json';
 
 // Helper to safely parse date like "Apr 2026", "Dec 2025", "2024", etc.

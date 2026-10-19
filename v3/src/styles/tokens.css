@@ -1,7 +1,9 @@
-/* ==========================================================================
-   TECHNICAL PASTEL DESIGN SYSTEM TOKENS
-   Awwwards Laboratory & Extreme Economic Engineering
-   ========================================================================== */
+/**
+ * v3/src/styles/tokens.css - Design System Tokens for Portfolio Version 3
+ * =======================================================================
+ * Role: Declares the Technical Pastel design tokens, natural light-mode studio transitions,
+ *       glassmorphic card surface variables, typography scales, and spacing tokens.
+ */
 
 :root {
   /* Pastel Transitions Palette */

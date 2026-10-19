@@ -1,6 +1,9 @@
 /**
- * Architectural Project Card Modal with Interactive WebGL Fluid Dynamics
- * Displays a concise, high-impact project card with fluid dye simulations.
+ * v3/src/components/modal.js - Project Card Modal with WebGL Fluid Dynamics (v3)
+ * ==============================================================================
+ * Role: Controls the floating glass project card modal in v3, displaying concise engineering
+ *       summaries, metrics grid, tags, and repo links while running an interactive WebGL
+ *       fluid simulation backdrop with pointer physics and sound feedback.
  */
 
 import { FluidSimulation } from '../effects/fluid.js';
