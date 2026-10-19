@@ -1,6 +1,8 @@
 /**
- * Architectural Project Dossier Drawer (Light Mode & Editorial)
- * Powered by Marked to render project READMEs.
+ * v2/src/components/modal.js - Project Dossier Slide-Over Drawer (v2)
+ * ===================================================================
+ * Role: Controls the full architectural slide-over drawer modal in v2, rendering formatted
+ *       Markdown project readmes using marked.js, tags, telemetry badges, and clipboard actions.
  */
 
 import { marked } from 'marked';
