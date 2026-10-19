@@ -1,3 +1,11 @@
+/**
+ * v1/index.css - Stylesheet for Portfolio Version 1
+ * ==================================================
+ * Role: Defines the cyberpunk HUD design system, neon glow palettes, dark and light theme
+ *       custom properties, glassmorphism card surfaces, 3D conveyor scroll conduit layouts,
+ *       responsive mobile drawers, and CRT terminal typography.
+ */
+
 :root {
             /* === BACKGROUND LAYERS === */
             --bg-void: #020204;
