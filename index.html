@@ -35,8 +35,6 @@
 
 
 
-    <!-- Textures -->
-    <div class="noise-overlay"></div>
 
     <!-- Progress Bar -->
     <div id="scroll-progress-bar"
@@ -3486,77 +3484,7 @@
         document.querySelectorAll('.glass-card, .edu-item, .post-card').forEach(el => {
             el.classList.add('fade-up');
             fadeIO.observe(el);
-
-            // Dynamic mouse glow tracker (desktop only)
-            if (window.innerWidth > 768) {
-                el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    el.style.setProperty('--mouse-x', `${x}px`);
-                    el.style.setProperty('--mouse-y', `${y}px`);
-                });
-            }
         });
-
-        // Global mouse/touch spotlight glow tracker — throttled to RAF
-        let globalPointerTimeout;
-        let pendingPointerX = -1, pendingPointerY = -1, pointerRAFPending = false;
-        const contactSec = document.getElementById('contact');
-
-        const flushPointer = () => {
-            pointerRAFPending = false;
-            const clientX = pendingPointerX;
-            const clientY = pendingPointerY;
-
-            document.body.classList.add('mouse-active');
-            document.documentElement.style.setProperty('--global-mouse-x', `${clientX}px`);
-            document.documentElement.style.setProperty('--global-mouse-y', `${clientY}px`);
-
-            if (contactSec) {
-                const rect = contactSec.getBoundingClientRect();
-                contactSec.style.setProperty('--global-mouse-x', `${clientX - rect.left}px`);
-                contactSec.style.setProperty('--global-mouse-y', `${clientY - rect.top}px`);
-                contactSec.classList.toggle('mouse-active',
-                    clientY >= rect.top && clientY <= rect.bottom);
-            }
-
-            clearTimeout(globalPointerTimeout);
-            globalPointerTimeout = setTimeout(() => {
-                document.body.classList.remove('mouse-active');
-                if (contactSec) contactSec.classList.remove('mouse-active');
-            }, 2000);
-        };
-
-        const updatePointerPosition = (clientX, clientY) => {
-            pendingPointerX = clientX;
-            pendingPointerY = clientY;
-            if (!pointerRAFPending) {
-                pointerRAFPending = true;
-                requestAnimationFrame(flushPointer);
-            }
-        };
-
-        window.addEventListener('mousemove', (e) => {
-            updatePointerPosition(e.clientX, e.clientY);
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            if (e.touches && e.touches[0]) {
-                updatePointerPosition(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        }, { passive: true });
-
-        window.addEventListener('touchstart', (e) => {
-            if (e.touches && e.touches[0]) {
-                updatePointerPosition(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        }, { passive: true });
-
-        document.addEventListener('mouseleave', () => {
-            document.body.classList.remove('mouse-active');
-            if (contactSec) contactSec.classList.remove('mouse-active');
-        }, { passive: true });
 
 
         // Dynamic Glowing Tag Parsing Routine
@@ -4944,94 +4872,6 @@
                 projectGrid.appendChild(card);
             });
 
-            const initJackpotTitle = (card, h3) => {
-                const originalName = h3.dataset.originalName || h3.textContent.trim();
-                h3.dataset.originalName = originalName;
-
-                if (window.innerWidth <= 768) {
-                    h3.textContent = originalName;
-                    return;
-                }
-
-                // Wrap each character in a styled span
-                h3.innerHTML = originalName.split('').map((char, idx) => {
-                    if (char === ' ') return `<span data-char=" " style="white-space: pre;"> </span>`;
-                    return `<span class="scramble-char" data-idx="${idx}">${char}</span>`;
-                }).join('');
-
-                const spans = h3.querySelectorAll('.scramble-char');
-                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=_";
-
-                let isHovered = false;
-                let intervals = [];
-
-                const startJackpot = () => {
-                    intervals.forEach(clearInterval);
-                    intervals = [];
-                    isHovered = false;
-
-                    spans.forEach((span) => {
-                        const speed = 180 + Math.random() * 320;
-                        setTimeout(() => {
-                            if (isHovered) return;
-                            const interval = setInterval(() => {
-                                if (isHovered) return;
-                                span.textContent = chars[Math.floor(Math.random() * chars.length)];
-                                span.classList.add('is-scrambled');
-                            }, speed);
-                            intervals.push(interval);
-                        }, Math.random() * 150);
-                    });
-                };
-
-                const resolveName = () => {
-                    isHovered = true;
-                    intervals.forEach(clearInterval);
-                    intervals = [];
-
-                    spans.forEach((span) => {
-                        const idx = parseInt(span.dataset.idx);
-                        const originalChar = originalName[idx];
-                        const delay = idx * 28;
-
-                        setTimeout(() => {
-                            if (!isHovered) return;
-                            let scrambleSteps = 0;
-                            const localInterval = setInterval(() => {
-                                if (!isHovered) {
-                                    clearInterval(localInterval);
-                                    return;
-                                }
-                                if (scrambleSteps >= 3) {
-                                    span.textContent = originalChar;
-                                    span.classList.remove('is-scrambled');
-                                    clearInterval(localInterval);
-                                } else {
-                                    span.textContent = chars[Math.floor(Math.random() * chars.length)];
-                                    span.classList.add('is-scrambled');
-                                    scrambleSteps++;
-                                }
-                            }, 35);
-                        }, delay);
-                    });
-                };
-
-                card.addEventListener('mouseenter', () => {
-                    resolveName();
-                    card.classList.add('active');
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    isHovered = false;
-                    card.classList.remove('active');
-                    setTimeout(() => {
-                        if (!isHovered) startJackpot();
-                    }, 400);
-                });
-
-                startJackpot();
-            };
-
             document.querySelectorAll('.timeline-card-content, .project-item').forEach(card => {
                 const h3 = card.querySelector('h3');
                 if (!h3) return;
@@ -5040,7 +4880,7 @@
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('a') || e.target.closest('button')) return;
 
-                    const name = h3.dataset.originalName || h3.textContent.trim();
+                    const name = h3.textContent.trim();
                     const descEl = card.querySelector('.font-body, p');
                     const descHtml = descEl ? descEl.innerHTML : 'No description available.';
 
@@ -5050,65 +4890,10 @@
                     console.log("Opening overlay for project:", name);
                     openProjectDetailOverlay(name, descHtml, repoLink);
                 });
-
-                if (card.classList.contains('timeline-card-content')) {
-                    initJackpotTitle(card, h3);
-                }
             });
 
             window.currentProjectsList = sortedProjects;
 
-            if (window.updateInteractiveHovers) {
-                window.updateInteractiveHovers();
-            }
-        }
-        let mobileScrollTicking = false;
-        function updateMobileTimelineCards() {
-            if (window.innerWidth > 768) return;
-            const viewportCenter = window.innerHeight * 0.5;
-            const range = window.innerHeight * 0.44;
-
-            const nodes = document.querySelectorAll('.timeline-node');
-            if (!nodes.length) return;
-
-            let closestNode = null;
-            let closestDist = Infinity;
-
-            nodes.forEach(node => {
-                if (node.style.display === 'none') return;
-                const rect = node.getBoundingClientRect();
-                const cardCenter = rect.top + rect.height * 0.5;
-                const dist = Math.abs(cardCenter - viewportCenter);
-
-                if (dist < closestDist) {
-                    closestDist = dist;
-                    closestNode = node;
-                }
-
-                if (dist < range) {
-                    const norm = 1 - (dist / range);
-                    const ease = norm * norm * (3 - 2 * norm);
-                    const scale = 0.88 + 0.18 * ease;
-                    const opacity = 0.45 + 0.55 * ease;
-
-                    node.style.transform = `scale(${scale.toFixed(3)}) translateZ(0)`;
-                    node.style.opacity = opacity.toFixed(2);
-                } else {
-                    node.style.transform = 'scale(0.88) translateZ(0)';
-                    node.style.opacity = '0.45';
-                }
-            });
-
-            nodes.forEach(node => {
-                if (node === closestNode && closestDist < range * 0.55) {
-                    node.classList.add('mobile-center-active');
-                    if (node.dataset.year && window.syncMobileTabToYear) {
-                        window.syncMobileTabToYear(node.dataset.year);
-                    }
-                } else {
-                    node.classList.remove('mobile-center-active');
-                }
-            });
         }
 
         function initMobileOdysseyTabs() {
@@ -5139,7 +4924,7 @@
                     } else if (['2026', '2025', '2024'].includes(filter)) {
                         allNodes.forEach(n => n.style.display = 'block');
                         allYears.forEach(y => y.style.display = 'block');
-                        
+
                         const targetCard = Array.from(allNodes).find(n => n.dataset.year === filter);
                         if (targetCard) {
                             targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -5162,8 +4947,6 @@
                             firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
                     }
-
-                    setTimeout(updateMobileTimelineCards, 150);
                 });
             });
 
@@ -5182,20 +4965,42 @@
             };
         }
 
-        window.addEventListener('scroll', () => {
-            if (window.innerWidth <= 768 && !mobileScrollTicking) {
-                mobileScrollTicking = true;
-                requestAnimationFrame(() => {
-                    updateMobileTimelineCards();
-                    mobileScrollTicking = false;
-                });
+        let mobileCenterObserver = null;
+        function initMobileCenterObserver() {
+            if (mobileCenterObserver) {
+                mobileCenterObserver.disconnect();
             }
-        }, { passive: true });
+            if (window.innerWidth > 768) return;
+
+            mobileCenterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('.timeline-node.mobile-center-active').forEach(el => {
+                            if (el !== entry.target) el.classList.remove('mobile-center-active');
+                        });
+                        entry.target.classList.add('mobile-center-active');
+                        if (entry.target.dataset.year && window.syncMobileTabToYear) {
+                            window.syncMobileTabToYear(entry.target.dataset.year);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '-35% 0px -35% 0px',
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.timeline-node').forEach(node => {
+                mobileCenterObserver.observe(node);
+            });
+        }
 
         window.addEventListener('resize', () => {
             if (window.innerWidth <= 768) {
-                updateMobileTimelineCards();
+                initMobileCenterObserver();
             } else {
+                if (mobileCenterObserver) {
+                    mobileCenterObserver.disconnect();
+                }
                 document.querySelectorAll('.timeline-node').forEach(node => {
                     node.style.transform = '';
                     node.style.opacity = '';
@@ -5205,6 +5010,8 @@
                 document.querySelectorAll('.timeline-year').forEach(y => {
                     y.style.display = '';
                 });
+                cacheSectionOffsets();
+                wake();
             }
         }, { passive: true });
 
@@ -5212,7 +5019,7 @@
             timelineNodes = document.querySelectorAll('.timeline-node');
 
             if (window.innerWidth <= 768) {
-                updateMobileTimelineCards();
+                initMobileCenterObserver();
                 return;
             }
 
@@ -5234,8 +5041,6 @@
             wake();
         }
 
-        // --- Custom Cursor Removed ---
-
         // --- Theme Switching Handler ---
         (function() {
             const themeToggleBtn = document.getElementById('theme-toggle');
@@ -5256,345 +5061,6 @@
         renderAllProjects();
         initTimelineAnimations();
         initMobileOdysseyTabs();
-
-        // ═══════════════════════════════════════════════════════════════
-        // MOBILE-EXCLUSIVE PUNCH EFFECTS (touch devices only)
-        // ═══════════════════════════════════════════════════════════════
-        (function() {
-            const isTouch = window.matchMedia('(pointer: coarse)').matches;
-            if (!isTouch) return;
-
-            // ── 1. TAP PARTICLE BURST (Clean intentional taps only, zero scroll friction) ──
-            const PARTICLE_COLORS = [
-                'var(--optimism-mint)',
-                'var(--optimism-teal)',
-                'var(--optimism-cyan)',
-                '#a8edea',
-                '#ffffff'
-            ];
-
-            function spawnParticles(x, y, count = 5) {
-                for (let i = 0; i < count; i++) {
-                    const p = document.createElement('div');
-                    p.className = 'touch-particle';
-
-                    const size = 3 + Math.random() * 4;
-                    const angle = (Math.random() * 360) * (Math.PI / 180);
-                    const speed = 25 + Math.random() * 45;
-                    const duration = 350 + Math.random() * 250;
-                    const color = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
-
-                    const txF = Math.cos(angle) * speed;
-                    const tyF = Math.sin(angle) * speed;
-
-                    Object.assign(p.style, {
-                        width:  `${size}px`,
-                        height: `${size}px`,
-                        left:   `${x}px`,
-                        top:    `${y}px`,
-                        background: color,
-                        boxShadow: `0 0 ${size * 2}px ${color}`,
-                        '--tx0': '0px',
-                        '--ty0': '0px',
-                        '--txF': `${txF}px`,
-                        '--tyF': `${tyF}px`,
-                        animation: `particle-scatter ${duration}ms cubic-bezier(0.2, 0.8, 0.4, 1) forwards`,
-                    });
-
-                    document.body.appendChild(p);
-                    p.addEventListener('animationend', () => p.remove());
-                }
-            }
-
-            let touchStartX = 0;
-            let touchStartY = 0;
-            let touchStartTime = 0;
-
-            document.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    touchStartX = e.touches[0].clientX;
-                    touchStartY = e.touches[0].clientY;
-                    touchStartTime = Date.now();
-                }
-            }, { passive: true });
-
-            document.addEventListener('touchend', (e) => {
-                if (e.changedTouches.length === 1) {
-                    const t = e.changedTouches[0];
-                    const dist = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
-                    const elapsed = Date.now() - touchStartTime;
-
-                    // Only fire if it was a quick intentional tap (< 8px movement and < 300ms)
-                    if (dist < 8 && elapsed < 300) {
-                        const isInteractive = !!e.target.closest('a, button, input, .filter-btn, .theme-toggle-btn, .timeline-close, .mobile-drawer-close, .terminal-close');
-                        if (!isInteractive) {
-                            spawnParticles(t.clientX, t.clientY, 5);
-                        }
-                    }
-                }
-            }, { passive: true });
-
-            // ── 2. GYROSCOPE 3D HERO PARALLAX (Subtle, clamped for zero overflow) ──
-            const heroTitle = document.querySelector('.hero-title');
-            const heroQuote = document.querySelector('.hero-quote');
-            const heroMeta  = document.querySelector('.hero-metadata');
-
-            let baseGamma = null;
-            let baseBeta  = null;
-
-            function applyGyroParallax(gamma, beta) {
-                if (baseGamma === null) { baseGamma = gamma; baseBeta = beta; return; }
-
-                const dGamma = Math.max(-10, Math.min(10, gamma - baseGamma));
-                const dBeta  = Math.max(-8,  Math.min(8,  beta  - baseBeta ));
-
-                if (heroTitle) heroTitle.style.transform = `translate3d(${dGamma * 0.4}px, ${dBeta * 0.3}px, 0)`;
-                if (heroQuote) heroQuote.style.transform = `translate3d(${dGamma * 0.25}px, ${dBeta * 0.2}px, 0)`;
-                if (heroMeta)  heroMeta.style.transform  = `translate3d(${dGamma * 0.1}px, ${dBeta * 0.08}px, 0)`;
-            }
-
-            function requestGyroPermission() {
-                if (typeof DeviceOrientationEvent === 'undefined') return;
-
-                const activate = () => {
-                    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                        DeviceOrientationEvent.requestPermission()
-                            .then(state => {
-                                if (state === 'granted') initGyro();
-                            })
-                            .catch(() => {});
-                    } else {
-                        initGyro();
-                    }
-                    document.removeEventListener('touchend', activate);
-                };
-                document.addEventListener('touchend', activate, { once: true, passive: true });
-            }
-
-            function initGyro() {
-                window.addEventListener('deviceorientation', (e) => {
-                    if (e.gamma === null) return;
-                    applyGyroParallax(e.gamma, e.beta);
-                }, { passive: true });
-            }
-
-            requestGyroPermission();
-        })();
-
-        // ═══════════════════════════════════════════════════════════════
-        // DESKTOP-EXCLUSIVE PREMIUM EFFECTS (mouse/pointer: fine only)
-        // ═══════════════════════════════════════════════════════════════
-        (function() {
-            const isDesktop = window.matchMedia('(pointer: fine)').matches;
-            if (!isDesktop) return;
-
-            // ── 1. HERO MULTI-LAYER MOUSE PARALLAX ────────────────────
-            const heroEl     = document.getElementById('hero');
-            const heroTitle  = document.querySelector('.hero-title');
-            const heroQuote  = document.querySelector('.hero-quote');
-            const heroMeta   = document.querySelector('.hero-metadata');
-            const heroLinks  = document.querySelector('.hero-links');
-
-            let heroMouseX = 0, heroMouseY = 0;
-            let heroLerpX  = 0, heroLerpY  = 0;
-            let heroRAF = null;
-
-            function lerpHero(a, b, t) { return a + (b - a) * t; }
-
-            function heroParallaxLoop() {
-                heroLerpX = lerpHero(heroLerpX, heroMouseX, 0.06);
-                heroLerpY = lerpHero(heroLerpY, heroMouseY, 0.06);
-
-                if (heroTitle) heroTitle.style.transform =
-                    `translate3d(${heroLerpX * 22}px, ${heroLerpY * 14}px, 0)`;
-                if (heroQuote) heroQuote.style.transform =
-                    `translate3d(${heroLerpX * 10}px, ${heroLerpY * 7}px, 0)`;
-                if (heroMeta)  heroMeta.style.transform  =
-                    `translate3d(${heroLerpX * 4}px, ${heroLerpY * 2}px, 0)`;
-                if (heroLinks) heroLinks.style.transform =
-                    `translate3d(${heroLerpX * 6}px, ${heroLerpY * 4}px, 0)`;
-
-                // Self-cancel when converged (saves GPU when mouse is still)
-                const dx = Math.abs(heroLerpX - heroMouseX);
-                const dy = Math.abs(heroLerpY - heroMouseY);
-                if (dx > 0.0005 || dy > 0.0005) {
-                    heroRAF = requestAnimationFrame(heroParallaxLoop);
-                } else {
-                    heroRAF = null;
-                }
-            }
-
-            if (heroEl) {
-                [heroTitle, heroQuote, heroMeta, heroLinks].forEach(el => {
-                    if (el) el.style.transition = 'none';
-                });
-
-                heroEl.addEventListener('mousemove', (e) => {
-                    const rect = heroEl.getBoundingClientRect();
-                    heroMouseX = ((e.clientX - rect.left) / rect.width  - 0.5);
-                    heroMouseY = ((e.clientY - rect.top)  / rect.height - 0.5);
-                    if (!heroRAF) heroParallaxLoop();
-                });
-
-                heroEl.addEventListener('mouseleave', () => {
-                    heroMouseX = 0; heroMouseY = 0;
-                });
-            }
-
-
-            // ── 2. 3D CARD TILT ON HOVER ──────────────────────────────
-            // Cards tilt toward the cursor in real 3D (like Stripe/Linear)
-            let cardTiltRAF = null;
-            let activeTiltEl = null;
-            let tX = 0, tY = 0, cX = 0, cY = 0;
-
-            function cardTiltLoop() {
-                if (!activeTiltEl) return;
-                cX = lerpHero(cX, tX, 0.1);
-                cY = lerpHero(cY, tY, 0.1);
-                activeTiltEl.style.transform =
-                    `perspective(700px) rotateY(${cX}deg) rotateX(${-cY}deg) scale3d(1.02, 1.02, 1.02)`;
-                activeTiltEl.style.boxShadow =
-                    `0 25px 60px rgba(var(--theme-color-1-rgb), 0.2), 0 0 0 1px var(--glass-border-hover),
-                     ${-cX * 0.5}px ${-cY * 0.5}px 30px rgba(var(--theme-color-2-rgb), 0.12)`;
-                cardTiltRAF = requestAnimationFrame(cardTiltLoop);
-            }
-
-            function bindCardTilt(card) {
-                if (card.dataset.tiltBound) return;
-                card.dataset.tiltBound = 'true';
-                card.style.transition = 'box-shadow 0.3s ease';
-
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const relX = (e.clientX - rect.left) / rect.width  - 0.5;
-                    const relY = (e.clientY - rect.top)  / rect.height - 0.5;
-                    tX = relX * 16;
-                    tY = relY * 10;
-
-                    if (activeTiltEl !== card) {
-                        if (activeTiltEl) {
-                            activeTiltEl.style.transform = '';
-                            activeTiltEl.style.boxShadow = '';
-                        }
-                        activeTiltEl = card;
-                        cancelAnimationFrame(cardTiltRAF);
-                        cX = 0; cY = 0;
-                        cardTiltLoop();
-                    }
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    cancelAnimationFrame(cardTiltRAF);
-                    card.style.transition = 'transform 0.5s cubic-bezier(0.25,1,0.5,1), box-shadow 0.5s ease';
-                    card.style.transform  = '';
-                    card.style.boxShadow  = '';
-                    activeTiltEl = null;
-                    tX = 0; tY = 0; cX = 0; cY = 0;
-                    // Reset transition after snap-back
-                    setTimeout(() => { if (card) card.style.transition = ''; }, 500);
-                });
-            }
-
-            // Bind now and after any dynamic re-render
-            const bindAllCards = () => {
-                document.querySelectorAll('.timeline-card-content, .project-item').forEach(bindCardTilt);
-            };
-            bindAllCards();
-            window.addEventListener('projectsRendered', bindAllCards);
-            // Fallback: re-bind 500ms after render
-            setTimeout(bindAllCards, 800);
-
-
-            // ── 3. MAGNETIC CURSOR PULL ────────────────────────────────
-            // Buttons and nav links gently attract cursor and shift themselves
-            const MAGNETIC_TARGETS = 'a, button, .filter-btn, .nav-link, [role="button"]';
-            const MAGNETIC_RADIUS  = 90;  // px activation zone
-            const MAGNETIC_STRENGTH_CURSOR = 0.35;
-            const MAGNETIC_STRENGTH_EL     = 0.18;
-
-            let magMouseX = 0, magMouseY = 0;
-
-            window.addEventListener('mousemove', (e) => {
-                magMouseX = e.clientX;
-                magMouseY = e.clientY;
-            });
-
-            function applyMagnet(el) {
-                if (el.dataset.magnetBound) return;
-                el.dataset.magnetBound = 'true';
-                el.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
-                el.style.display = el.style.display || 'inline-flex';
-
-                el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const elCX = rect.left + rect.width  / 2;
-                    const elCY = rect.top  + rect.height / 2;
-                    const dx   = e.clientX - elCX;
-                    const dy   = e.clientY - elCY;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < MAGNETIC_RADIUS) {
-                        const pull = (1 - dist / MAGNETIC_RADIUS);
-                        // Move element toward cursor
-                        el.style.transform = `translate(${dx * MAGNETIC_STRENGTH_EL * pull}px, ${dy * MAGNETIC_STRENGTH_EL * pull}px)`;
-                    }
-                });
-
-                el.addEventListener('mouseleave', () => {
-                    el.style.transform = '';
-                });
-            }
-
-            // Bind nav links + hero links (not every link — performance)
-            document.querySelectorAll('.nav-links a, .hero-links a, .nav-cta, button').forEach(applyMagnet);
-
-
-            // ── 4. TEXT SCRAMBLE ON SECTION LABEL ENTRY ──────────────
-            const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%—/·';
-
-            function scrambleText(el) {
-                const original = el.dataset.originalText || el.textContent;
-                el.dataset.originalText = original;
-
-                let iteration = 0;
-                const totalFrames = original.length * 3;
-                const revealStep  = totalFrames / original.length;
-
-                clearInterval(el._scrambleInterval);
-                el._scrambleInterval = setInterval(() => {
-                    el.textContent = original
-                        .split('')
-                        .map((char, i) => {
-                            if (char === ' ' || char === '/' || char === '—' || char === '·') return char;
-                            // Reveal characters progressively left-to-right
-                            if (i < Math.floor(iteration / revealStep)) return char;
-                            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-                        })
-                        .join('');
-
-                    if (iteration >= totalFrames) {
-                        el.textContent = original;
-                        clearInterval(el._scrambleInterval);
-                    }
-                    iteration++;
-                }, 28);
-            }
-
-            // Observe section labels with IntersectionObserver
-            const scrambleObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        scrambleText(entry.target);
-                        scrambleObserver.unobserve(entry.target); // fire once
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            document.querySelectorAll('.section-label').forEach(el => scrambleObserver.observe(el));
-
-        })();
-
     </script>
 </body>
 
