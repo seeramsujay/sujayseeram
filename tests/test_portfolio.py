@@ -3,7 +3,8 @@
 import json
 import unittest
 from pathlib import Path
-from manage_projects import format_date, _parse_json_response
+
+from manage_projects import _parse_json_response, format_date
 
 
 class TestPortfolioDatabase(unittest.TestCase):
@@ -24,7 +25,9 @@ class TestPortfolioDatabase(unittest.TestCase):
         for item in data:
             self.assertIsInstance(item, dict)
             for k in required_keys:
-                self.assertIn(k, item, f"Missing required key '{k}' in project {item.get('name')}")
+                self.assertIn(
+                    k, item, f"Missing required key '{k}' in project {item.get('name')}"
+                )
             self.assertIsInstance(item["name"], str)
             self.assertTrue(len(item["name"]) > 0)
 
