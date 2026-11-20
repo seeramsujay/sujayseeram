@@ -1,4 +1,21 @@
-# 🎙️ Sujay Seeram: Cyber-Physical Systems & Physics-Informed Design
+<p align="center">
+  <img src="assets/logo.svg" alt="Sujay Seeram Logo" width="130" height="130" />
+</p>
+
+<h1 align="center">Sujay Seeram (Suzaykid)</h1>
+
+<p align="center">
+  <strong>Cyber-Physical Systems · Physics-Informed Computing · Extreme Economic Engineering</strong>
+</p>
+
+<p align="center">
+  <a href="https://sujayseeram.com"><img src="https://img.shields.io/badge/Portfolio-sujayseeram.com-8b5cf6?style=flat-square" alt="Portfolio" /></a>
+  <img src="https://img.shields.io/badge/Status-Active%20Research-brightgreen?style=flat-square" alt="Status" />
+  <img src="https://img.shields.io/badge/Focus-Cyber--Physical%20Systems-blue?style=flat-square" alt="Focus" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License" />
+</p>
+
+---
 
 👋 Hi, I am **Sujay Seeram** (Suzaykid). I am an Electronics and Communication Engineering student at Amrita Vishwa Vidyapeetham, specializing in resource-constrained cyber-physical systems, embedded hardware design, and physics-informed computing.
 

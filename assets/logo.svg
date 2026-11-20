@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="sujayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <filter id="sujayGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#8b5cf6" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Deep Obsidian Container -->
+  <rect width="160" height="160" rx="36" fill="#0b0f19" />
+  <rect x="2" y="2" width="156" height="156" rx="34" fill="none" stroke="#8b5cf6" stroke-opacity="0.25" stroke-width="2" />
+
+  <!-- Cyber-Physical Lattice & Physics-Informed Monogram Vector S -->
+  <g filter="url(#sujayGlow)">
+    <!-- Circuit Wave Traces -->
+    <path d="M40 48 Q80 28 120 48" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 5" opacity="0.6" />
+    <path d="M40 112 Q80 132 120 112" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 5" opacity="0.6" />
+
+    <!-- Kinetic Continuous S-Curve Node Pipeline -->
+    <path d="M108 52 C108 38 92 34 80 34 C64 34 52 44 52 60 C52 76 68 82 82 86 C98 90 108 96 108 108 C108 122 94 126 80 126 C64 126 50 120 50 106" fill="none" stroke="url(#sujayGrad)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Satellite Physics/Hardware Nodes -->
+    <circle cx="80" cy="80" r="5" fill="#38bdf8" />
+    <circle cx="52" cy="60" r="3.5" fill="#8b5cf6" />
+    <circle cx="108" cy="108" r="3.5" fill="#8b5cf6" />
+  </g>
+</svg>
