@@ -38,3 +38,6 @@ Projects/
 .zed/
 .agents
 .agent
+
+# Local perf benchmark output
+.perf/

@@ -11,7 +11,7 @@ class TestPortfolioDatabase(unittest.TestCase):
     def setUp(self):
         self.root = Path(__file__).parent.parent
         self.db_path = self.root / "projects_db.json"
-        self.html_path = self.root / "index.html"
+        self.html_path = self.root / "site" / "index.html"
 
     def test_database_json_validity(self):
         self.assertTrue(self.db_path.exists(), "projects_db.json should exist")

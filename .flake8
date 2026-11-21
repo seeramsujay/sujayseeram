@@ -4,7 +4,6 @@ extend-ignore = E203, E501, W503, E701, E129
 exclude =
     .git,
     __pycache__,
-    v1,
-    v2,
-    v3,
-    Projects
+    .venv,
+    Projects,
+    site
