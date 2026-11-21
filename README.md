@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="Sujay Seeram Logo" width="130" height="130" />
+  <img src="site/assets/logo.svg" alt="Sujay Seeram Logo" width="130" height="130" />
 </p>
 
 <h1 align="center">Sujay Seeram (Suzaykid)</h1>
@@ -57,18 +57,45 @@ I apply physics first principles to build highly economical, hardware-optimized 
 
 ---
 
+## 🗂️ Repository Layout
+
+```
+site/                 ← the only folder that gets deployed (see netlify.toml)
+  index.html          page markup + inline project timeline data
+  css/site.css        styles
+  js/site.js          interactions (scroll engine, overlays, theme)
+  data/readmes.json   full project READMEs, lazy-loaded on first project open
+  assets/             logo / favicon
+tools/                manage_projects.py, test_gemini_api.py, perf-check.mjs
+tests/                pytest suite for the tooling
+docs/                 roadmap, performance budget, branching model, design notes
+projects_db.json      source of truth for projects
+```
+
+**Branches:** `main` is the live site. `v2` and `v3` hold the next-generation
+Vite builds; `archive/v1` keeps the older v1 snapshot. See
+[docs/BRANCHING.md](docs/BRANCHING.md).
+
+**Preview locally:** `python3 -m http.server -d site 8000` then open http://localhost:8000
+(opening the file directly works too, but project READMEs need a server to load).
+
+**Check smoothness:** `node tools/perf-check.mjs --label mychange` — see
+[docs/PERFORMANCE.md](docs/PERFORMANCE.md).
+
+---
+
 ## 🚀 Quickstart & Project Automation
 
-This repository includes an automated portfolio management pipeline ([`manage_projects.py`](file:///home/suzaykid/Projects/sujayseeram/manage_projects.py)) that reconciles GitHub repositories, generates AI descriptions with Gemini, and synchronizes [`projects_db.json`](file:///home/suzaykid/Projects/sujayseeram/projects_db.json) and [`index.html`](file:///home/suzaykid/Projects/sujayseeram/index.html).
+This repository includes an automated portfolio management pipeline ([`manage_projects.py`](tools/manage_projects.py)) that reconciles GitHub repositories, generates AI descriptions with Gemini, and synchronizes [`projects_db.json`](projects_db.json) into the site (timeline data inline in [`site/index.html`](site/index.html), full READMEs in `site/data/readmes.json`).
 
 ### 📦 Setup & Dependency Management
 
 The project uses modern, reproducible packaging supporting both [**uv**](https://github.com/astral-sh/uv) and standard **pip**:
 
-- **[`pyproject.toml`](file:///home/suzaykid/Projects/sujayseeram/pyproject.toml)**: Standard PEP 517/621 project specification with `google-genai` and `google-generativeai`.
-- **[`uv.lock`](file:///home/suzaykid/Projects/sujayseeram/uv.lock)**: Deterministic, pinned lockfile for instantaneous environment reproduction.
-- **[`requirements.txt`](file:///home/suzaykid/Projects/sujayseeram/requirements.txt)**: Fallback compatibility for traditional pip virtual environments.
-- **[`.env.example`](file:///home/suzaykid/Projects/sujayseeram/.env.example)**: Starter configuration template for environment variables.
+- **[`pyproject.toml`](pyproject.toml)**: Standard PEP 517/621 project specification with `google-genai` and `google-generativeai`.
+- **[`uv.lock`](uv.lock)**: Deterministic, pinned lockfile for instantaneous environment reproduction.
+- **[`requirements.txt`](requirements.txt)**: Fallback compatibility for traditional pip virtual environments.
+- **[`.env.example`](.env.example)**: Starter configuration template for environment variables.
 
 #### Option A: Using `uv` (Recommended)
 ```bash
@@ -108,18 +135,18 @@ cp .env.example .env
 Launch the interactive Terminal UI (TUI):
 ```bash
 # With uv
-uv run manage_projects.py
+uv run tools/manage_projects.py
 
 # Or with activated venv
-python3 manage_projects.py
+python3 tools/manage_projects.py
 ```
 
 #### Key Capabilities & Fault Tolerance:
 - **No Startup Crash**: Operates smoothly without a `GEMINI_API_KEY` for browsing, reviewing, and toggling visibility of existing projects.
 - **Dual SDK Support**: Uses modern `google-genai` with fallback to `google-generativeai` and multi-model fallbacks (`gemini-3.1-flash-lite`, `gemini-2.5-flash`, `gemini-2.0-flash`).
-- **Graceful GitHub CLI Fallback**: If `gh` is missing, unauthenticated, or offline, the tool warns gracefully and continues using existing records in [`projects_db.json`](file:///home/suzaykid/Projects/sujayseeram/projects_db.json).
-- **Self-Contained DB Recovery**: If `projects_db.json` is missing, it automatically extracts and reconstructs the database directly from [`index.html`](file:///home/suzaykid/Projects/sujayseeram/index.html).
-- **Automated Browser Preview & Git Push**: After commissioning changes, it automatically opens `index.html` in Zen browser for preview, prompts to upload (`Y/n`), and commits (`"update new projects"`) and pushes directly to GitHub.
+- **Graceful GitHub CLI Fallback**: If `gh` is missing, unauthenticated, or offline, the tool warns gracefully and continues using existing records in [`projects_db.json`](projects_db.json).
+- **Self-Contained DB Recovery**: If `projects_db.json` is missing, it automatically extracts and reconstructs the database directly from [`index.html`](site/index.html).
+- **Automated Browser Preview & Git Push**: After commissioning changes, it automatically opens `site/index.html` in Zen browser for preview, prompts to upload (`Y/n`), and commits (`"update new projects"`) and pushes directly to GitHub.
 
 #### TUI Keyboard Controls:
 - `Up` / `Down` or `k` / `j`: Navigate repository list
@@ -127,7 +154,7 @@ python3 manage_projects.py
 - `[v]`: Set to **Private** (displayed on main timeline without GitHub link)
 - `[a]`: Set to **Archive** (moved to the Vault section)
 - `[d]`: Set to **Nuked** (opted-out / hidden completely)
-- `[s]`: Save changes, update `projects_db.json` & `index.html`, preview in Zen browser, and optionally push to GitHub
+- `[s]`: Save changes, update `projects_db.json` & `site/`, preview in Zen browser, and optionally push to GitHub
 - `[q]`: Quit without saving
 
 ---
@@ -136,9 +163,9 @@ python3 manage_projects.py
 
 Test your Google Gemini connection and key validity:
 ```bash
-uv run test_gemini_api.py
+uv run tools/test_gemini_api.py
 # Or pass key directly:
-uv run test_gemini_api.py YOUR_API_KEY
+uv run tools/test_gemini_api.py YOUR_API_KEY
 ```
 
 ---
