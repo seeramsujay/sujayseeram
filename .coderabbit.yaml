@@ -1,5 +1,5 @@
 # CodeRabbit configuration for full repository review (free tier, public repository only)
-version: "2"
+version: 2
 language: "en-US"
 tone_instructions: "Be thorough, strict, and precise. Scan the entire repository for security loopholes, reliability issues, formatting anomalies, and structural integrity."
 early_access: false

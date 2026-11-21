@@ -2209,6 +2209,11 @@
     to { opacity: 1; }
 }
 
+/* Project detail can open from inside the Vault, so it must stack above it */
+#project-detail-overlay {
+    z-index: 1600 !important;
+}
+
 /* Mobile menu trigger (a real <button>) */
 .mobile-menu-btn {
     background: none;

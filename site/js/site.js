@@ -248,7 +248,10 @@ const hideOverlay = (el) => {
 // Keep Tab inside whichever overlay is open.
 document.addEventListener('keydown', (e) => {
     if (e.key !== 'Tab') return;
-    const open = [...document.querySelectorAll(OPEN_LAYERS)].pop();
+    // Topmost open layer wins (project detail sits above the Vault).
+    const open = [...document.querySelectorAll(OPEN_LAYERS)]
+        .sort((a, b) => (parseInt(getComputedStyle(a).zIndex, 10) || 0) - (parseInt(getComputedStyle(b).zIndex, 10) || 0))
+        .pop();
     if (!open) return;
     const items = [...open.querySelectorAll(FOCUSABLE)].filter(n => n.offsetParent !== null);
     if (!items.length) return;
