@@ -11,7 +11,7 @@ class TestPortfolioDatabase(unittest.TestCase):
     def setUp(self):
         self.root = Path(__file__).parent.parent
         self.db_path = self.root / "projects_db.json"
-        self.html_path = self.root / "index.html"
+        self.html_path = self.root / "site" / "index.html"
 
     def test_database_json_validity(self):
         self.assertTrue(self.db_path.exists(), "projects_db.json should exist")
@@ -21,9 +21,12 @@ class TestPortfolioDatabase(unittest.TestCase):
         self.assertIsInstance(data, list)
         self.assertGreater(len(data), 0)
 
-        required_keys = {"name", "description", "githubLink"}
         for item in data:
             self.assertIsInstance(item, dict)
+            # Opted-out ("nuked") projects are hidden, so they only need identity fields.
+            required_keys = {"name", "githubLink"}
+            if not item.get("opted_out"):
+                required_keys.add("description")
             for k in required_keys:
                 self.assertIn(
                     k, item, f"Missing required key '{k}' in project {item.get('name')}"

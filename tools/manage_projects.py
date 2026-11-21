@@ -8,6 +8,15 @@ import subprocess
 import sys
 from datetime import datetime
 
+# Repository layout: this script lives in tools/, the public site in site/.
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SITE_DIR = os.path.join(REPO_ROOT, "site")
+SITE_HTML = os.path.join(SITE_DIR, "index.html")
+READMES_JSON = os.path.join(SITE_DIR, "data", "readmes.json")
+
+PROJECTS_START = "<!-- PROJECTS_DATA_START -->"
+PROJECTS_END = "<!-- PROJECTS_DATA_END -->"
+
 # ANSI Colors
 COLORS = {
     "cyan": "\033[96m",
@@ -62,7 +71,7 @@ def print_status(msg, status_type="info"):
 
 
 def load_env():
-    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    env_path = os.path.join(REPO_ROOT, ".env")
     if os.path.exists(env_path):
         with open(env_path, "r", encoding="utf-8") as f:
             for line in f:
@@ -106,38 +115,32 @@ def get_github_username():
 
 
 def get_db_path():
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "projects_db.json")
+    return os.path.join(REPO_ROOT, "projects_db.json")
 
 
 def init_db():
     db_path = get_db_path()
     if not os.path.exists(db_path):
-        # Attempt to recover projects array from index.html if present
-        html_path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "index.html"
-        )
+        # Attempt to recover the projects array from site/index.html if present
         projects = []
-        if os.path.exists(html_path):
+        if os.path.exists(SITE_HTML):
             try:
-                with open(html_path, "r", encoding="utf-8") as f:
+                with open(SITE_HTML, "r", encoding="utf-8") as f:
                     content = f.read()
-                start_proj = "// <!-- PROJECTS_DATA_START -->"
-                end_proj = "// <!-- PROJECTS_DATA_END -->"
-                start_idx = content.find(start_proj)
-                end_idx = content.find(end_proj)
+                start_idx = content.find(PROJECTS_START)
+                end_idx = content.find(PROJECTS_END)
                 if start_idx != -1 and end_idx != -1:
-                    block = content[start_idx + len(start_proj) : end_idx]
-                    match = re.search(
-                        r"const\s+projects\s*=\s*(\[.*?\])\s*;", block, re.DOTALL
-                    )
+                    block = content[start_idx + len(PROJECTS_START) : end_idx]
+                    match = re.search(r"(\[.*\])", block, re.DOTALL)
                     if match:
                         projects = json.loads(match.group(1))
                         print_status(
-                            "Initialized projects_db.json from index.html.", "success"
+                            "Initialized projects_db.json from site/index.html.",
+                            "success",
                         )
             except Exception as e:
                 print_status(
-                    f"Could not extract existing projects from index.html: {e}",
+                    f"Could not extract existing projects from site/index.html: {e}",
                     "warning",
                 )
 
@@ -155,18 +158,6 @@ def save_db(projects):
     with open(db_path, "w", encoding="utf-8") as f:
         json.dump(projects, f, indent=4)
     print_status(f"Database saved to {db_path}", "success")
-
-    # Mirror to v2/src/data/projects_db.json if v2 exists
-    v2_db = os.path.join(
-        os.path.dirname(db_path), "v2", "src", "data", "projects_db.json"
-    )
-    if os.path.exists(os.path.dirname(v2_db)):
-        try:
-            with open(v2_db, "w", encoding="utf-8") as f:
-                json.dump(projects, f, indent=4)
-            print_status(f"Database mirrored to {v2_db}", "success")
-        except Exception as e:
-            print_status(f"Notice: Could not mirror database to v2: {e}", "warning")
 
 
 def get_public_repos():
@@ -694,66 +685,61 @@ def run_tui(projects):
 
 
 def inject_data(projects_list):
-    print_status("Injecting project details into index.html...", "info")
+    """Write timeline data inline into site/index.html and READMEs to site/data/readmes.json.
 
-    # Clean readmes mapping
+    Project cards are needed for first paint, so they stay inline as a JSON
+    script tag. Full READMEs (~250 KB) are only needed when a project is
+    opened, so the site fetches them lazily from a separate file.
+    """
+    print_status("Writing project data into site/...", "info")
+
     readmes_dict = {}
     projects_clean = []
-
     for p in projects_list:
         p_copy = p.copy()
         readme_content = p_copy.pop("readme", "")
         projects_clean.append(p_copy)
-
         name = p["name"]
         repo_key = (
             "Word-Association-Test-SSB-"
             if name == "Word-Association-Test-SSB"
             else name
         )
-        readmes_dict[repo_key] = readme_content
+        if readme_content:
+            readmes_dict[repo_key] = readme_content
 
-    projects_json = json.dumps(projects_clean, indent=4)
-    readmes_json = json.dumps(readmes_dict, indent=4)
+    # Escape "</" so README/description text can never close the script tag early.
+    projects_json = json.dumps(projects_clean, indent=1, ensure_ascii=False).replace("</", "<\\/")
 
-    html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
-    if not os.path.exists(html_path):
-        print_status(f"index.html not found at {html_path}", "warning")
+    os.makedirs(os.path.dirname(READMES_JSON), exist_ok=True)
+    with open(READMES_JSON, "w", encoding="utf-8") as f:
+        json.dump(readmes_dict, f, ensure_ascii=False, separators=(",", ":"))
+    print_status(f"READMEs written to {os.path.relpath(READMES_JSON, REPO_ROOT)}", "success")
+
+    if not os.path.exists(SITE_HTML):
+        print_status(f"index.html not found at {SITE_HTML}", "warning")
         return
 
-    with open(html_path, "r", encoding="utf-8") as f:
+    with open(SITE_HTML, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # Inject projects data
-    start_proj = "// <!-- PROJECTS_DATA_START -->"
-    end_proj = "// <!-- PROJECTS_DATA_END -->"
-    start_idx = content.find(start_proj)
-    end_idx = content.find(end_proj)
-    if start_idx != -1 and end_idx != -1:
-        end_idx += len(end_proj)
-        old_proj_block = content[start_idx:end_idx]
-        new_proj_block = f"{start_proj}\n        const projects = {projects_json};\n        {end_proj}"
-        content = content.replace(old_proj_block, new_proj_block)
-    else:
-        print_status("Projects data markers not found in index.html!", "warning")
+    start_idx = content.find(PROJECTS_START)
+    end_idx = content.find(PROJECTS_END)
+    if start_idx == -1 or end_idx == -1:
+        print_status("Projects data markers not found in site/index.html!", "warning")
+        return
 
-    # Inject readmes data
-    start_readme = "// <!-- PROJECT_READMES_START -->"
-    end_readme = "// <!-- PROJECT_READMES_END -->"
-    start_idx = content.find(start_readme)
-    end_idx = content.find(end_readme)
-    if start_idx != -1 and end_idx != -1:
-        end_idx += len(end_readme)
-        old_readme_block = content[start_idx:end_idx]
-        new_readme_block = f"{start_readme}\n        const projectReadmes = {readmes_json};\n        {end_readme}"
-        content = content.replace(old_readme_block, new_readme_block)
-    else:
-        print_status("Project readmes markers not found in index.html!", "warning")
-
-    with open(html_path, "w", encoding="utf-8") as f:
+    content = (
+        content[: start_idx + len(PROJECTS_START)]
+        + '\n<script id="projects-data" type="application/json">\n'
+        + projects_json
+        + "\n</script>\n"
+        + content[end_idx:]
+    )
+    with open(SITE_HTML, "w", encoding="utf-8") as f:
         f.write(content)
 
-    print_status("index.html updated successfully!", "success")
+    print_status("site/index.html updated successfully!", "success")
 
 
 def open_in_browser(file_path):
@@ -805,16 +791,16 @@ def open_in_browser(file_path):
 
 def git_commit_and_push():
     print_status("Preparing Git commit...", "info")
-    repo_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_dir = REPO_ROOT
     try:
-        # Stage projects_db.json and index.html
+        # Stage the database and the generated site data
         subprocess.run(
             [
                 "git",
                 "add",
                 "projects_db.json",
-                "index.html",
-                "v2/src/data/projects_db.json",
+                "site/index.html",
+                "site/data/readmes.json",
             ],
             cwd=repo_dir,
             capture_output=True,
@@ -990,10 +976,7 @@ def main():
         inject_data(active_projects)
 
         # Open preview in Zen / default browser
-        html_path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "index.html"
-        )
-        open_in_browser(html_path)
+        open_in_browser(SITE_HTML)
 
         # Prompt to commit and push
         print("\n" + "-" * 65)

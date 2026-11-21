@@ -25,16 +25,13 @@ Thumbs.db
 *.log
 node_modules/
 
-# Workspaces build & modules
-v2/node_modules/
-v2/dist/
-v2/.vite/
+# Build output (v2/v3 branches)
+dist/
+.vite/
 
-v3/node_modules/
-v3/dist/
-v3/.vite/
-
-Projects/
 .zed/
 .agents
 .agent
+
+# Local perf benchmark output
+.perf/
