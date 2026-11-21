@@ -21,9 +21,12 @@ class TestPortfolioDatabase(unittest.TestCase):
         self.assertIsInstance(data, list)
         self.assertGreater(len(data), 0)
 
-        required_keys = {"name", "description", "githubLink"}
         for item in data:
             self.assertIsInstance(item, dict)
+            # Opted-out ("nuked") projects are hidden, so they only need identity fields.
+            required_keys = {"name", "githubLink"}
+            if not item.get("opted_out"):
+                required_keys.add("description")
             for k in required_keys:
                 self.assertIn(
                     k, item, f"Missing required key '{k}' in project {item.get('name')}"
