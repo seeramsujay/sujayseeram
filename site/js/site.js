@@ -1,9 +1,4 @@
-// ─── Hero fade-in ────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.getElementById('hero-quote').classList.remove('opacity-0');
-    }, 800);
-});
+// Hero quote fade-in is pure CSS (see .hero-quote in site.css).
 
 // ─── Scroll engine ───────────────────────────────────────────────────────
 // One rAF per scroll event, bound directly to scrollY (no lerp trailing).

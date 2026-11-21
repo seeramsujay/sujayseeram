@@ -459,7 +459,7 @@
             font-weight: 300;
             font-style: italic;
             line-height: 1.5;
-            transition: opacity 1.2s ease;
+            animation: heroQuoteIn 0.9s ease 0.15s both;
         }
 
         .hero-links {
@@ -2202,6 +2202,11 @@
     }
     .fade-up { opacity: 1; transform: none; }
     .timeline-node { position: relative !important; top: auto !important; }
+}
+
+@keyframes heroQuoteIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Mobile menu trigger (a real <button>) */
