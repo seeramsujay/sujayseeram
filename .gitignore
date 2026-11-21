@@ -29,7 +29,6 @@ node_modules/
 dist/
 .vite/
 
-Projects/
 .zed/
 .agents
 .agent
