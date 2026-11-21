@@ -60,8 +60,10 @@
                     <span class="material-symbols-outlined theme-icon-dark">dark_mode</span>
                     <span class="material-symbols-outlined theme-icon-light">light_mode</span>
                 </button>
-                <div class="md-hidden material-symbols-outlined" style="color: var(--optimism-mint); cursor: pointer;" onclick="openMobileDrawer()">menu
-                </div>
+                <button id="mobile-menu-btn" class="md-hidden mobile-menu-btn" type="button" aria-label="Open menu"
+                    aria-controls="mobile-nav-drawer" aria-expanded="false" onclick="openMobileDrawer()">
+                    <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+                </button>
             </div>
         </div>
     </nav>
@@ -72,7 +74,7 @@
         <div class="mobile-drawer-content">
             <div class="mobile-drawer-header">
                 <span class="font-mono" style="font-size: 10px; color: var(--optimism-mint);">NAVIGATION_INDEX</span>
-                <button class="mobile-drawer-close" onclick="closeMobileDrawer()" aria-label="Close menu">
+                <button class="mobile-drawer-close" onclick="closeMobileDrawer()" aria-label="Close menu" data-overlay-close>
                     <span class="material-symbols-outlined" style="color: var(--text-primary);">close</span>
                 </button>
             </div>

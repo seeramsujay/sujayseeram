@@ -109,7 +109,15 @@ window.addEventListener('resize', () => {
     resizeTimer = setTimeout(() => {
         const widthChanged = window.innerWidth !== vw;
         const wasDesktop = isDesktop();
-        if (!widthChanged) { vh = window.innerHeight; maxScroll = Math.max(1, document.documentElement.scrollHeight - vh); schedule(); return; }
+        if (!widthChanged) {
+            // Phones: URL-bar show/hide only changes height; keep cached layout.
+            // Desktop: a height change resizes the vh-based gaps, so re-measure.
+            if (isDesktop()) { remeasure(); return; }
+            vh = window.innerHeight;
+            maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+            schedule();
+            return;
+        }
         vw = window.innerWidth;
         if (wasDesktop !== isDesktop()) setTimelineMode();
         remeasure();
@@ -171,6 +179,7 @@ filterBtns.forEach(btn => {
 const togglePost = (header) => {
     const article = header.parentElement;
     article.classList.toggle('expanded');
+    header.setAttribute('aria-expanded', article.classList.contains('expanded') ? 'true' : 'false');
 
     const icon = header.querySelector('.material-symbols-outlined');
     if (article.classList.contains('expanded')) {
@@ -207,26 +216,74 @@ const copyPostText = (btn, text) => {
     });
 };
 
-// Mobile Navigation Drawer Controllers
-const openMobileDrawer = () => {
-    const drawer = document.getElementById('mobile-nav-drawer');
-    if (drawer) {
-        drawer.style.display = 'block';
-        drawer.offsetHeight; // force reflow
-        drawer.classList.add('active');
-        document.body.style.overflow = 'hidden';
+// ─── Overlay helpers ─────────────────────────────────────────────────────
+// Shared open/close for every overlay: cancels a pending hide when reopened
+// quickly, moves focus inside, traps Tab, and restores focus on close.
+const hideTimers = new Map();
+const returnFocus = new Map();
+const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+const OPEN_LAYERS = '.fullscreen-overlay.active, .terminal-overlay.active, #mobile-nav-drawer.active';
+
+const showOverlay = (el, display = 'flex') => {
+    if (!el) return;
+    clearTimeout(hideTimers.get(el));
+    const wasOpen = el.classList.contains('active');
+    if (!wasOpen) returnFocus.set(el, document.activeElement);
+    el.style.display = display;
+    el.offsetHeight; // reflow so the transition runs
+    el.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (!wasOpen) {
+        const target = el.querySelector('[data-overlay-close]') || el.querySelector(FOCUSABLE);
+        if (target) target.focus({ preventScroll: true });
     }
 };
 
+const hideOverlay = (el) => {
+    if (!el || !el.classList.contains('active')) return;
+    el.classList.remove('active');
+    if (!document.querySelector(OPEN_LAYERS)) document.body.style.overflow = '';
+    clearTimeout(hideTimers.get(el));
+    hideTimers.set(el, setTimeout(() => { el.style.display = 'none'; }, 500));
+    const prev = returnFocus.get(el);
+    if (prev && typeof prev.focus === 'function' && document.contains(prev)) prev.focus({ preventScroll: true });
+    returnFocus.delete(el);
+};
+
+// Keep Tab inside whichever overlay is open.
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const open = [...document.querySelectorAll(OPEN_LAYERS)].pop();
+    if (!open) return;
+    const items = [...open.querySelectorAll(FOCUSABLE)].filter(n => n.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (!open.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+
+// Enter/Space activates elements that act as buttons but aren't <button>.
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const el = e.target.closest && e.target.closest('[data-kbd-click]');
+    if (!el || el !== e.target) return;
+    e.preventDefault();
+    el.click();
+});
+
+// Mobile Navigation Drawer Controllers
+const openMobileDrawer = () => {
+    showOverlay(document.getElementById('mobile-nav-drawer'), 'block');
+    const btn = document.getElementById('mobile-menu-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+};
+
 const closeMobileDrawer = () => {
-    const drawer = document.getElementById('mobile-nav-drawer');
-    if (drawer) {
-        drawer.classList.remove('active');
-        document.body.style.overflow = '';
-        setTimeout(() => {
-            drawer.style.display = 'none';
-        }, 500);
-    }
+    hideOverlay(document.getElementById('mobile-nav-drawer'));
+    const btn = document.getElementById('mobile-menu-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
 };
 
 // Gestures & Project Cycling for Bottom Sheets on Mobile
@@ -377,39 +434,10 @@ window.addEventListener('keydown', (e) => {
 });
 
 
-const openVaultOverlay = () => {
-    const el = document.getElementById('vault-overlay');
-    el.style.display = 'flex';
-    el.offsetHeight;
-    el.classList.add('active');
-    document.body.style.overflow = 'hidden';
-};
-
-const closeVaultOverlay = () => {
-    const el = document.getElementById('vault-overlay');
-    el.classList.remove('active');
-    document.body.style.overflow = '';
-    setTimeout(() => {
-        el.style.display = 'none';
-    }, 500);
-};
-
-const openPostsOverlay = () => {
-    const el = document.getElementById('posts-overlay');
-    el.style.display = 'flex';
-    el.offsetHeight;
-    el.classList.add('active');
-    document.body.style.overflow = 'hidden';
-};
-
-const closePostsOverlay = () => {
-    const el = document.getElementById('posts-overlay');
-    el.classList.remove('active');
-    document.body.style.overflow = '';
-    setTimeout(() => {
-        el.style.display = 'none';
-    }, 500);
-};
+const openVaultOverlay = () => showOverlay(document.getElementById('vault-overlay'));
+const closeVaultOverlay = () => hideOverlay(document.getElementById('vault-overlay'));
+const openPostsOverlay = () => showOverlay(document.getElementById('posts-overlay'));
+const closePostsOverlay = () => hideOverlay(document.getElementById('posts-overlay'));
 
 // Terminal Telemetry Boot Sequence Simulation
 const terminalCommands = [
@@ -519,33 +547,42 @@ const startTerminalBootSequence = () => {
 
 const openTerminal = () => {
     const el = document.getElementById('terminal-overlay');
-    if (el) {
-        el.style.display = 'flex';
-        el.offsetHeight; // Force reflow
-        el.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        startTerminalBootSequence();
-    }
+    if (!el) return;
+    showOverlay(el);
+    startTerminalBootSequence();
 };
 
-const closeTerminal = () => {
-    const el = document.getElementById('terminal-overlay');
-    if (el) {
-        el.classList.remove('active');
-        document.body.style.overflow = '';
-        setTimeout(() => {
-            el.style.display = 'none';
-        }, 500);
-    }
-};
+const closeTerminal = () => hideOverlay(document.getElementById('terminal-overlay'));
 
 const openTerminalArchive = () => {
     openTerminal();
 };
 
-// Accessibility Fix: Hide ligature icons from screen readers
+// Accessibility: hide ligature icons from screen readers, make div-based
+// controls focusable and operable from the keyboard, label the overlays.
 document.querySelectorAll('.material-symbols-outlined').forEach(icon => {
     icon.setAttribute('aria-hidden', 'true');
+});
+document.querySelectorAll('.terminal-close').forEach(btn => {
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('tabindex', '0');
+    btn.setAttribute('data-kbd-click', '');
+    btn.setAttribute('data-overlay-close', '');
+    if (!btn.getAttribute('aria-label')) btn.setAttribute('aria-label', 'Close');
+});
+document.querySelectorAll('.post-card-inner').forEach(header => {
+    header.setAttribute('role', 'button');
+    header.setAttribute('tabindex', '0');
+    header.setAttribute('data-kbd-click', '');
+    header.setAttribute('aria-expanded', header.parentElement.classList.contains('expanded') ? 'true' : 'false');
+});
+[['project-detail-overlay', 'Project details'], ['vault-overlay', 'Project vault'],
+    ['posts-overlay', 'Reading room'], ['terminal-overlay', 'Terminal']].forEach(([id, label]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('aria-label', label);
 });
 
 
@@ -555,8 +592,36 @@ document.querySelectorAll('.material-symbols-outlined').forEach(icon => {
 // opened, so they load on demand (and are prefetched when the page is idle).
 let readmesPromise = null;
 const loadReadmes = () => readmesPromise || (readmesPromise = fetch('data/readmes.json')
-    .then(r => (r.ok ? r.json() : {}))
+    .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
     .catch(() => { readmesPromise = null; return {}; }));
+
+// README HTML comes from other repos: sanitize it before it touches the DOM.
+let purifyPromise = null;
+const loadPurify = () => purifyPromise || (purifyPromise = new Promise(resolve => {
+    if (window.DOMPurify) return resolve(true);
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js';
+    s.onload = () => resolve(true);
+    s.onerror = () => { purifyPromise = null; resolve(false); };
+    document.head.appendChild(s);
+}));
+
+// Point repo-relative links/images in a README at the source repository.
+const GITHUB_USER = 'seeramsujay';
+const absolutizeReadmeLinks = (root, repo) => {
+    const isRelative = (u) => u && !/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(u);
+    const clean = (u) => u.replace(/^\.\//, '').replace(/^\//, '');
+    root.querySelectorAll('a[href]').forEach(a => {
+        const href = a.getAttribute('href');
+        if (isRelative(href)) a.setAttribute('href', `https://github.com/${GITHUB_USER}/${repo}/blob/HEAD/${clean(href)}`);
+        if (!href.startsWith('#')) { a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener noreferrer'); }
+    });
+    root.querySelectorAll('img[src]').forEach(img => {
+        const src = img.getAttribute('src');
+        if (isRelative(src)) img.setAttribute('src', `https://raw.githubusercontent.com/${GITHUB_USER}/${repo}/HEAD/${clean(src)}`);
+        img.setAttribute('loading', 'lazy');
+    });
+};
 
 let markedPromise = null;
 const loadMarked = () => markedPromise || (markedPromise = new Promise(resolve => {
@@ -571,7 +636,7 @@ const loadMarked = () => markedPromise || (markedPromise = new Promise(resolve =
 const escapeHtml = (str) => str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const whenIdle = window.requestIdleCallback || ((fn) => setTimeout(fn, 2500));
-window.addEventListener('load', () => whenIdle(() => { loadReadmes(); loadMarked(); }, { timeout: 5000 }), { once: true });
+window.addEventListener('load', () => whenIdle(() => { loadReadmes(); loadMarked(); loadPurify(); }, { timeout: 5000 }), { once: true });
 
 
 
@@ -593,30 +658,23 @@ const openProjectDetailOverlay = (name, descHtml, repoLink) => {
     // Show the short description instantly; swap in the full README when ready.
     bodyEl.innerHTML = `<p>${descHtml}</p>`;
     const repoKey = name === 'Word-Association-Test-SSB' ? 'Word-Association-Test-SSB-' : name;
-    Promise.all([loadReadmes(), loadMarked()]).then(([readmes]) => {
+    Promise.all([loadReadmes(), loadMarked(), loadPurify()]).then(([readmes, , purifyOk]) => {
         const md = readmes[repoKey];
         if (!md || window.currentActiveProjectName !== name) return;
-        bodyEl.innerHTML = (window.marked && typeof marked.parse === 'function')
-            ? marked.parse(md)
-            : `<div style="white-space: pre-wrap; font-family: monospace; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">${escapeHtml(md)}</div>`;
+        const canRender = purifyOk && window.DOMPurify && window.marked && typeof marked.parse === 'function';
+        if (canRender) {
+            bodyEl.innerHTML = DOMPurify.sanitize(marked.parse(md));
+            absolutizeReadmeLinks(bodyEl, repoKey);
+        } else {
+            // No sanitizer available: show the raw markdown as escaped text.
+            bodyEl.innerHTML = `<div style="white-space: pre-wrap; font-family: monospace; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">${escapeHtml(md)}</div>`;
+        }
     });
 
-    el.style.display = 'flex';
-    el.offsetHeight;
-    el.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    showOverlay(el);
 };
 
-const closeProjectDetailOverlay = () => {
-    const el = document.getElementById('project-detail-overlay');
-    if (el) {
-        el.classList.remove('active');
-        document.body.style.overflow = '';
-        setTimeout(() => {
-            el.style.display = 'none';
-        }, 500);
-    }
-};
+const closeProjectDetailOverlay = () => hideOverlay(document.getElementById('project-detail-overlay'));
 
 const projects = JSON.parse(document.getElementById('projects-data').textContent);
 
@@ -751,6 +809,10 @@ function renderAllProjects() {
         if (!h3) return;
 
         card.style.cursor = 'pointer';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('data-kbd-click', '');
+        card.setAttribute('aria-label', `Open details for ${h3.textContent.trim()}`);
         card.addEventListener('click', (e) => {
             if (e.target.closest('a') || e.target.closest('button')) return;
 
